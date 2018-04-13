@@ -1,0 +1,24 @@
+{
+  "name": "latergat/355",
+  "authors": [
+    {
+      "name": "Antonio Suarez",
+      "email": "asuarez2@mail.greenriver.edu"
+    },
+    {
+      "name": "Elizabeth Kanzler",
+      "email": "ekanzler@mail.greenriver.edu"
+    },
+    {
+      "name": "Pavel Radchuk",
+      "email": "pradchuk@mail.greenriver.edu"
+    },
+    {
+      "name": "Sam Ourn",
+      "email": "sourn@mail.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
