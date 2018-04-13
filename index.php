@@ -11,8 +11,9 @@
 
     // define a default route
     $f3->route('GET /', function() {
-            $template = new Template();
-            echo $template->render
-            ('views/home.html');
-        }
-    );
+        $template = new Template();
+        echo $template->render('views/home.html');
+    });
+
+    // run fat free
+    $f3->run();
