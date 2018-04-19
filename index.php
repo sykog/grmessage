@@ -15,5 +15,17 @@
         echo $template->render('views/home.html');
     });
 
+    // define a default route
+    $f3->route('GET /register', function() {
+        $template = new Template();
+        echo $template->render('views/registration.html');
+    });
+
+    // define a default route
+    $f3->route('GET /testConnection', function() {
+        $template = new Template();
+        echo $template->render('tempTestCnxn.html');
+    });
+
     // run fat free
     $f3->run();
