@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah');
+
+/* Body Styles */
+
+div#mainContainer {
+    width: 100%;
+    padding-top: 1%;
+}
+
+/* Header Styles */
+header#mainHeader {
+    width: 100%;
+    left: 0px;
+    background-color: deepskyblue;
+    z-index: 10;
+    padding: 1%;
+}
+
+header h1 {
+    font-family: 'Gloria Hallelujah', sans-serif;
+    color: yellow;
+    padding: 8px;
+    width: max-content;
+    float: left;
+}
+
+header a#admin h2 {
+    font-family: 'Gloria Hallelujah', sans-serif;
+    color: yellow;
+    float: right;
+    padding: 15px 15px 0px 0px;
+}
+
+header a h1:hover, header a h2:hover {
+    text-decoration: underline;
+}
