@@ -18,77 +18,91 @@
     </header>
 
     <div class="container" id="mainContainer">
-        <h2>Register</h2>
-        <hr>
+        <h2 id="regHeader">Register as:</h2>
         <div class="btn-toolbar" arialabel="Register As:">
             <div class="btn-group mb-2">
                 <button type="button" class="btn btn-primary" id="student">Student</button>
                 <button type="button" class="btn btn-primary" id="instructor">Instructor</button>
             </div>
         </div>
+        <hr>
 
-        <div class="col-7">
+        <div class="col-12">
             <form class="form" action="" method="post">
                 <p>* Required fields</p>
 
-                <label class="form-control-label" for="email">*Green River Email :</label>
-                <div class="input-group">
-                    <input class="form-control" type="text" id="email" name="email"
-                           value="" required>
+                <div class="form-group col-6">
+                    <label class="form-control-label" for="email">*Green River Email :</label>
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="email" name="email"
+                               value="" required>
+                    </div>
                 </div>
 
-                <label class="form-control-label" for="phone">*Password</label>
-                <check if="{{ isset(@errors['phone']) }}">
-                    <p>{{ @errors['phone'] }}</p>
-                </check>
-                <input class="form-control" type="text" id="password" name="password"
-                        value="{{ @phone }}">
-
-                <label class="form-control-label" for="phone">*Confirm password</label>
-                <check if="{{ isset(@errors['phone']) }}">
-                    <p>{{ @errors['phone'] }}</p>
-                </check>
-                <input class="form-control" type="text" id="confirm" name="confirm"
-                        value="{{ @phone }}">
-
-                <label class="form-control-label" for="first">*First Name</label>
-                <check if="{{ isset(@errors['first']) }}">
-                    <p>{{ @errors['first'] }}</p>
-                </check>
-                <div class="input-group">
-                    <input class="form-control" type="text" id="first" name="first"
-                            value="{{ @first }}" required>
-                    <span class="input-group-addon"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
+                <div class="form-group col-6">
+                    <label class="form-control-label" for="phone">*Password</label>
+                    <check if="{{ isset(@errors['phone']) }}">
+                        <p>{{ @errors['phone'] }}</p>
+                    </check>
+                    <input class="form-control" type="text" id="password" name="password"
+                            value="{{ @phone }}">
                 </div>
 
-                <label class="form-control-label" for="last">*Last Name</label>
-                <check if="{{ isset(@errors['last']) }}">
-                    <p>{{ @errors['last'] }}</p>
-                </check>
-                <input class="form-control" type="text" id="last" name="last"
-                        value="{{ @last }}" required>
+                <div class="form-group col-6">
+                    <label class="form-control-label" for="phone">*Confirm password</label>
+                    <check if="{{ isset(@errors['phone']) }}">
+                        <p>{{ @errors['phone'] }}</p>
+                    </check>
+                    <input class="form-control" type="text" id="confirm" name="confirm"
+                            value="{{ @phone }}">
+                </div>
 
-                <label class="form-control-label" for="phone">Phone Number</label>
-                <check if="{{ isset(@errors['phone']) }}">
-                    <p>{{ @errors['phone'] }}</p>
-                </check>
-                <input class="form-control" type="text" id="phone" name="phone"
-                        value="{{ @phone }}">
+                <div class="form-group col-6">
+                    <label class="form-control-label" for="first">*First Name</label>
+                    <check if="{{ isset(@errors['first']) }}">
+                        <p>{{ @errors['first'] }}</p>
+                    </check>
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="first" name="first"
+                                value="{{ @first }}" required>
+                        <span class="input-group-addon"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
+                    </div>
+                </div>
 
-                <label class="form-check-label">Mobile Carrier</label>
-                <label class="d-block"></label>
-                <select class="form-control dropdown" id="carrier" name="carrier">
-                    <option value="volvo">Verizon</option>
-                    <option value="saab">AT&T</option>
-                    <option value="mercedes">Sprint</option>
-                    <option value="audi">T-Mobile</option>
-                    <option value="volvo">Boost Mobile</option>
-                    <option value="saab">Cricket Wireless</option>
-                    <option value="mercedes">Virgin Mobile</option>
-                    <option value="audi">Republic Wireless</option>
-                    <option value="volvo">U.S. Cellular</option>
-                    <option value="saab">Alltel</option>
-                </select>
+                <div class="form-group col-6">
+                    <label class="form-control-label" for="last">*Last Name</label>
+                    <check if="{{ isset(@errors['last']) }}">
+                        <p>{{ @errors['last'] }}</p>
+                    </check>
+                    <input class="form-control" type="text" id="last" name="last"
+                            value="{{ @last }}" required>
+                </div>
+
+                <div class="form-group col-6">
+                    <label class="form-control-label" for="phone">Phone Number</label>
+                    <check if="{{ isset(@errors['phone']) }}">
+                        <p>{{ @errors['phone'] }}</p>
+                    </check>
+                    <input class="form-control" type="text" id="phone" name="phone"
+                            value="{{ @phone }}">
+                </div>
+
+                <div class="form-group col-6">
+                    <label class="form-check-label">Mobile Carrier</label>
+                    <label class="d-block"></label>
+                    <select class="form-control dropdown" id="carrier" name="carrier">
+                        <option value="volvo">Verizon</option>
+                        <option value="saab">AT&T</option>
+                        <option value="mercedes">Sprint</option>
+                        <option value="audi">T-Mobile</option>
+                        <option value="volvo">Boost Mobile</option>
+                        <option value="saab">Cricket Wireless</option>
+                        <option value="mercedes">Virgin Mobile</option>
+                        <option value="audi">Republic Wireless</option>
+                        <option value="volvo">U.S. Cellular</option>
+                        <option value="saab">Alltel</option>
+                    </select>
+                </div>
 
                 <button id="next" class="btn btn-primary" type="submit" name="submit">Register</button>
             </form>

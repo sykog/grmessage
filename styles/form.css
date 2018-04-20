@@ -1,1 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah');
+
+div.btn-toolbar {
+    diplay: inline;
+    margin-top: 2px;
+}
+
+h2#regHeader {
+    display: inline;
+    float: left;
+    width: max-content;
+    margin-right: 2%;
+}

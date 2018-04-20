@@ -10,13 +10,13 @@
     $f3->set('DEBUG', 3);
 
     // define a default route
-    $f3->route('GET /', function() {
+    $f3->route('GET|POST /', function() {
         $template = new Template();
         echo $template->render('views/home.html');
     });
 
-    // define a default route
-    $f3->route('GET /register', function() {
+    // define a route for registration
+    $f3->route('GET|POST /register', function() {
         $template = new Template();
         echo $template->render('views/registration.html');
     });
