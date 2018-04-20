@@ -35,26 +35,26 @@
                     <label class="form-control-label" for="email">*Green River Email :</label>
                     <div class="input-group">
                         <input class="form-control" type="text" id="email" name="email"
-                               value="" required>
+                               value="{{ @email }}" required>
                     </div>
                 </div>
 
                 <div class="form-group col-6">
-                    <label class="form-control-label" for="phone">*Password</label>
-                    <check if="{{ isset(@errors['phone']) }}">
-                        <p>{{ @errors['phone'] }}</p>
+                    <label class="form-control-label" for="password">*Password</label>
+                    <check if="{{ isset(@errors['password']) }}">
+                        <p>{{ @errors['password'] }}</p>
                     </check>
                     <input class="form-control" type="text" id="password" name="password"
-                            value="{{ @phone }}">
+                            value="{{ @password }}" required>
                 </div>
 
                 <div class="form-group col-6">
-                    <label class="form-control-label" for="phone">*Confirm password</label>
-                    <check if="{{ isset(@errors['phone']) }}">
-                        <p>{{ @errors['phone'] }}</p>
+                    <label class="form-control-label" for="confirm">*Confirm password</label>
+                    <check if="{{ isset(@errors['confirm']) }}">
+                        <p>{{ @errors['confirm'] }}</p>
                     </check>
                     <input class="form-control" type="text" id="confirm" name="confirm"
-                            value="{{ @phone }}">
+                            value="{{ @confirm }}" required>
                 </div>
 
                 <div class="form-group col-6">
@@ -65,7 +65,6 @@
                     <div class="input-group">
                         <input class="form-control" type="text" id="first" name="first"
                                 value="{{ @first }}" required>
-                        <span class="input-group-addon"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
                     </div>
                 </div>
 
@@ -91,16 +90,10 @@
                     <label class="form-check-label">Mobile Carrier</label>
                     <label class="d-block"></label>
                     <select class="form-control dropdown" id="carrier" name="carrier">
-                        <option value="volvo">Verizon</option>
-                        <option value="saab">AT&T</option>
-                        <option value="mercedes">Sprint</option>
-                        <option value="audi">T-Mobile</option>
-                        <option value="volvo">Boost Mobile</option>
-                        <option value="saab">Cricket Wireless</option>
-                        <option value="mercedes">Virgin Mobile</option>
-                        <option value="audi">Republic Wireless</option>
-                        <option value="volvo">U.S. Cellular</option>
-                        <option value="saab">Alltel</option>
+                        <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
+                            <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
+                            {{ @carrierOption }}</option>
+                        </repeat>
                     </select>
                 </div>
 
