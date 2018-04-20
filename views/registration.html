@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/main.css">
     <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/form.css">
+
+    <!-- Javascript-->
+    <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/355/grmessage/javascript/register.js"></script>
 </head>
 <body>
@@ -27,66 +30,54 @@
         </div>
         <hr>
 
-        <div class="col-12">
+        <div class="col-6">
             <form class="form" action="" method="post">
                 <p>* Required fields</p>
 
-                <div class="form-group col-6">
-                    <label class="form-control-label" for="email">*Green River Email :</label>
-                    <div class="input-group">
-                        <input class="form-control" type="text" id="email" name="email"
-                               value="{{ @email }}" required>
-                    </div>
+                <label class="form-control-label" for="email">*Green River Email :</label>
+                <div class="input-group">
+                    <input class="form-control" type="text" id="email" name="email"
+                           value="{{ @email }}" required>
                 </div>
 
-                <div class="form-group col-6">
-                    <label class="form-control-label" for="password">*Password</label>
-                    <check if="{{ isset(@errors['password']) }}">
-                        <p>{{ @errors['password'] }}</p>
-                    </check>
-                    <input class="form-control" type="text" id="password" name="password"
-                            value="{{ @password }}" required>
+                <label class="form-control-label" for="password">*Password</label>
+                <check if="{{ isset(@errors['password']) }}">
+                    <p>{{ @errors['password'] }}</p>
+                </check>
+                <input class="form-control" type="text" id="password" name="password"
+                        value="{{ @password }}" required>
+
+                <label class="form-control-label" for="confirm">*Confirm password</label>
+                <check if="{{ isset(@errors['confirm']) }}">
+                    <p>{{ @errors['confirm'] }}</p>
+                </check>
+                <input class="form-control" type="text" id="confirm" name="confirm"
+                        value="{{ @confirm }}" required>
+
+                <label class="form-control-label" for="first">*First Name</label>
+                <check if="{{ isset(@errors['first']) }}">
+                    <p>{{ @errors['first'] }}</p>
+                </check>
+                <div class="input-group">
+                    <input class="form-control" type="text" id="first" name="first"
+                            value="{{ @first }}" required>
                 </div>
 
-                <div class="form-group col-6">
-                    <label class="form-control-label" for="confirm">*Confirm password</label>
-                    <check if="{{ isset(@errors['confirm']) }}">
-                        <p>{{ @errors['confirm'] }}</p>
-                    </check>
-                    <input class="form-control" type="text" id="confirm" name="confirm"
-                            value="{{ @confirm }}" required>
-                </div>
+                <label class="form-control-label" for="last">*Last Name</label>
+                <check if="{{ isset(@errors['last']) }}">
+                    <p>{{ @errors['last'] }}</p>
+                </check>
+                <input class="form-control" type="text" id="last" name="last"
+                        value="{{ @last }}" required>
 
-                <div class="form-group col-6">
-                    <label class="form-control-label" for="first">*First Name</label>
-                    <check if="{{ isset(@errors['first']) }}">
-                        <p>{{ @errors['first'] }}</p>
-                    </check>
-                    <div class="input-group">
-                        <input class="form-control" type="text" id="first" name="first"
-                                value="{{ @first }}" required>
-                    </div>
-                </div>
-
-                <div class="form-group col-6">
-                    <label class="form-control-label" for="last">*Last Name</label>
-                    <check if="{{ isset(@errors['last']) }}">
-                        <p>{{ @errors['last'] }}</p>
-                    </check>
-                    <input class="form-control" type="text" id="last" name="last"
-                            value="{{ @last }}" required>
-                </div>
-
-                <div class="form-group col-6">
+                <div id="studentFields">
                     <label class="form-control-label" for="phone">Phone Number</label>
                     <check if="{{ isset(@errors['phone']) }}">
                         <p>{{ @errors['phone'] }}</p>
                     </check>
                     <input class="form-control" type="text" id="phone" name="phone"
                             value="{{ @phone }}">
-                </div>
 
-                <div class="form-group col-6">
                     <label class="form-check-label">Mobile Carrier</label>
                     <label class="d-block"></label>
                     <select class="form-control dropdown" id="carrier" name="carrier">
@@ -101,9 +92,5 @@
             </form>
         </div>
     </div> <!-- /container -->
-</body>
-
-<script type="text/javascript" src="assets/js/bootstrap.js"></script>
-<script src="http://code.jquery.com/jquery.js"></script>
 </body>
 </html>

@@ -1,9 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah');
 
+/* Button Styles */
+
 div.btn-toolbar {
     diplay: inline;
     margin-top: 2px;
 }
+
+button.showed {
+
+}
+
+/* Header Styles */
 
 h2#regHeader {
     display: inline;
