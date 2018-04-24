@@ -5,8 +5,6 @@ error_reporting(E_ALL);
 // require autoload file
 require_once('vendor/autoload.php');
 
-require_once "config.php";
-
 //Start the session
 session_start();
 include ('model/validate.php');
@@ -20,6 +18,8 @@ $f3->set('carriers', array("Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
 
 // define a default route
 $f3->route('GET|POST /', function() {
+    $database = new Database();
+
     $template = new Template();
     echo $template->render('views/home.html');
 });
