@@ -1,6 +1,6 @@
 <?php
 
-require_once "../config.php";
+require_once "config.php";
 
 class Database
 {
@@ -16,6 +16,7 @@ class Database
         try {
             // instantiate a PDO object
             $this->dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+            echo 'Connected to database!';
         }
         catch (PDOException $e) {
             echo $e->getMessage();
