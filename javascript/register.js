@@ -1,10 +1,15 @@
 // adds a listener to window.onload
 $(document).ready(function() {
 
-    // button variables
+    // variables
     var student = $("button#student");
 	var instructor = $("button#instructor");
 	var field = "";
+	var semailExp = new RegExp('^[\\w]+@mail.greenriver.edu$');
+	var iemailExp = new RegExp('^[\\w]+@greenriver.edu$');
+
+	// input masks
+	$("#phone").mask("(999) 999-9999");
 
 	// shows student fields (phone, carrier)
 	student.click( function() {
@@ -21,67 +26,79 @@ $(document).ready(function() {
         $("#email").attr("name", "iemail");
 	});
 
+	// toggle show password
+    $("#showPassword").click( function() {
+
+        if ($("#password").attr("type") == "password") {
+            $("#password").attr("type", "text");
+            $("#confirm").attr("type", "text");
+        } else {
+            $("#password").attr("type", "password");
+            $("#confirm").attr("type", "password");
+        }
+    });
+
 	// when clicking on inpult field
     $("input").focus( function() {
         // get name of field
         field = $(this).attr("name");
 
-        // eq() gets the nth element
         if (field == "semail") {
             validSEmail();
-            $(".red").eq(0).text(field);
         }
         else if (field == "iemail") {
             validIEmail();
-            $(".red").eq(0).text(field);
         }
         else if (field == "password") {
             validPassword();
-            $(".red").eq(1).text(field);
         }
         else if (field == "confirm") {
             validConfirm();
-            $(".red").eq(2).text(field);
-        }
-        else if (field == "first") {
-            validFirst();
-            $(".red").eq(3).text(field);
-        }
-        else if (field == "last") {
-            validLast();
-            $(".red").eq(4).text(field);
-        }
-        else if (field == "phone") {
-            validPhone();
-            $(".red").eq(5).text(field);
         }
     });
 
+    // check for valid student email
     function validSEmail() {
-
+        $("input#email").keyup(function () {
+            if(semailExp.test($(this).val())) {
+                $(".red").eq(0).text("");
+            } else {
+                $(".red").eq(0).text("Not a green river student email");
+            }
+        });
     }
 
+    // check for valid instructor email.
     function validIEmail() {
-
+        $("input#email").keyup(function () {
+            if(iemailExp.test($(this).val())) {
+                $(".red").eq(0).text("");
+            } else {
+                $(".red").eq(0).text("Not a green river instructor email");
+            }
+        });
     }
 
+    // must be at least 6 characters
     function validPassword() {
-
+        $("input#password").keyup(function () {
+            if (this.value.length < 6) {
+                // eq() gets the nth element
+                $(".red").eq(1).text("Password must be at least 6 characters");
+            } else {
+                $(".red").eq(1).text("");
+            }
+        });
     }
 
+    // must match password
     function validConfirm() {
-
-    }
-
-    function validFirst() {
-
-    }
-
-    function validLast() {
-
-    }
-
-    function validPhone() {
-
+        $("input#confirm").keyup(function () {
+            if ($("input#password").val() === this.value) {
+                $(".red").eq(2).text("");
+            } else {
+                $(".red").eq(2).text("Does not match password");
+            }
+        });
     }
 });

@@ -13,6 +13,7 @@
 
     <!-- Javascript-->
     <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js" type="text/javascript"></script>
     <script src="/355/grmessage/javascript/register.js"></script>
 </head>
 <body>
@@ -41,18 +42,19 @@
                 <input class="form-control" type="text" id="email" name="semail"
                        value="{{ @email }}" required>
 
-                <label class="form-control-label" for="password">*Password<span class="red"></span></label>
+                <label class="form-control-label" for="password">*Password<span class="red"></span>
+                    <input type="checkbox" value="show" id="showPassword">Show</label>
                 <check if="{{ isset(@errors['password']) }}">
                     <p>{{ @errors['password'] }}</p>
                 </check>
-                <input class="form-control" type="text" id="password" name="password"
+                <input class="form-control" type="password" id="password" name="password"
                         value="{{ @password }}" required>
 
                 <label class="form-control-label" for="confirm">*Confirm password<span class="red"></span></label>
                 <check if="{{ isset(@errors['confirm']) }}">
                     <p>{{ @errors['confirm'] }}</p>
                 </check>
-                <input class="form-control" type="text" id="confirm" name="confirm"
+                <input class="form-control" type="password" id="confirm" name="confirm"
                         value="{{ @confirm }}" required>
 
                 <label class="form-control-label" for="first">*First Name<span class="red"></span></label>
