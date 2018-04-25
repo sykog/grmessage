@@ -19,3 +19,10 @@ h2#regHeader {
     width: max-content;
     margin-right: 2%;
 }
+
+/* Input Styles */
+span.red {
+    display: inline;
+    color: red;
+    padding: 1em;
+}

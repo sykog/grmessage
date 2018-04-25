@@ -32,38 +32,37 @@
 
         <div class="col-6">
             <form class="form" action="" method="post">
-                <p>* Required fields</p>
+                <p><i>* Required fields</i></p>
 
-                <label class="form-control-label" for="email">*Green River Email :</label>
-                <div class="input-group">
-                    <input class="form-control" type="text" id="email" name="email"
-                           value="{{ @email }}" required>
-                </div>
+                <label class="form-control-label" for="email">*Green River Email<span class="red"></span></label>
+                <check if="{{ isset(@errors['password']) }}">
+                    <p>{{ @errors['email'] }}</p>
+                </check>
+                <input class="form-control" type="text" id="email" name="semail"
+                       value="{{ @email }}" required>
 
-                <label class="form-control-label" for="password">*Password</label>
+                <label class="form-control-label" for="password">*Password<span class="red"></span></label>
                 <check if="{{ isset(@errors['password']) }}">
                     <p>{{ @errors['password'] }}</p>
                 </check>
                 <input class="form-control" type="text" id="password" name="password"
                         value="{{ @password }}" required>
 
-                <label class="form-control-label" for="confirm">*Confirm password</label>
+                <label class="form-control-label" for="confirm">*Confirm password<span class="red"></span></label>
                 <check if="{{ isset(@errors['confirm']) }}">
                     <p>{{ @errors['confirm'] }}</p>
                 </check>
                 <input class="form-control" type="text" id="confirm" name="confirm"
                         value="{{ @confirm }}" required>
 
-                <label class="form-control-label" for="first">*First Name</label>
+                <label class="form-control-label" for="first">*First Name<span class="red"></span></label>
                 <check if="{{ isset(@errors['first']) }}">
                     <p>{{ @errors['first'] }}</p>
                 </check>
-                <div class="input-group">
-                    <input class="form-control" type="text" id="first" name="first"
-                            value="{{ @first }}" required>
-                </div>
+                <input class="form-control" type="text" id="first" name="first"
+                        value="{{ @first }}" required>
 
-                <label class="form-control-label" for="last">*Last Name</label>
+                <label class="form-control-label" for="last">*Last Name<span class="red"></span></label>
                 <check if="{{ isset(@errors['last']) }}">
                     <p>{{ @errors['last'] }}</p>
                 </check>
@@ -71,7 +70,7 @@
                         value="{{ @last }}" required>
 
                 <div id="studentFields">
-                    <label class="form-control-label" for="phone">Phone Number</label>
+                    <label class="form-control-label" for="phone">Phone Number<span class="red"></span></label>
                     <check if="{{ isset(@errors['phone']) }}">
                         <p>{{ @errors['phone'] }}</p>
                     </check>
@@ -88,7 +87,7 @@
                     </select>
                 </div>
 
-                <button id="next" class="btn btn-primary" type="submit" name="submit">Register</button>
+                <button id="submit" class="btn btn-primary" type="submit" name="submitS">Register</button>
             </form>
         </div>
     </div> <!-- /container -->
