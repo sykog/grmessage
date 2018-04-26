@@ -36,8 +36,11 @@
                 <p><i>* Required fields</i></p>
 
                 <label class="form-control-label" for="email">*Green River Email<span class="red"></span></label>
-                <check if="{{ isset(@errors['password']) }}">
-                    <p>{{ @errors['email'] }}</p>
+                <check if="{{ isset(@errors['semail']) }}">
+                    <p class="red">{{ @errors['semail'] }}</p>
+                </check>
+                <check if="{{ isset(@errors['iemail']) }}">
+                    <p class="red">{{ @errors['iemail'] }}</p>
                 </check>
                 <input class="form-control" type="text" id="email" name="semail"
                        value="{{ @email }}" required>
@@ -45,36 +48,30 @@
                 <label class="form-control-label" for="password">*Password<span class="red"></span>
                     <input type="checkbox" value="show" id="showPassword">Show</label>
                 <check if="{{ isset(@errors['password']) }}">
-                    <p>{{ @errors['password'] }}</p>
+                    <p class="red">{{ @errors['password'] }}</p>
                 </check>
                 <input class="form-control" type="password" id="password" name="password"
                         value="{{ @password }}" required>
 
                 <label class="form-control-label" for="confirm">*Confirm password<span class="red"></span></label>
                 <check if="{{ isset(@errors['confirm']) }}">
-                    <p>{{ @errors['confirm'] }}</p>
+                    <p class="red">{{ @errors['confirm'] }}</p>
                 </check>
                 <input class="form-control" type="password" id="confirm" name="confirm"
                         value="{{ @confirm }}" required>
 
                 <label class="form-control-label" for="first">*First Name<span class="red"></span></label>
-                <check if="{{ isset(@errors['first']) }}">
-                    <p>{{ @errors['first'] }}</p>
-                </check>
                 <input class="form-control" type="text" id="first" name="first"
                         value="{{ @first }}" required>
 
                 <label class="form-control-label" for="last">*Last Name<span class="red"></span></label>
-                <check if="{{ isset(@errors['last']) }}">
-                    <p>{{ @errors['last'] }}</p>
-                </check>
                 <input class="form-control" type="text" id="last" name="last"
                         value="{{ @last }}" required>
 
                 <div id="studentFields">
                     <label class="form-control-label" for="phone">Phone Number<span class="red"></span></label>
                     <check if="{{ isset(@errors['phone']) }}">
-                        <p>{{ @errors['phone'] }}</p>
+                        <p class="red">{{ @errors['phone'] }}</p>
                     </check>
                     <input class="form-control" type="text" id="phone" name="phone"
                             value="{{ @phone }}">

@@ -27,8 +27,10 @@ $f3->route('GET|POST /', function() {
 // define a route for registration
 $f3->route('GET|POST /register', function($f3, $params) {
     $errors = array();
-    if(isset($_POST['submit'])){
-        $email = $_POST['email'];
+
+    // if registering as a student
+    if(isset($_POST['submitS'])){
+        $email = $_POST['semail'];
         $password = $_POST['password'];
         $confirm = $_POST['confirm'];
         $first = $_POST['first'];
@@ -42,23 +44,63 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $_SESSION['last'] = $last;
         $_SESSION['phone'] = $phone;
         $_SESSION['carrier'] = $carrier;
-        if(!validEmail($email)){
-            $errors['email'] = "Please enter a student email.";
+        if(!validSEmail($email)){
+            $errors['semail'] = "Please enter a student email.";
         }
         if(!validPassword($password)){
-            $errors['password'] = "Please enter a valid password.";
+            $errors['password'] = "Password is less than 6 characters.";
         }
-        if(!validPassword($confirm)){
-            $errors['confirm'] = "Please Confirm your password.";
-        }
-        if(!validName($first)){
-            $errors['first'] = "Please enter a valid name.";
-        }
-        if(!validName($last)){
-            $errors['last'] = "Please enter a valid name.";
+        if(!validConfirm($password, $confirm)){
+            $errors['confirm'] = "Password and confirmation do not match.";
         }
         if(!validPhone($phone)){
-            $errors['phone'] = "Invalid. Phone Number.";
+            $errors['phone'] = "Invalid phone number.";
+        }
+        if(!validCarrier($carrier)) {
+            $errors['phone'] = "Invalid carrier.";
+        }
+        $success = sizeof($errors) == 0;
+        $f3->set('email', $email);
+        $f3->set('password', $password);
+        $f3->set('confirm', $confirm);
+        $f3->set('first', $first);
+        $f3->set('last', $last);
+        $f3->set('phone', $phone);
+        $f3->set('carrier', $carrier);
+        $f3->set('errors', $errors);
+        $f3->set('success', $success);
+    }
+
+    // if registering as an instructor
+    if(isset($_POST['submitI'])){
+        $email = $_POST['iemail'];
+        $password = $_POST['password'];
+        $confirm = $_POST['confirm'];
+        $first = $_POST['first'];
+        $last = $_POST['last'];
+        $phone = $_POST['phone'];
+        $carrier = $_POST['carrier'];
+        $_SESSION['email'] = $email;
+        $_SESSION['password'] = $password;
+        $_SESSION['confirm'] = $confirm;
+        $_SESSION['first'] = $first;
+        $_SESSION['last'] = $last;
+        $_SESSION['phone'] = $phone;
+        $_SESSION['carrier'] = $carrier;
+        if(!validIEmail($email)){
+            $errors['iemail'] = "Please enter an instructor email.";
+        }
+        if(!validPassword($password)){
+            $errors['password'] = "Password is less than 6 characters.";
+        }
+        if(!validConfirm($password, $confirm)){
+            $errors['confirm'] = "Password and confirmation do not match.";
+        }
+        if(!validPhone($phone)){
+            $errors['phone'] = "Invalid phone number.";
+        }
+        if(!validCarrier($carrier)) {
+            $errors['phone'] = "Invalid carrier.";
         }
         $success = sizeof($errors) == 0;
         $f3->set('email', $email);
