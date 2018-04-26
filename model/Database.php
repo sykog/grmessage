@@ -76,4 +76,52 @@ class Database
 
     }//end changeStudentPassword
 
+    /**
+     * Returns 1 if email is in database, 0 if not
+     * @param email email being searched
+     * @return bool 1 if email is found
+     */
+    function studentExists($email)
+    {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM students WHERE studentEmail= :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+
+        // Process the result
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        return $row['studentEmail'] == $email;
+    }//end memberExists()
+
+    /**
+     * Returns 1 if email is in database, 0 if not
+     * @param email email being searched
+     * @return bool 1 if email is found
+     */
+    function InstructorExists($email)
+    {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM instructors WHERE email= :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+
+        // Process the result
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        return $row['email'] == $email;
+    }//end memberExists()
+
 }//end Database class

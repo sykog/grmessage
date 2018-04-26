@@ -120,13 +120,25 @@ $f3->route('GET|POST /register', function($f3, $params) {
         //$f3->reroute('/profile');
         // if student account
         if ($email == $_POST['semail']) {
-            echo "student account";
-            $database->addStudent($email, $password, $phone, $first, $last, $carrier);
+
+            // only submit if the email doesnt exist
+            if($database->studentExists($email)) {
+                echo "email already exists";
+            } else {
+                $database->addStudent($email, $password, $phone, $first, $last, $carrier);
+                echo "Student registered!";
+            }
         }
         // if instructor account
         if ($email == $_POST['iemail']) {
-            echo "instructor account";
-            $database->addInstructor($email, $password, $first, $last);
+
+            // only submit if the email doesnt exist
+            if($database->instructorExists($email)) {
+                echo "email already exists";
+            } else {
+                $database->addInstructor($email, $password, $first, $last);
+                echo "Instructor registered!";
+            }
         }
     }
 });
