@@ -143,6 +143,30 @@ $f3->route('GET|POST /register', function($f3, $params) {
     }
 });
 
+// define a message route
+$f3->route('GET|POST /message', function($f3, $params) {
+
+    $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
+    if(isset($_POST['submit'])){
+        $textMessage = $_POST['textMessage'];
+        $textMessage = trim($textMessage);
+        $f3->set('textMessage', $textMessage);
+        if(validTextMessage ($textMessage)){
+            $to = "2536531125@vtext.com";
+            $headers = "From: LaterGators\n";
+            mail($to, '', $textMessage ."\n", $headers);
+            //echo $textMessage."length".strlen($textMessage);
+
+        }
+        else{
+            echo "must be between 1 and 250 characters";
+        }
+    }
+    $template = new Template();
+    echo $template->render('views/instructorMessage.html');
+
+});
+
 // define a default route
 $f3->route('GET /profile', function() {
 

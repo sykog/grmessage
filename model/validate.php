@@ -27,6 +27,12 @@ ini_set('display_errors', 1);
         return strlen($password) > 5;
     }
 
+    // limit textBox characters
+    function validTextMessage($length)
+    {
+        return strlen($length) > 0 && strlen($length) <= 250;
+    }
+
     // confirmation and password must be the same
     function validConfirm($password, $confirm) {
         return $password == $confirm;
