@@ -80,11 +80,11 @@ $f3->route('GET|POST /register', function($f3, $params) {
 });
 
 // define a default route
-$f3->route('GET /testConnection', function() {
+$f3->route('GET /profile', function() {
 
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
     $template = new Template();
-    echo $template->render('views/registration.html');
+    echo $template->render('views/profile.html');
 
 });
 
