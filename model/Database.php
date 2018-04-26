@@ -14,7 +14,7 @@ class Database
     function __construct()
     {
         try {
-            // instantiate a PDO object
+// instantiate a PDO object
             $this->dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
 
         }
@@ -26,11 +26,11 @@ class Database
     function addStudent($email, $password, $phone, $fname, $lname, $carrier)
     {
         $dbh = $this->dbh;
-        // define the query
+// define the query
         $sql = "INSERT INTO students(studentEmail, password, phone, fname, lname)
-          VALUES (:email, :password, :phone, :fname, :lname, :carrier)";
+VALUES (:email, :password, :phone, :fname, :lname, :carrier)";
 
-        // prepare the statement
+// prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(':email', $email, PDO::PARAM_STR);
         $statement->bindParam(':password', $password, PDO::PARAM_STR);
@@ -39,35 +39,35 @@ class Database
         $statement->bindParam(':lname', $lname, PDO::PARAM_STR);
         $statement->bindParam(':carrier', $carrier, PDO::PARAM_STR);
 
-        // execute
+// execute
         $statement->execute();
     }//end addStudent
 
     function addInstructor($email, $password,$fname, $lname)
     {
         $dbh = $this->dbh;
-        // define the query
+// define the query
         $sql = "INSERT INTO instructors(email, password, fname, lname)
-          VALUES (:email, :password, :fname, :lname)";
+VALUES (:email, :password, :fname, :lname)";
 
-        // prepare the statement
+// prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(':email', $email, PDO::PARAM_STR);
         $statement->bindParam(':password', $password, PDO::PARAM_STR);
         $statement->bindParam(':fname', $fname, PDO::PARAM_STR);
         $statement->bindParam(':lname', $lname, PDO::PARAM_STR);
 
-        // execute
+// execute
         $statement->execute();
     }//end addInstructor
 
     function changeStudentPassword($id, $newPassword)
     {
         $dbh = $this->dbh;
-        // define the query
+// define the query
         $sql = "UPDATE students
-          SET (password = :newPassword)
-          WHERE studentid = :id";
+SET (password = :newPassword)
+WHERE studentid = :id";
 
     }//end changeStudentPassword
 
