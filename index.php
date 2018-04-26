@@ -26,6 +26,7 @@ $f3->route('GET|POST /', function() {
 
 // define a route for registration
 $f3->route('GET|POST /register', function($f3, $params) {
+    $database = new Database();
     $errors = array();
 
     // if registering as a student
@@ -117,7 +118,16 @@ $f3->route('GET|POST /register', function($f3, $params) {
     echo $template->render('views/registration.html');
     if($success) {
         //$f3->reroute('/profile');
-        echo "success";
+        // if student account
+        if ($email == $_POST['semail']) {
+            echo "student account";
+            $database->addStudent($email, $password, $phone, $first, $last, $carrier);
+        }
+        // if instructor account
+        if ($email == $_POST['iemail']) {
+            echo "instructor account";
+            $database->addInstructor($email, $password, $first, $last);
+        }
     }
 });
 
