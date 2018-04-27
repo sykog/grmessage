@@ -189,6 +189,11 @@ $f3->route('GET|POST /message', function($f3, $params) {
     echo $template->render('views/instructorMessage.html');
 });
 
+$f3->route('GET|POST /profile', function($f3, $params) {
+    $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
+    $template = new Template();
+    echo $template->render('views/studentProfile.html');
+});
 
 // run fat free
 $f3->run();
