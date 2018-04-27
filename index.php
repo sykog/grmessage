@@ -113,8 +113,6 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $_SESSION['confirm'] = $confirm;
         $_SESSION['first'] = $first;
         $_SESSION['last'] = $last;
-        $_SESSION['phone'] = $phone;
-        $_SESSION['carrier'] = $carrier;
         if(!validIEmail($email)){
             $errors['iemail'] = "Please enter an instructor email.";
         }
@@ -124,12 +122,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if(!validConfirm($password, $confirm)){
             $errors['confirm'] = "Password and confirmation do not match.";
         }
-        if(!validPhone($phone)){
-            $errors['phone'] = "Invalid phone number.";
-        }
-        if(!validCarrier($carrier)) {
-            $errors['phone'] = "Invalid carrier.";
-        }
+
         $success = sizeof($errors) == 0;
         $f3->set('email', $email);
         $f3->set('password', $password);
@@ -153,6 +146,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 echo "email already exists";
             } else {
                 $database->addStudent($email, $password, $phone, $first, $last, $carrier);
+                $f3->reroute("/");
                 echo "Student registered!";
             }
         }
@@ -163,6 +157,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 echo "email already exists";
             } else {
                 $database->addInstructor($email, $password, $first, $last);
+                $f3->reroute("/message");
                 echo "Instructor registered!";
             }
         }
