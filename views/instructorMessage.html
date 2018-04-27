@@ -9,7 +9,7 @@
     <!--Style sheets-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/main.css">
-    <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/form.css">
+    <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/message.css">
 
     <!-- Javascript-->
     <script src="http://code.jquery.com/jquery.js"></script>
@@ -22,10 +22,9 @@
 
 <div class="container" id="mainContainer">
     <h2 id="regHeader">Messaging</h2>
-    <br><br>
     <hr>
 
-    <div class="col-4">
+    <div class="col-6">
         <!--<input title="it-355 10am" id="it-355am" type="checkbox">
         <label>IT-355 10am</label>
         <br>
@@ -39,12 +38,26 @@
         <label>IT-334 2pm</label>
         <br>-->
         <form class="form" action="" method="post">
-           <textarea id="textMessage" name="textMessage" rows="4" cols="50">{{ @textMessage }}</textarea>
+            <p id="counter"><span id="chars">250</span> characters left</p>
+            <textarea id="textMessage" name="textMessage" rows="6" cols="60" maxlength="250">{{ @textMessage }}</textarea>
 
             <button id="sendMessage" class="btn btn-primary" type="submit" name="submit" >Send Message</button>
-
+            <check if="{{ @sent }}">
+                <h3 id="green" class="alert alert-success" role="alert">Message Sent!</h3>
+            </check>
         </form>
     </div>
-</div> <!-- /container -->
+</div> <!-- container -->
+
+<script>
+    var maxLength = 250;
+
+    // show number of characters left
+    $("#textMessage").keydown(function() {
+        var length = $(this).val().length;
+        length = maxLength - length;
+        $("#chars").text(length);
+    });
+</script>
 </body>
 </html>

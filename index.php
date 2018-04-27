@@ -171,11 +171,15 @@ $f3->route('GET|POST /message', function($f3, $params) {
         $textMessage = $_POST['textMessage'];
         $textMessage = trim($textMessage);
         $f3->set('textMessage', $textMessage);
+        $f3->set('sent', false);
         if(validTextMessage ($textMessage)){
             $to = "2536531125@vtext.com";
             $headers = "From: LaterGators\n";
             mail($to, '', $textMessage ."\n", $headers);
-            //echo $textMessage."length".strlen($textMessage);
+
+            // confirmation and remove message
+            $f3->set('sent', true);
+            $f3->set('textMessage', "");
         }
         else{
             echo "must be between 1 and 250 characters";
