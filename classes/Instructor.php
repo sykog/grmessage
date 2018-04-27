@@ -1,6 +1,6 @@
 <?php
 
-    class registration{
+    class Instructor {
         protected $email;
         protected $password;
         protected $confirm;

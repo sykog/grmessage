@@ -67,7 +67,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $confirm = $_POST['confirm'];
         $first = $_POST['first'];
         $last = $_POST['last'];
-        $phone = $_POST['phone'];
+        $phone = shortenPhone($_POST['phone']);
         $carrier = $_POST['carrier'];
         $_SESSION['email'] = $email;
         $_SESSION['password'] = $password;
@@ -76,7 +76,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $_SESSION['last'] = $last;
         $_SESSION['phone'] = $phone;
         $_SESSION['carrier'] = $carrier;
-        if(!validEmail($email)){
+        if(!validSEmail($email)){
             $errors['email'] = "Please enter a student email.";
         }
         if(!validPassword($password)){
@@ -84,12 +84,6 @@ $f3->route('GET|POST /register', function($f3, $params) {
         }
         if(!validPassword($confirm)){
             $errors['confirm'] = "Please Confirm your password.";
-        }
-        if(!validName($first)){
-            $errors['first'] = "Please enter a valid name.";
-        }
-        if(!validName($last)){
-            $errors['last'] = "Please enter a valid name.";
         }
         if(!validPhone($phone)){
             $errors['phone'] = "Invalid. Phone Number.";

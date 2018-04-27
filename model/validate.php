@@ -41,10 +41,6 @@ ini_set('display_errors', 1);
     // 10 characters, numbers only
     function validPhone($phone)
     {
-        $phone = str_replace('-', '', $phone);
-        $phone = str_replace(' ', '', $phone);
-        $phone = str_replace('(', '', $phone);
-        $phone = str_replace(')', '', $phone);
         return is_numeric($phone) && strlen($phone) == 10;
     }
 
@@ -53,3 +49,13 @@ ini_set('display_errors', 1);
         global $f3;
         return in_array($carrier, $f3->get('carriers'));
     }
+
+    // removes any non numeric characters
+    function shortenPhone($phone) {
+        $phone = str_replace('-', '', $phone);
+        $phone = str_replace(' ', '', $phone);
+        $phone = str_replace('(', '', $phone);
+        $phone = str_replace(')', '', $phone);
+        return $phone;
+    }
+
