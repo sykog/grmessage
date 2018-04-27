@@ -70,7 +70,7 @@ WHERE studentid = :id";
 
     }//end changeStudentPassword
 
-    function login($email, $password){
+   /* function login($email, $password){
         $dbh = $this->dbh;
         $sql = "SELECT password FROM student WHERE studentEmail = :email";
         $statement = $dbh->prepare($sql);
@@ -78,6 +78,25 @@ WHERE studentid = :id";
         $statement->execute();
         $comp = $statement->fetch();
         return $comp == $password;
-        }
+    } */
+
+    //retrieve student from database
+    function getStudent($email) {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM stuedents WHERE studentEmail= :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+
+        // Process the result
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 
 }//end Database class
