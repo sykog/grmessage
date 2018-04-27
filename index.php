@@ -26,12 +26,9 @@ $f3->route('GET|POST /', function() {
 
 // define a route for registration
 $f3->route('GET|POST /register', function($f3, $params) {
-    $database = new Database();
     $errors = array();
-
-    // if registering as a student
-    if(isset($_POST['submitS'])){
-        $email = $_POST['semail'];
+    if(isset($_POST['submit'])){
+        $email = $_POST['email'];
         $password = $_POST['password'];
         $confirm = $_POST['confirm'];
         $first = $_POST['first'];
@@ -45,63 +42,23 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $_SESSION['last'] = $last;
         $_SESSION['phone'] = $phone;
         $_SESSION['carrier'] = $carrier;
-        if(!validSEmail($email)){
-            $errors['semail'] = "Please enter a student email.";
+        if(!validEmail($email)){
+            $errors['email'] = "Please enter a student email.";
         }
         if(!validPassword($password)){
-            $errors['password'] = "Password is less than 6 characters.";
+            $errors['password'] = "Please enter a valid password.";
         }
-        if(!validConfirm($password, $confirm)){
-            $errors['confirm'] = "Password and confirmation do not match.";
+        if(!validPassword($confirm)){
+            $errors['confirm'] = "Please Confirm your password.";
         }
-        if(!validPhone($phone)){
-            $errors['phone'] = "Invalid phone number.";
+        if(!validName($first)){
+            $errors['first'] = "Please enter a valid name.";
         }
-        if(!validCarrier($carrier)) {
-            $errors['phone'] = "Invalid carrier.";
-        }
-        $success = sizeof($errors) == 0;
-        $f3->set('email', $email);
-        $f3->set('password', $password);
-        $f3->set('confirm', $confirm);
-        $f3->set('first', $first);
-        $f3->set('last', $last);
-        $f3->set('phone', $phone);
-        $f3->set('carrier', $carrier);
-        $f3->set('errors', $errors);
-        $f3->set('success', $success);
-    }
-
-    // if registering as an instructor
-    if(isset($_POST['submitI'])){
-        $email = $_POST['iemail'];
-        $password = $_POST['password'];
-        $confirm = $_POST['confirm'];
-        $first = $_POST['first'];
-        $last = $_POST['last'];
-        $phone = $_POST['phone'];
-        $carrier = $_POST['carrier'];
-        $_SESSION['email'] = $email;
-        $_SESSION['password'] = $password;
-        $_SESSION['confirm'] = $confirm;
-        $_SESSION['first'] = $first;
-        $_SESSION['last'] = $last;
-        $_SESSION['phone'] = $phone;
-        $_SESSION['carrier'] = $carrier;
-        if(!validIEmail($email)){
-            $errors['iemail'] = "Please enter an instructor email.";
-        }
-        if(!validPassword($password)){
-            $errors['password'] = "Password is less than 6 characters.";
-        }
-        if(!validConfirm($password, $confirm)){
-            $errors['confirm'] = "Password and confirmation do not match.";
+        if(!validName($last)){
+            $errors['last'] = "Please enter a valid name.";
         }
         if(!validPhone($phone)){
-            $errors['phone'] = "Invalid phone number.";
-        }
-        if(!validCarrier($carrier)) {
-            $errors['phone'] = "Invalid carrier.";
+            $errors['phone'] = "Invalid. Phone Number.";
         }
         $success = sizeof($errors) == 0;
         $f3->set('email', $email);
@@ -118,61 +75,31 @@ $f3->route('GET|POST /register', function($f3, $params) {
     echo $template->render('views/registration.html');
     if($success) {
         //$f3->reroute('/profile');
-        // if student account
-        if ($email == $_POST['semail']) {
-
-            // only submit if the email doesnt exist
-            if($database->studentExists($email)) {
-                echo "email already exists";
-            } else {
-                $database->addStudent($email, $password, $phone, $first, $last, $carrier);
-                echo "Student registered!";
-            }
-        }
-        // if instructor account
-        if ($email == $_POST['iemail']) {
-
-            // only submit if the email doesnt exist
-            if($database->instructorExists($email)) {
-                echo "email already exists";
-            } else {
-                $database->addInstructor($email, $password, $first, $last);
-                echo "Instructor registered!";
-            }
-        }
+        echo "success";
     }
-});
-
-// define a message route
-$f3->route('GET|POST /message', function($f3, $params) {
-
-    $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
-    if(isset($_POST['submit'])){
-        $textMessage = $_POST['textMessage'];
-        $textMessage = trim($textMessage);
-        $f3->set('textMessage', $textMessage);
-        if(validTextMessage ($textMessage)){
-            $to = "2536531125@vtext.com";
-            $headers = "From: LaterGators\n";
-            mail($to, '', $textMessage ."\n", $headers);
-            //echo $textMessage."length".strlen($textMessage);
-
-        }
-        else{
-            echo "must be between 1 and 250 characters";
-        }
-    }
-    $template = new Template();
-    echo $template->render('views/instructorMessage.html');
-
 });
 
 // define a default route
-$f3->route('GET /profile', function() {
+$f3->route('GET /testConnection', function() {
 
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
     $template = new Template();
-    echo $template->render('views/profile.html');
+    echo $template->render('views/registration.html');
+
+});
+
+$f3->route('POST /login', function($f3) {
+
+    $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
+    $success = $dbh->login($_POST['email'], $_POST['password']);
+    if($success){
+        //$f3->reroute('/profile');
+        echo "success";
+    }
+    else{
+        //$f3->reroute('/');
+        echo "failure";
+    }
 
 });
 
