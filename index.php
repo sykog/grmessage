@@ -22,6 +22,37 @@ $f3->route('GET|POST /', function() {
 
     $template = new Template();
     echo $template->render('views/home.html');
+
+    //if login button is clicked
+    if (isset($_POST['login'])) {
+
+        $email = $_POST['email'];
+        $password = sha1($_POST['password']);
+        $success = true;
+        $student = $database->login($email);
+
+        // have to use [0] since the array is in an array
+        if($student[0]['studentEmail'] == $email && ($student[0]['password'] == $password)) {
+            $success = true;
+        }
+        else $success = false;
+
+        if($success) {
+            echo'Success!';
+            echo $student[0]['studentEmail'];
+            echo $student[0]['password'];
+            echo $email;
+            echo $password;
+        }
+
+        else {
+            echo "Incorrect email or password <br>";
+            echo $student[0]['studentEmail'] . "<br>";
+            echo $student[0]['password']. "<br>";
+            echo $email . "<br>";
+            echo $password;
+        }
+    }
 });
 
 // define a route for registration
@@ -163,58 +194,6 @@ $f3->route('GET|POST /message', function($f3, $params) {
     }
     $template = new Template();
     echo $template->render('views/instructorMessage.html');
-});
-
-$f3->route('POST /login', function($f3) {
-
-    /*$dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
-    $success = $dbh->login($_POST['email'], $_POST['password']);
-    if($success){
-        //$f3->reroute('/profile');
-        echo "success";
-    }
-    else{
-        //$f3->reroute('/');
-        echo "failure";
-    } */
-
-
-    // access the database
-    $database = new Database();
-
-    $template = new Template();
-    echo $template->render('pages/home.html');
-
-    //if login button is clicked
-    if (isset($_POST['login'])) {
-
-        $email = $_POST['email'];
-        $password = sha1($_POST['password']);
-        $success = true;
-        $student = $database->getMember($email);
-
-        // have to use [0] since the array is in an array
-        if($student[0]['email'] == $email && ($student[0]['password'] == $password)) {
-            $success = true;
-        }
-        else $success = false;
-
-        if($success) {
-            $student = new Student($email, $password);
-            $_SESSION['email'] = $email;
-            $_SESSION['student'] = $student;
-            $f3->set('email', $_SESSION['email']);
-
-            $_SESSION["message"] = "";
-            $f3->reroute("/");
-        }
-
-        else {
-            $_SESSION["message"] = "Incorrect email or password";
-            $f3->reroute("/login");
-        }
-    }
-
 });
 
 

@@ -27,7 +27,7 @@ class Database
         $dbh = $this->dbh;
 // define the query
         $sql = "INSERT INTO students(studentEmail, password, phone, fname, lname)
-VALUES (:email, :password, :phone, :fname, :lname, :carrier)";
+VALUES (:email, sha1(:password), :phone, :fname, :lname, :carrier)";
 
 // prepare the statement
         $statement = $dbh->prepare($sql);
@@ -47,7 +47,7 @@ VALUES (:email, :password, :phone, :fname, :lname, :carrier)";
         $dbh = $this->dbh;
 // define the query
         $sql = "INSERT INTO instructors(email, password, fname, lname)
-VALUES (:email, :password, :fname, :lname)";
+        VALUES (:email, sha1(:password), :fname, :lname)";
 
 // prepare the statement
         $statement = $dbh->prepare($sql);
@@ -65,8 +65,8 @@ VALUES (:email, :password, :fname, :lname)";
         $dbh = $this->dbh;
 // define the query
         $sql = "UPDATE students
-SET (password = :newPassword)
-WHERE studentid = :id";
+                SET (password = sha1(:newPassword))
+                WHERE studentid = :id";
 
     }//end changeStudentPassword
 
@@ -81,10 +81,10 @@ WHERE studentid = :id";
     } */
 
     //retrieve student from database
-    function getStudent($email) {
+    function login($email) {
         $dbh = $this->dbh;
         // Define the query
-        $sql = "SELECT * FROM stuedents WHERE studentEmail= :email";
+        $sql = "SELECT * FROM students WHERE studentEmail= :email";
 
         // Prepare the statement
         $statement = $dbh->prepare($sql);

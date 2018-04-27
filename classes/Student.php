@@ -20,7 +20,7 @@
             $this->email = $email;
             $this->password = $password;
             $this->phone = $phone;
-            $this->carrier = carrier;
+            $this->carrier = $carrier;
         }
 
     }
