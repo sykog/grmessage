@@ -38,6 +38,13 @@
         <label>IT-334 2pm</label>
         <br>-->
         <form class="form" action="" method="post">
+            <repeat group="{{ @students }}" value="{{ @studentOption }}">
+                <label>
+                    <input type="radio" name="student" value="{{@studentOption['email']}}">
+                {{ @studentOption['fname'] }} {{ @studentOption['lname'] }}
+                </label>
+                <br>
+            </repeat>
             <p id="counter"><span id="chars">250</span> characters left</p>
             <textarea id="textMessage" name="textMessage" rows="6" cols="60" maxlength="250">{{ @textMessage }}</textarea>
 
