@@ -153,4 +153,23 @@ class Database
         return $result;
     }
 
+    //retrieve all students from the database
+    function getStudents() {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM students";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+
+        // Process the result
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+
 }//end Database class
