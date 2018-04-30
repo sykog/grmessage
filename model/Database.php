@@ -135,7 +135,7 @@ class Database
     }//end memberExists()
 
     //retrieve student from database
-    function login($email) {
+    function getStudent($email) {
         $dbh = $this->dbh;
         // Define the query
         $sql = "SELECT * FROM students WHERE studentEmail= :email";

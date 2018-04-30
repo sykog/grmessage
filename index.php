@@ -17,7 +17,7 @@ $f3->set('carriers', array("Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
     "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"));
 
 // define a default route
-$f3->route('GET|POST /', function() {
+$f3->route('GET|POST /', function($f3, $params) {
     $database = new Database();
 
     $template = new Template();
@@ -29,7 +29,8 @@ $f3->route('GET|POST /', function() {
         $email = $_POST['email'];
         $password = sha1($_POST['password']);
         $success = true;
-        $student = $database->login($email);
+        $student = $database->getStudent($email);
+        $f3->set('student', $student);
 
         // have to use [0] since the array is in an array
         if($student[0]['studentEmail'] == $email && ($student[0]['password'] == $password)) {
@@ -38,11 +39,11 @@ $f3->route('GET|POST /', function() {
         else $success = false;
 
         if($success) {
-            echo'Success!';
-            echo $student[0]['studentEmail'];
-            echo $student[0]['password'];
-            echo $email;
-            echo $password;
+            $_SESSION['studentEmail'] = $student[0]['studentEmail'];
+            $f3->set('studentEmail', $_SESSION['studentEmail']);
+
+            $_SESSION["message"] = "";
+            $f3->reroute("/profile");
         }
 
         else {
