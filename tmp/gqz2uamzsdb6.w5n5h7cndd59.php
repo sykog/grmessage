@@ -38,20 +38,20 @@
         <label>IT-334 2pm</label>
         <br>-->
         <form class="form" action="" method="post">
-            <repeat group="{{ @students }}" value="{{ @studentOption }}">
+            <?php foreach (($students?:[]) as $studentOption): ?>
                 <label>
-                    <input type="checkbox" name="studentEmails[]" value="{{@studentOption['studentEmail']}}">
-                    {{ @studentOption['fname'] }} {{ @studentOption['lname'] }} ({{@studentOption['studentEmail']}})
+                    <input type="checkbox" name="studentEmails[]" value="<?= ($studentOption['studentEmail']) ?>">
+                    <?= ($studentOption['fname']) ?> <?= ($studentOption['lname']) ?> (<?= ($studentOption['studentEmail']) ?>)
                 </label>
                 <br>
-            </repeat>
+            <?php endforeach; ?>
             <p id="counter"><span id="chars">250</span> characters left</p>
-            <textarea id="textMessage" name="textMessage" rows="6" cols="60" maxlength="250">{{ @textMessage }}</textarea>
+            <textarea id="textMessage" name="textMessage" rows="6" cols="60" maxlength="250"><?= ($textMessage) ?></textarea>
 
             <button id="sendMessage" class="btn btn-primary" type="submit" name="submit" >Send Message</button>
-            <check if="{{ @sent }}">
+            <?php if ($sent): ?>
                 <h3 id="green" class="alert alert-success" role="alert">Message Sent!</h3>
-            </check>
+            <?php endif; ?>
         </form>
     </div>
 </div> <!-- container -->

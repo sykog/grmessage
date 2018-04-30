@@ -162,14 +162,31 @@ class Database
         // Prepare the statement
         $statement = $dbh->prepare($sql);
 
-        $statement->bindParam(":email", $email, PDO::PARAM_STR);
-
         // Execute the statement
         $statement->execute();
 
         // Process the result
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $results;
+    }
+
+    //retrieve carrier info from database
+    function getCarrierInfo($carrier) {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM carriers WHERE carrier = :carrier";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":carrier", $carrier, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+
+        // Process the result
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
     }
 
 }//end Database class
