@@ -6,47 +6,53 @@
     <title>Green River Messaging</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/main.css">
+    <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/login.css">
 
     <!--Style sheets-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
 
-    <div class="row">
-        <h1>Green River Messaging</h1>
+    <header class="header clearfix" id="mainHeader">
+        <a href=""><h1>Green River Messaging</h1></a>
+    </header>
 
-        <p class="alert alert-success" role="alert">
-            This is not an official Green River service. This is a project by IT students to provide a messaging
-            service for Green River College students and instructors.
-        </p>
-    </div>
-    <div class="row">
-        <form method="post" class="mx-auto">
-            <div class="container">
-                <div class="row mx-auto">
-                    <label for="email">Student Email </label>
-                    <input type="text" id="email" name="email">
-                </div>
-                <div class="row mx-auto my-5">
-                    <label for="password">Password </label>
-                    <input type="password" id="password" name="password">
-                </div>
-                <div class="row align-bottom mx-auto">
-                    <div class="col-sm-6 my-auto">
-                        <input type="submit" name="login" value="Login" class="btn btn-success align-bottom">
+    <div class="container">
+
+        <div class="row">
+            <p class="alert alert-warning text-dark my-3" role="alert">
+                This is not an official Green River service. This is a project by IT students to provide a messaging
+                service for Green River College students and instructors.
+            </p>
+
+            <div class="col-4 mx-auto">
+                <form method="post" class="form mx-auto">
+                    <div class="row mx-auto">
+                        <label class="form-control-label mx-auto" for="email">Green River Email </label>
+                        <input class="form-control" type="text" id="email" name="email">
                     </div>
-                    <div class="col-sm-6">
-                        <p>Not a member?</p>
-                        <a class="btn btn-danger" href="register">Register</a>
+
+                    <div class="row mx-auto">
+                        <label class="form-control-label mx-auto" for="password">Password </label>
+                        <input class="form-control" type="password" id="password" name="password">
                     </div>
-                </div>
+
+                    <div class="row align-bottom mx-auto">
+                        <div class="col-sm-6 my-auto">
+                            <button type="submit" name="login">Login</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <p>Not a member?</p>
+                            <button><a href="register">Register</a></button><a class="btn btn-danger" href="register">Register</a>
+                        </div>
+                    </div>
+                </form>
+
             </div>
+        </div>
 
-        </form>
     </div>
-
-</div>
 <script type="text/javascript" src="assets/js/bootstrap.js"></script>
 </body>
 </html>

@@ -32,7 +32,7 @@ header a h1:hover, header a h2:hover {
 /* Button Styles */
 
 button {
-    color: whitesmoke;
+    color: white;
     background: #62c463;
     background: -moz-linear-gradient(0deg, #7af47e 0%, #62c463 49%, #31a533 51%, #3dcc3f 100%);
     background: -webkit-linear-gradient(0deg, #7af47e 0%,#62c463 49%,#31a533 51%,#3dcc3f 100%);
