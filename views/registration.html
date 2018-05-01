@@ -18,17 +18,14 @@
 </head>
 <body>
     <header class="header clearfix" id="mainHeader">
-        <a href="/355/grmessage/"><h1>GR Messaging</h1></a>
+        <a href="/355/grmessage/"><h1>Green River Messaging</h1></a>
     </header>
 
     <div class="container" id="mainContainer">
-        <h2 id="regHeader">Register as:</h2>
-        <div class="btn-toolbar" arialabel="Register As:">
-            <div class="btn-group mb-2">
-                <button type="button" class="btn btn-primary" id="student">Student</button>
-                <button type="button" class="btn btn-primary" id="instructor">Instructor</button>
-            </div>
-        </div>
+        <h2>Register as: </h2>
+        <button type="button" id="student" class="clicked">Student</button>
+        <button type="button" id="instructor">Instructor</button>
+        <h2 id="regHeader">Student</h2>
         <hr>
 
         <div class="col-6">
@@ -86,7 +83,7 @@
                     </select>
                 </div>
 
-                <button id="submit" class="btn btn-primary" type="submit" name="submitS">Register</button>
+                <button id="submit" type="submit" name="submitS">Register</button>
             </form>
         </div>
     </div> <!-- /container -->

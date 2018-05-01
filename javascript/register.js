@@ -1,33 +1,44 @@
-// adds a listener to window.onload
+// switches between student and registration validation and validating both
+
+// waits till page is loaded
 $(document).ready(function() {
 
     // variables
     var student = $("button#student");
-	var instructor = $("button#instructor");
-	var field = "";
-	var semailExp = new RegExp('^[\\w]+@mail.greenriver.edu$');
-	var iemailExp = new RegExp('^[\\w]+@greenriver.edu$');
+    var instructor = $("button#instructor");
+    var field = "";
+    var semailExp = new RegExp('^[\\w]+@mail.greenriver.edu$');
+    var iemailExp = new RegExp('^[\\w]+@greenriver.edu$');
 
-	// input masks
-	$("#phone").mask("(999) 999-9999");
+    // input masks
+    $("#phone").mask("(999) 999-9999");
 
-	// shows student fields (phone, carrier)
-	student.click( function() {
+    // shows student fields (phone, carrier)
+    student.click(function () {
         $("#studentFields").show();
+        student.addClass("clicked");
+        instructor.removeClass("clicked");
+        validSEmail();
+
         $("#submit").attr("name", "submitS");
         $("#email").attr("name", "semail");
-	});
+        $('#regHeader').text("Student");
+    });
 
-	// hides fields (phone, carrier)
-	instructor.click( function() {
+    // hides fields (phone, carrier)
+    instructor.click(function () {
         $("#studentFields").hide();
-        student.removeClass("showed");
+        instructor.addClass("clicked");
+        student.removeClass("clicked");
+        validIEmail();
+
         $("#submit").attr("name", "submitI");
         $("#email").attr("name", "iemail");
-	});
+        $('#regHeader').text("Instructor");
+    });
 
-	// toggle show password
-    $("#showPassword").click( function() {
+    // toggle show password
+    $("#showPassword").click(function () {
 
         if ($("#password").attr("type") == "password") {
             $("#password").attr("type", "text");
@@ -38,8 +49,8 @@ $(document).ready(function() {
         }
     });
 
-	// when clicking on inpult field
-    $("input").focus( function() {
+    // when clicking on inpult field
+    $("input").focus(function () {
         // get name of field
         field = $(this).attr("name");
 
@@ -59,8 +70,8 @@ $(document).ready(function() {
 
     // check for valid student email
     function validSEmail() {
-        $("input#email").keyup(function () {
-            if(semailExp.test($(this).val())) {
+        $("input#email").on('keyup blur change', function () {
+            if (semailExp.test($(this).val())) {
                 $(".red").eq(0).text("");
             } else {
                 $(".red").eq(0).text("Not a green river student email");
@@ -70,8 +81,8 @@ $(document).ready(function() {
 
     // check for valid instructor email.
     function validIEmail() {
-        $("input#email").keyup(function () {
-            if(iemailExp.test($(this).val())) {
+        $("input#email").on('keyup blur change', function () {
+            if (iemailExp.test($(this).val())) {
                 $(".red").eq(0).text("");
             } else {
                 $(".red").eq(0).text("Not a green river instructor email");
@@ -81,7 +92,7 @@ $(document).ready(function() {
 
     // must be at least 6 characters
     function validPassword() {
-        $("input#password").keyup(function () {
+        $("input#password").on('keyup blur change', function () {
             if (this.value.length < 6) {
                 // eq() gets the nth element
                 $(".red").eq(1).text("Password must be at least 6 characters");
@@ -93,7 +104,7 @@ $(document).ready(function() {
 
     // must match password
     function validConfirm() {
-        $("input#confirm").keyup(function () {
+        $("input#confirm").on('keyup blur change', function () {
             if ($("input#password").val() === this.value) {
                 $(".red").eq(2).text("");
             } else {
