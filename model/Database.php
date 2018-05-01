@@ -80,13 +80,21 @@ class Database
         $id = $dbh->lastInsertId();
     }//end addInstructor
 
-    function changeStudentPassword($id, $newPassword)
+    function changeStudentPassword($email, $newPassword)
     {
         $dbh = $this->dbh;
         // define the query
         $sql = "UPDATE students
-            SET (password = :newPassword)
-            WHERE studentid = :id";
+            SET password = :newPassword
+            WHERE studentEmail = :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+        $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
     }//end changeStudentPassword
 
     /**
@@ -188,5 +196,27 @@ class Database
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    //update changed student notification preferences
+    function updatePreferences ($email, $getStudentEmails, $getTexts, $getPersonalEmails) {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "UPDATE students
+                SET getTexts = :getTexts, getStudentEmails = :getStudentEmails, getPersonalEmails = :getPersonalEmails
+                WHERE studentEmail = :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+        $statement->bindParam(":getTexts", $getTexts, PDO::PARAM_STR);
+        $statement->bindParam(":getStudentEmails", $getStudentEmails, PDO::PARAM_STR);
+        $statement->bindParam(":getPersonalEmails", $getPersonalEmails, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+
+    }
+
 
 }//end Database class

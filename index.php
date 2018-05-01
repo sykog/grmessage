@@ -30,7 +30,7 @@ $f3->route('GET|POST /', function($f3, $params) {
         $password = sha1($_POST['password']);
         $success = true;
         $student = $database->getStudent($email);
-        $f3->set('student', $student);
+        $f3->set('studentEmail', $email);
 
         // have to use [0] since the array is in an array
         if($student[0]['studentEmail'] == $email && ($student[0]['password'] == $password)) {
@@ -39,19 +39,14 @@ $f3->route('GET|POST /', function($f3, $params) {
         else $success = false;
 
         if($success) {
-            $_SESSION['studentEmail'] = $student[0]['studentEmail'];
-            $f3->set('studentEmail', $_SESSION['studentEmail']);
 
+            $_SESSION['email'] = $f3->get('studentEmail');
             $_SESSION["message"] = "";
             $f3->reroute("/profile");
         }
 
         else {
             echo "Incorrect email or password <br>";
-            echo $student[0]['studentEmail'] . "<br>";
-            echo $student[0]['password']. "<br>";
-            echo $email . "<br>";
-            echo $password;
         }
     }
 });
@@ -100,7 +95,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $f3->set('errors', $errors);
         $f3->set('success', $success);
     }
-     // if registering as an instructor
+    // if registering as an instructor
     if(isset($_POST['submitI'])){
         $email = $_POST['iemail'];
         $password = $_POST['password'];
@@ -227,6 +222,73 @@ $f3->route('GET|POST /message', function($f3, $params) {
 
 $f3->route('GET|POST /profile', function($f3, $params) {
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
+
+    $studentEmail = $_SESSION['studentEmail'];
+    $student = $dbh->getStudent($studentEmail);
+
+    $f3->set('studentEmail', $studentEmail);
+    $f3->set('password', $student[0]['password']);
+    $f3->set('fname', $student[0]['fname']);
+    $f3->set('lname', $student[0]['lname']);
+    $f3->set('phone', $student[0]['phone']);
+    $f3->set('carrier', $student[0]['carrier']);
+    $f3->set('personalEmail', $student[0]['personalEmail']);
+    $f3->set('getTexts', $student[0]['getTexts']);
+    $f3->set('getStudentEmails', $student[0]['getStudentEmails']);
+    $f3->set('getPersonalEmails', $student[0]['getPersonalEmails']);
+
+    //if changes were made
+    if(isset($_POST['save'])) {
+        if(isset ($_POST['getStudentEmails'])) {
+            $getStudentEmails = 'y';
+            "You will now receive announcements via your student email";
+        }
+        else {
+            $getStudentEmails = 'n';
+            "You will no longer receive announcements via your student email";
+        }
+        if(isset ($_POST['getTexts'])) {
+            $getTexts = 'y';
+            echo "You will now receive announcements via text message";
+        }
+        else {
+            $getTexts = 'n';
+            echo "You will no longer receive announcements via text message";
+        }
+        if(isset ($_POST['getPersonalEmails'])) {
+            $getPersonalEmails = 'y';
+            "You will now receive announcements via your personal email";
+        }
+        else {
+            $getPersonalEmails = 'n';
+            "You will no longer receive announcements via your personal email";
+        }
+
+        $dbh->updatePreferences($studentEmail, $getStudentEmails, $getTexts, $getPersonalEmails);
+    }
+
+    /*
+    //change password if button was clicked
+    if(isset($_POST['changePassword'])) {
+
+        $currentPassword = sha1($_POST['currentPassword']);
+        $newPassword = sha1($_POST['newPassword']);
+        $confirmPassword = sha1($_POST['confirmPassword']);
+
+        if($currentPassword == $f3->get('password')) {
+            if($newPassword == $confirmPassword) {
+                $dbh->changeStudentPassword($studentEmail, $newPassword);
+                echo 'Password successfully changed!';
+            }
+            else {
+                echo 'Passwords do not match.';
+            }
+        }
+        else {
+            echo 'Current password is incorrect.';
+        }
+    } */
+
     $template = new Template();
     echo $template->render('views/studentProfile.html');
 });
