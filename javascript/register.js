@@ -72,7 +72,10 @@ $(document).ready(function() {
     function validSEmail() {
         $("input#email").on('keyup blur change', function () {
             if (semailExp.test($(this).val())) {
-                $(".red").eq(0).text("");
+
+                // if valid check if it already exists
+                $(".red").eq(0).load('studentExists.php', {studentEmail: $(this).val()});
+
             } else {
                 $(".red").eq(0).text("Not a green river student email");
             }
@@ -83,19 +86,22 @@ $(document).ready(function() {
     function validIEmail() {
         $("input#email").on('keyup blur change', function () {
             if (iemailExp.test($(this).val())) {
-                $(".red").eq(0).text("");
+
+                // if valid check if it already exists
+                $(".red").eq(0).load('instructorExists.php', {email: $(this).val()});
+
             } else {
                 $(".red").eq(0).text("Not a green river instructor email");
             }
         });
     }
 
-    // must be at least 6 characters
+    // must be at least 8 characters
     function validPassword() {
         $("input#password").on('keyup blur change', function () {
-            if (this.value.length < 6) {
+            if (this.value.length < 8) {
                 // eq() gets the nth element
-                $(".red").eq(1).text("Password must be at least 6 characters");
+                $(".red").eq(1).text("Password must be at least 8 characters");
             } else {
                 $(".red").eq(1).text("");
             }

@@ -24,7 +24,7 @@ ini_set('display_errors', 1);
     // must be at least 6 character
     function validPassword($password)
     {
-        return strlen($password) > 5;
+        return strlen($password) > 7;
     }
 
     // limit textBox characters
@@ -38,10 +38,10 @@ ini_set('display_errors', 1);
         return $password == $confirm;
     }
 
-    // 10 characters, numbers only
+    // 10 characters, numbers only, can be blank
     function validPhone($phone)
     {
-        return is_numeric($phone) && strlen($phone) == 10;
+        return is_numeric($phone) && (strlen($phone) == 10 || strlen($phone) == 0);
     }
 
     // must be one of the valid carriers
