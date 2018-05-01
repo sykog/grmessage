@@ -9,11 +9,18 @@ button.clicked {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#59b25b', endColorstr='#257727',GradientType=1 );
 }
 
+button#submit {
+    margin: 10px 0px;
+}
+
 /* Header Styles */
+
+h2 {
+    display: inline;
+}
 
 h2#regHeader {
     display: inline;
-    float: left;
     width: max-content;
     margin-right: 2%;
 }
