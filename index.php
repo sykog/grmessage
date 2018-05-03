@@ -46,7 +46,8 @@ $f3->route('GET|POST /', function($f3, $params) {
         }
 
         else {
-            echo "Incorrect email or password <br>";
+            echo "<div class=\"error alert alert-danger\" role=\"alert\">
+            Incorrect email or password</div>";
         }
     }
 });
@@ -139,7 +140,8 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if ($email == $_POST['semail']) {
             // only submit if the email doesnt exist
             if($database->studentExists($email)) {
-                echo "email already exists";
+                echo "<div class=\"error alert alert-danger\" role=\"alert\">
+            Email already exists.</div>";
             } else {
                 $database->addStudent($email, $password, $phone, $first, $last, $carrier);
                 $f3->reroute("/");
@@ -150,7 +152,8 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if ($email == $_POST['iemail']) {
             // only submit if the email doesnt exist
             if($database->instructorExists($email)) {
-                echo "email already exists";
+                echo "<div class=\"error alert alert-danger\" role=\"alert\">
+            Email already exists.</div>";
             } else {
                 $database->addInstructor($email, $password, $first, $last);
                 $f3->reroute("/message");

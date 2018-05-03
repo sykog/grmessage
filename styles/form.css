@@ -31,3 +31,7 @@ span.red {
     color: red;
     padding: 1em;
 }
+
+.error {
+    margin-left: 10px;
+}
