@@ -41,7 +41,6 @@ $f3->route('GET|POST /', function($f3, $params) {
         if($success) {
 
             $_SESSION['email'] = $f3->get('studentEmail');
-            $_SESSION["message"] = "";
             $f3->reroute("/profile");
         }
 
@@ -226,7 +225,8 @@ $f3->route('GET|POST /message', function($f3, $params) {
 $f3->route('GET|POST /profile', function($f3, $params) {
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
 
-    $studentEmail = $_SESSION['studentEmail'];
+
+    $studentEmail = $_SESSION['email'];
     $student = $dbh->getStudent($studentEmail);
 
     $f3->set('studentEmail', $studentEmail);
