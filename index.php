@@ -204,9 +204,6 @@ $f3->route('GET|POST /message', function($f3, $params) {
                     $f3->set('sent', true);
                     $f3->set('textMessage', "");
                 }
-                $to = "2536531125@vtext.com";
-                $headers = "From: LaterGators\n";
-                mail($to, '', $textMessage . "\n", $headers);
 
                 // confirmation and remove message
                 $f3->set('sent', true);
