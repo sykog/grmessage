@@ -32,8 +32,7 @@ $f3->route('GET|POST /', function($f3, $params) {
         $student = $database->getStudent($email);
         $f3->set('studentEmail', $email);
 
-        // have to use [0] since the array is in an array
-        if($student[0]['studentEmail'] == $email && ($student[0]['password'] == $password)) {
+        if($student['studentEmail'] == $email && ($student['password'] == $password)) {
             $success = true;
         }
         else $success = false;
@@ -227,15 +226,15 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     $student = $dbh->getStudent($studentEmail);
 
     $f3->set('studentEmail', $studentEmail);
-    $f3->set('password', $student[0]['password']);
-    $f3->set('fname', $student[0]['fname']);
-    $f3->set('lname', $student[0]['lname']);
-    $f3->set('phone', $student[0]['phone']);
-    $f3->set('carrier', $student[0]['carrier']);
-    $f3->set('personalEmail', $student[0]['personalEmail']);
-    $f3->set('getTexts', $student[0]['getTexts']);
-    $f3->set('getStudentEmails', $student[0]['getStudentEmails']);
-    $f3->set('getPersonalEmails', $student[0]['getPersonalEmails']);
+    $f3->set('password', $student['password']);
+    $f3->set('fname', $student['fname']);
+    $f3->set('lname', $student['lname']);
+    $f3->set('phone', $student['phone']);
+    $f3->set('carrier', $student['carrier']);
+    $f3->set('personalEmail', $student['personalEmail']);
+    $f3->set('getTexts', $student['getTexts']);
+    $f3->set('getStudentEmails', $student['getStudentEmails']);
+    $f3->set('getPersonalEmails', $student['getPersonalEmails']);
 
     //if changes were made
     if(isset($_POST['save'])) {
