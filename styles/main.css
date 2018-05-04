@@ -53,3 +53,7 @@ button:hover {
 .error {
     width: 40%;
 }
+
+#logout {
+    float: right;
+}
