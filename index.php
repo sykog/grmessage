@@ -16,38 +16,63 @@ $f3->set('DEBUG', 3);
 $f3->set('carriers', array("Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
     "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"));
 
+
 // define a default route
 $f3->route('GET|POST /', function($f3, $params) {
-    $database = new Database();
 
-    $template = new Template();
-    echo $template->render('views/home.html');
+    if (!$_SESSION['loggedin'] || !isset($_SESSION['loggedin'])){
+        $database = new Database();
 
-    //if login button is clicked
-    if (isset($_POST['login'])) {
+           $template = new Template();
 
-        $email = $_POST['email'];
-        $password = sha1($_POST['password']);
-        $success = true;
-        $student = $database->getStudent($email);
-        $f3->set('studentEmail', $email);
+        echo $template->render('views/home.html');
 
-        if($student['studentEmail'] == $email && ($student['password'] == $password)) {
+        //if login button is clicked
+        if (isset($_POST['login'])) {
+
+            $email = $_POST['email'];
+            $password = sha1($_POST['password']);
             $success = true;
-        }
-        else $success = false;
+            $student = $database->getStudent($email);
+            $f3->set('studentEmail', $email);
 
-        if($success) {
+            if($student['studentEmail'] == $email && ($student['password'] == $password)) {
+                $success = true;
+            }
+            else $success = false;
 
-            $_SESSION['email'] = $f3->get('studentEmail');
-            $f3->reroute("/profile");
-        }
+            if($success) {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['email'] = $f3->get('studentEmail');
 
-        else {
-            echo "<div class=\"error alert alert-danger\" role=\"alert\">
-            Incorrect email or password</div>";
+                if(!validSEmail($email)){
+                    $f3->reroute("/profile");
+                }
+
+                if(!validIEmail($email)){
+                    $f3->reroute("/message");
+                }
+            }
+
+
+            else {
+                echo "<div class=\"error alert alert-danger\" role=\"alert\">
+                Incorrect email or password</div>";
+            }
         }
     }
+    else {
+        $f3->reroute("/profile");
+    }
+
+});
+
+// define a route for logout
+$f3->route('GET|POST /logout', function($f3, $params) {
+    $database = new Database();
+    $_SESSION['loggedin'] = false;
+    $template = new Template();
+    $f3->reroute("/");
 });
 
 // define a route for registration
@@ -163,6 +188,9 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
 // define a message route
 $f3->route('GET|POST /message', function($f3, $params) {
+    if(!$_SESSION['loggedin']){
+        $f3->reroute("/");
+    }
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
     $f3->set("students", $dbh->getStudents());
     if(isset($_POST['submit'])){
@@ -219,6 +247,11 @@ $f3->route('GET|POST /message', function($f3, $params) {
 });
 
 $f3->route('GET|POST /profile', function($f3, $params) {
+
+    if(!$_SESSION['loggedin']){
+        $f3->reroute("/");
+    }
+
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
 
 
@@ -291,6 +324,8 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     $template = new Template();
     echo $template->render('views/studentProfile.html');
 });
+
+
 
 // run fat free
 $f3->run();
