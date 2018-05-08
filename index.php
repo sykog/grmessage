@@ -44,12 +44,10 @@ $f3->route('GET|POST /', function($f3, $params) {
             if($success) {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['email'] = $f3->get('studentEmail');
-
-                if(!validSEmail($email)){
+                if(validSEmail($email)){
                     $f3->reroute("/profile");
                 }
-
-                if(!validIEmail($email)){
+                if(validIEmail($email)){
                     $f3->reroute("/message");
                 }
             }
