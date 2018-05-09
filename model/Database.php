@@ -28,14 +28,17 @@ class Database
      * @param $lname last name
      * @param $carrier cell phone carrier
      */
-    function addStudent($email, $password, $phone, $fname, $lname, $carrier)
+    function addStudent($email, $password, $phone, $fname, $lname, $carrier, $program)
     {
         // encrypt password
         $password = sha1($password);
+        if (strlen($phone) == 0) {
+            $carrier = "";
+        }
         $dbh = $this->dbh;
         // define the query
-        $sql = "INSERT INTO students(studentEmail, password, phone, fname, lname, carrier)
-            VALUES (:email, :password, :phone, :fname, :lname, :carrier)";
+        $sql = "INSERT INTO students(studentEmail, password, phone, fname, lname, carrier, program)
+            VALUES (:email, :password, :phone, :fname, :lname, :carrier, :program)";
 
         // prepare the statement
         $statement = $dbh->prepare($sql);
@@ -45,6 +48,7 @@ class Database
         $statement->bindParam(':fname', $fname, PDO::PARAM_STR);
         $statement->bindParam(':lname', $lname, PDO::PARAM_STR);
         $statement->bindParam(':carrier', $carrier, PDO::PARAM_STR);
+        $statement->bindParam(':program', $program, PDO::PARAM_STR);
 
         // execute
         $statement->execute();

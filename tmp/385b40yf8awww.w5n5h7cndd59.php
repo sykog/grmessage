@@ -17,7 +17,8 @@
 </head>
 <body>
 <header class="header clearfix" id="mainHeader">
-    <a href=""><h1>GR Messaging</h1></a>
+    <a href="message"><h1>Green River Messaging</h1></a>
+    <a href="logout"><h1 id="logout">Logout</h1></a>
 </header>
 
 <div class="container" id="mainContainer">
@@ -48,7 +49,7 @@
             <p id="counter"><span id="chars">250</span> characters left</p>
             <textarea id="textMessage" name="textMessage" rows="6" cols="60" maxlength="250"><?= ($textMessage) ?></textarea>
 
-            <button id="sendMessage" class="btn btn-primary" type="submit" name="submit" >Send Message</button>
+            <button id="sendMessage" type="submit" name="submit" >Send Message</button>
             <?php if ($sent): ?>
                 <h3 id="green" class="alert alert-success" role="alert">Message Sent!</h3>
             <?php endif; ?>

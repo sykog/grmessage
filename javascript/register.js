@@ -13,6 +13,9 @@ $(document).ready(function() {
     // input masks
     $("#phone").mask("(999) 999-9999");
 
+    // carrier field starts hidden
+    $("#selectCarrier").hide();
+
     // shows student fields (phone, carrier)
     student.click(function () {
         $("#studentFields").show();
@@ -35,6 +38,12 @@ $(document).ready(function() {
         $('#regHeader').text("Instructor");
     });
 
+    // shows carrier is phone number is typed in
+    $("#phone").focus(function() {
+        $("#selectCarrier").show();
+        validPhone();
+    });
+
     // toggle show password
     $("#showPassword").click(function () {
 
@@ -47,7 +56,7 @@ $(document).ready(function() {
         }
     });
 
-    // when clicking on inpult field
+    // when clicking on input field
     $("input").focus(function () {
         // get name of field
         field = $(this).attr("name");
@@ -113,6 +122,15 @@ $(document).ready(function() {
                 $(".red").eq(2).text("");
             } else {
                 $(".red").eq(2).text("Does not match password");
+            }
+        });
+    }
+
+    // hide carrier box if phone is empty
+    function validPhone() {
+        $("input#phone").on('keyup blur change', function () {
+            if (this.value.length < 1) {
+                $("#selectCarrier").hide();
             }
         });
     }

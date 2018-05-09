@@ -15,12 +15,13 @@ $f3->set('DEBUG', 3);
 
 $f3->set('carriers', array("Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
     "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"));
-
+$f3->set('programs', array("Bachelors - Software Develpoment", "Associates - Software Develpoment",
+    "Bachelors - Networking", "Associates - Networking"));
 
 // define a default route
 $f3->route('GET|POST /', function($f3, $params) {
 
-    if (!$_SESSION['loggedin'] || !isset($_SESSION['loggedin'])){
+    if (!$_SESSION['loggedIn'] || !isset($_SESSION['loggedIn'])){
         $database = new Database();
 
            $template = new Template();
@@ -42,7 +43,7 @@ $f3->route('GET|POST /', function($f3, $params) {
             else $success = false;
 
             if($success) {
-                $_SESSION['loggedin'] = true;
+                $_SESSION['loggedIn'] = true;
                 $_SESSION['email'] = $f3->get('studentEmail');
                 if(validSEmail($email)){
                     $f3->reroute("/profile");
@@ -68,7 +69,7 @@ $f3->route('GET|POST /', function($f3, $params) {
 // define a route for logout
 $f3->route('GET|POST /logout', function($f3, $params) {
     $database = new Database();
-    $_SESSION['loggedin'] = false;
+    $_SESSION['loggedIn'] = false;
     $template = new Template();
     $f3->reroute("/");
 });
@@ -87,6 +88,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $last = $_POST['last'];
         $phone = shortenPhone($_POST['phone']);
         $carrier = $_POST['carrier'];
+        $program = $_POST['program'];
         $_SESSION['email'] = $email;
         $_SESSION['password'] = $password;
         $_SESSION['confirm'] = $confirm;
@@ -94,6 +96,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $_SESSION['last'] = $last;
         $_SESSION['phone'] = $phone;
         $_SESSION['carrier'] = $carrier;
+        $_SESSION['program'] = $program;
         if(!validSEmail($email)){
             $errors['email'] = "Please enter a student email";
         }
@@ -106,6 +109,12 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if(!validPhone($phone)){
             $errors['phone'] = "Invalid phone number" . strlen($phone);
         }
+        if(!validCarrier($carrier)){
+            $errors['carrier'] = "Invalid carrier" . strlen($phone);
+        }
+        if(!validProgram($program)){
+            $errors['program'] = "Invalid program" . strlen($phone);
+        }
         $success = sizeof($errors) == 0;
         $f3->set('email', $email);
         $f3->set('password', $password);
@@ -114,6 +123,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $f3->set('last', $last);
         $f3->set('phone', $phone);
         $f3->set('carrier', $carrier);
+        $f3->set('program', $carrier);
         $f3->set('errors', $errors);
         $f3->set('success', $success);
     }
@@ -164,9 +174,9 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 echo "<div class=\"error alert alert-danger\" role=\"alert\">
             Email already exists.</div>";
             } else {
-                $database->addStudent($email, $password, $phone, $first, $last, $carrier);
-                $f3->reroute("/");
-                echo "Student registered!";
+                $database->addStudent($email, $password, $phone, $first, $last, $carrier, $program);
+                $_SESSION['loggedIn'] = true;
+                $f3->reroute("/profile");
             }
         }
         // if instructor account
@@ -177,8 +187,8 @@ $f3->route('GET|POST /register', function($f3, $params) {
             Email already exists.</div>";
             } else {
                 $database->addInstructor($email, $password, $first, $last);
-                $f3->reroute("/message");
-                echo "Instructor registered!";
+                $_SESSION['loggedIn'] = true;
+                $f3->reroute("/profile");
             }
         }
     }
@@ -186,7 +196,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
 // define a message route
 $f3->route('GET|POST /message', function($f3, $params) {
-    if(!$_SESSION['loggedin']){
+    if(!$_SESSION['loggedIn']){
         $f3->reroute("/");
     }
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
@@ -246,7 +256,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
 
 $f3->route('GET|POST /profile', function($f3, $params) {
 
-    if(!$_SESSION['loggedin']){
+    if(!$_SESSION['loggedIn']){
         $f3->reroute("/");
     }
 

@@ -50,6 +50,12 @@ ini_set('display_errors', 1);
         return in_array($carrier, $f3->get('carriers'));
     }
 
+    // must be one of the valid programs
+    function validProgram($program) {
+        global $f3;
+        return in_array($program, $f3->get('programs'));
+    }
+
     // removes any non numeric characters
     function shortenPhone($phone) {
         $phone = str_replace('-', '', $phone);

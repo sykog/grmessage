@@ -33,61 +33,61 @@
                 <p><i>* Required fields</i></p>
 
                 <label class="form-control-label" for="email">*Green River Email<span class="red"></span></label>
-                <check if="{{ isset(@errors['email']) }}">
-                    <p class="error alert alert-danger">{{ @errors['email'] }}</p>
-                </check>
+                <?php if (isset($errors['email'])): ?>
+                    <p class="error alert alert-danger"><?= ($errors['email']) ?></p>
+                <?php endif; ?>
                 <input class="form-control" type="text" id="email" name="semail"
-                       value="{{ @email }}" required>
+                       value="<?= ($email) ?>" required>
 
                 <label class="form-control-label" for="password">*Password<span class="red"></span>
                     <input type="checkbox" value="show" id="showPassword">Show</label>
-                <check if="{{ isset(@errors['password']) }}">
-                    <p class="error alert alert-danger">{{ @errors['password'] }}</p>
-                </check>
+                <?php if (isset($errors['password'])): ?>
+                    <p class="error alert alert-danger"><?= ($errors['password']) ?></p>
+                <?php endif; ?>
                 <input class="form-control" type="password" id="password" name="password"
-                        value="{{ @password }}" required>
+                        value="<?= ($password) ?>" required>
 
                 <label class="form-control-label" for="confirm">*Confirm password<span class="red"></span></label>
-                <check if="{{ isset(@errors['confirm']) }}">
-                    <p class="error alert alert-danger">{{ @errors['confirm'] }}</p>
-                </check>
+                <?php if (isset($errors['confirm'])): ?>
+                    <p class="error alert alert-danger"><?= ($errors['confirm']) ?></p>
+                <?php endif; ?>
                 <input class="form-control" type="password" id="confirm" name="confirm"
-                        value="{{ @confirm }}" required>
+                        value="<?= ($confirm) ?>" required>
 
                 <label class="form-control-label" for="first">*First Name<span class="red"></span></label>
                 <input class="form-control" type="text" id="first" name="first"
-                        value="{{ @first }}" required>
+                        value="<?= ($first) ?>" required>
 
                 <label class="form-control-label" for="last">*Last Name<span class="red"></span></label>
                 <input class="form-control" type="text" id="last" name="last"
-                        value="{{ @last }}" required>
+                        value="<?= ($last) ?>" required>
 
                 <div id="studentFields">
                     <label class="form-control-label" for="phone">Cell Phone Number<span class="red"></span></label>
-                    <check if="{{ isset(@errors['phone']) }}">
-                        <p class="error alert alert-danger">{{ @errors['phone'] }}</p>
-                    </check>
+                    <?php if (isset($errors['phone'])): ?>
+                        <p class="error alert alert-danger"><?= ($errors['phone']) ?></p>
+                    <?php endif; ?>
                     <input class="form-control" type="text" id="phone" name="phone"
-                            value="{{ @phone }}">
+                            value="<?= ($phone) ?>">
 
                     <div id="selectCarrier">
                         <label class="form-check-label">Mobile Carrier</label>
                         <label class="d-block"></label>
                         <select class="form-control dropdown" id="carrier" name="carrier">
-                            <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
-                                <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
-                                {{ @carrierOption }}</option>
-                            </repeat>
+                            <?php foreach (($carriers?:[]) as $carrierOption): ?>
+                                <option <?php if ($carrierOption == $carrier): ?>selected<?php endif; ?>>
+                                <?= ($carrierOption) ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
 
                     <label class="form-check-label">*Program</label>
                     <label class="d-block"></label>
                     <select class="form-control dropdown" id="program" name="program">
-                        <repeat group = "{{ @programs }}" value = "{{ @programOption }}">
-                            <option <check if="{{ @programOption == @program }}">selected</check>>
-                            {{ @programOption }}</option>
-                        </repeat>
+                        <?php foreach (($programs?:[]) as $programOption): ?>
+                            <option <?php if ($programOption == $program): ?>selected<?php endif; ?>>
+                            <?= ($programOption) ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
