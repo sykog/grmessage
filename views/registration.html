@@ -33,11 +33,8 @@
                 <p><i>* Required fields</i></p>
 
                 <label class="form-control-label" for="email">*Green River Email<span class="red"></span></label>
-                <check if="{{ isset(@errors['semail']) }}">
-                    <p class="red">{{ @errors['semail'] }}</p>
-                </check>
-                <check if="{{ isset(@errors['iemail']) }}">
-                    <p class="red">{{ @errors['iemail'] }}</p>
+                <check if="{{ isset(@errors['email']) }}">
+                    <p class="error alert alert-danger">{{ @errors['email'] }}</p>
                 </check>
                 <input class="form-control" type="text" id="email" name="semail"
                        value="{{ @email }}" required>
@@ -45,14 +42,14 @@
                 <label class="form-control-label" for="password">*Password<span class="red"></span>
                     <input type="checkbox" value="show" id="showPassword">Show</label>
                 <check if="{{ isset(@errors['password']) }}">
-                    <p class="red">{{ @errors['password'] }}</p>
+                    <p class="error alert alert-danger">{{ @errors['password'] }}</p>
                 </check>
                 <input class="form-control" type="password" id="password" name="password"
                         value="{{ @password }}" required>
 
                 <label class="form-control-label" for="confirm">*Confirm password<span class="red"></span></label>
                 <check if="{{ isset(@errors['confirm']) }}">
-                    <p class="red">{{ @errors['confirm'] }}</p>
+                    <p class="error alert alert-danger">{{ @errors['confirm'] }}</p>
                 </check>
                 <input class="form-control" type="password" id="confirm" name="confirm"
                         value="{{ @confirm }}" required>
@@ -68,7 +65,7 @@
                 <div id="studentFields">
                     <label class="form-control-label" for="phone">Cell Phone Number<span class="red"></span></label>
                     <check if="{{ isset(@errors['phone']) }}">
-                        <p class="red">{{ @errors['phone'] }}</p>
+                        <p class="error alert alert-danger">{{ @errors['phone'] }}</p>
                     </check>
                     <input class="form-control" type="text" id="phone" name="phone"
                             value="{{ @phone }}">

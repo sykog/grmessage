@@ -18,7 +18,6 @@ $(document).ready(function() {
         $("#studentFields").show();
         student.addClass("clicked");
         instructor.removeClass("clicked");
-        validSEmail();
 
         $("#submit").attr("name", "submitS");
         $("#email").attr("name", "semail");
@@ -30,7 +29,6 @@ $(document).ready(function() {
         $("#studentFields").hide();
         instructor.addClass("clicked");
         student.removeClass("clicked");
-        validIEmail();
 
         $("#submit").attr("name", "submitI");
         $("#email").attr("name", "iemail");

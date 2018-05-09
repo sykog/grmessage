@@ -32,6 +32,13 @@ span.red {
     padding: 1em;
 }
 
-.error {
-    margin-left: 10px;
+p.error {
+    position: absolute;
+    left: 100%;
+    margin-top: 0px;
+    display: block;
+    width: max-content;
+    float: right;
+    height: 38px;
+    line-height: 12px;
 }

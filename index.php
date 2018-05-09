@@ -95,16 +95,16 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $_SESSION['phone'] = $phone;
         $_SESSION['carrier'] = $carrier;
         if(!validSEmail($email)){
-            $errors['email'] = "Please enter a student email.";
+            $errors['email'] = "Please enter a student email";
         }
         if(!validPassword($password)){
-            $errors['password'] = "Please enter a valid password.";
+            $errors['password'] = "Please enter a valid password";
         }
         if(!validPassword($confirm)){
-            $errors['confirm'] = "Please Confirm your password.";
+            $errors['confirm'] = "Please confirm your password";
         }
         if(!validPhone($phone)){
-            $errors['phone'] = "Invalid. Phone Number.";
+            $errors['phone'] = "Invalid phone number" . strlen($phone);
         }
         $success = sizeof($errors) == 0;
         $f3->set('email', $email);
@@ -132,13 +132,13 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $_SESSION['first'] = $first;
         $_SESSION['last'] = $last;
         if(!validIEmail($email)){
-            $errors['iemail'] = "Please enter an instructor email.";
+            $errors['iemail'] = "Please enter an instructor email";
         }
         if(!validPassword($password)){
-            $errors['password'] = "Password is less than 6 characters.";
+            $errors['password'] = "Please enter a valid password";
         }
         if(!validConfirm($password, $confirm)){
-            $errors['confirm'] = "Password and confirmation do not match.";
+            $errors['confirm'] = "Please confirm your password";
         }
 
         $success = sizeof($errors) == 0;

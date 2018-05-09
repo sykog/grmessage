@@ -41,7 +41,7 @@ ini_set('display_errors', 1);
     // 10 characters, numbers only, can be blank
     function validPhone($phone)
     {
-        return is_numeric($phone) && (strlen($phone) == 10 || strlen($phone) == 0);
+        return (is_numeric($phone) && (strlen($phone) == 10) || strlen($phone) == 0);
     }
 
     // must be one of the valid carriers
