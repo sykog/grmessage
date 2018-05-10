@@ -165,6 +165,25 @@ class Database
         return $result;
     }
 
+    //retrieve student from database
+    function getInstructor($email) {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM instructors WHERE email= :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+
+        // Process the result
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     //retrieve all students from the database
     function getStudents() {
         $dbh = $this->dbh;

@@ -34,26 +34,36 @@ $f3->route('GET|POST /', function($f3, $params) {
             $email = $_POST['email'];
             $password = sha1($_POST['password']);
             $success = true;
-            $student = $database->getStudent($email);
-            $f3->set('studentEmail', $email);
+            // if logging in as a student
+            if (validSEmail($email)) {
+                $student = $database->getStudent($email);
+                $_SESSION['isInstructor'] = false;
 
-            if($student['studentEmail'] == $email && ($student['password'] == $password)) {
-                $success = true;
+                if($student['studentEmail'] == $email && ($student['password'] == $password)) {
+                    $success = true;
+                } else $success = false;
             }
-            else $success = false;
+            // if logging in as an instructor
+            if (validIEmail($email)) {
+                $instructor = $database->getInstructor($email);
+                $_SESSION['isInstructor'] = true;
+
+                if($instructor['email'] == $email && ($instructor['password'] == $password)) {
+                    $success = true;
+                } else $success = false;
+            }
 
             if($success) {
                 $_SESSION['loggedIn'] = true;
-                $_SESSION['email'] = $f3->get('studentEmail');
-                if(validSEmail($email)){
+
+                if ($_SESSION['isInstructor']) {
+                    $_SESSION['email'] = $email;
+                    $f3->reroute("/message");
+                } else { // is a student
+                    $_SESSION['email'] = $email;
                     $f3->reroute("/profile");
                 }
-                if(validIEmail($email)){
-                    $f3->reroute("/message");
-                }
             }
-
-
             else {
                 echo "<div class=\"error alert alert-danger\" role=\"alert\">
                 Incorrect email or password</div>";
@@ -201,17 +211,22 @@ $f3->route('GET|POST /message', function($f3, $params) {
     }
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
     $f3->set("students", $dbh->getStudents());
+
     if(isset($_POST['submit'])){
         $textMessage = $_POST['textMessage'];
         $textMessage = trim($textMessage);
         $f3->set('textMessage', $textMessage);
         $f3->set('sent', false);
+
         if(validTextMessage ($textMessage)){
-            $chosen = $_POST['chosenPrograms'];
+            $chosen = $_POST['chosenPrograms']; // gets the selected program(s)
             $students = $dbh->getStudents();
+
+            // select the program, then the student
             foreach ($chosen as $current) {
                 foreach ($students as $studentInfo) {
                     if ($studentInfo['program'] == $current) {
+                        // only send text if opted in
                         if ($studentInfo['getTexts'] == "y") {
                             $carrierInfo = $dbh->getCarrierInfo($studentInfo['carrier']);
                             $carrierEmail = $carrierInfo['carrierEmail'];
@@ -223,6 +238,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                             $f3->set('sent', true);
                             $f3->set('textMessage', "");
                         }
+                        // only send secondary email if opted in
                         if ($studentInfo['getPersonalEmails'] == "y") {
                             $to = $studentInfo['personalEmail'];
                             $headers = "From: LaterGators\n";
@@ -232,6 +248,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                             $f3->set('sent', true);
                             $f3->set('textMessage', "");
                         }
+                        // only send email if opted in
                         if ($studentInfo['getStudentEmails'] == "y") {
                             $to = $studentInfo['studentEmail'];
                             $headers = "From: LaterGators\n";
