@@ -207,42 +207,46 @@ $f3->route('GET|POST /message', function($f3, $params) {
         $f3->set('textMessage', $textMessage);
         $f3->set('sent', false);
         if(validTextMessage ($textMessage)){
-            $studentEmails = $_POST['studentEmails'];
-            foreach ($studentEmails as $studentEmail) {
-                $studentInfo = $dbh->getStudent($studentEmail);
-                if ($studentInfo['getTexts'] == "y") {
-                    $carrierInfo = $dbh->getCarrierInfo($studentInfo['carrier']);
-                    $carrierEmail = $carrierInfo['carrierEmail'];
-                    $to = $studentInfo['phone'] . "@" . $carrierEmail;
-                    $headers = "From: LaterGators\n";
-                    mail($to, '', $textMessage . "\n", $headers);
+            $chosen = $_POST['chosenPrograms'];
+            $students = $dbh->getStudents();
+            foreach ($chosen as $current) {
+                foreach ($students as $studentInfo) {
+                    if ($studentInfo['program'] == $current) {
+                        if ($studentInfo['getTexts'] == "y") {
+                            $carrierInfo = $dbh->getCarrierInfo($studentInfo['carrier']);
+                            $carrierEmail = $carrierInfo['carrierEmail'];
+                            $to = $studentInfo['phone'] . "@" . $carrierEmail;
+                            $headers = "From: LaterGators\n";
+                            mail($to, '', $textMessage . "\n", $headers);
 
-                    // confirmation and remove message
-                    $f3->set('sent', true);
-                    $f3->set('textMessage', "");
+                            // confirmation and remove message
+                            $f3->set('sent', true);
+                            $f3->set('textMessage', "");
+                        }
+                        if ($studentInfo['getPersonalEmails'] == "y") {
+                            $to = $studentInfo['personalEmail'];
+                            $headers = "From: LaterGators\n";
+                            mail($to, '', $textMessage . "\n", $headers);
+
+                            // confirmation and remove message
+                            $f3->set('sent', true);
+                            $f3->set('textMessage', "");
+                        }
+                        if ($studentInfo['getStudentEmails'] == "y") {
+                            $to = $studentInfo['studentEmail'];
+                            $headers = "From: LaterGators\n";
+                            mail($to, '', $textMessage . "\n", $headers);
+
+                            // confirmation and remove message
+                            $f3->set('sent', true);
+                            $f3->set('textMessage', "");
+                        }
+
+                        // confirmation and remove message
+                        $f3->set('sent', true);
+                        $f3->set('textMessage', "");
+                    }
                 }
-                if ($studentInfo['getPersonalEmails'] == "y") {
-                    $to = $studentInfo['personalEmail'];
-                    $headers = "From: LaterGators\n";
-                    mail($to, '', $textMessage . "\n", $headers);
-
-                    // confirmation and remove message
-                    $f3->set('sent', true);
-                    $f3->set('textMessage', "");
-                }
-                if ($studentInfo['getStudentEmails'] == "y") {
-                    $to = $studentInfo['studentEmail'];
-                    $headers = "From: LaterGators\n";
-                    mail($to, '', $textMessage . "\n", $headers);
-
-                    // confirmation and remove message
-                    $f3->set('sent', true);
-                    $f3->set('textMessage', "");
-                }
-
-                // confirmation and remove message
-                $f3->set('sent', true);
-                $f3->set('textMessage', "");
             }
         }
         else{

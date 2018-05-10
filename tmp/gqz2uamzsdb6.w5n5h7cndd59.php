@@ -39,20 +39,21 @@
         <label>IT-334 2pm</label>
         <br>-->
         <form class="form" action="" method="post">
-            <repeat group="{{ @programs }}" value="{{ @programOption }}">
+            <?php foreach (($programs?:[]) as $programOption): ?>
                 <label>
-                    <input type="checkbox" name="chosenPrograms[]" value="{{@programOption}}">
-                    {{ @programOption }}
+                    <input type="checkbox" name="chosenPrograms[]" value="<?= ($programOption) ?>">
+                    <?= ($programOption)."
+" ?>
                 </label>
                 <br>
-            </repeat>
+            <?php endforeach; ?>
             <p id="counter"><span id="chars">250</span> characters left</p>
-            <textarea id="textMessage" name="textMessage" rows="6" cols="60" maxlength="250">{{ @textMessage }}</textarea>
+            <textarea id="textMessage" name="textMessage" rows="6" cols="60" maxlength="250"><?= ($textMessage) ?></textarea>
 
             <button id="sendMessage" type="submit" name="submit" >Send Message</button>
-            <check if="{{ @sent }}">
+            <?php if ($sent): ?>
                 <h3 id="green" class="alert alert-success" role="alert">Message Sent!</h3>
-            </check>
+            <?php endif; ?>
         </form>
     </div>
 </div> <!-- container -->

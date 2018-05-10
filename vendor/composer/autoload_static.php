@@ -51,6 +51,7 @@ class ComposerStaticInit22ab9d97bc40d9a50203b47c9ece09a7
         'Web\\OAuth2' => __DIR__ . '/..' . '/bcosca/fatfree-core/web/oauth2.php',
         'Web\\OpenID' => __DIR__ . '/..' . '/bcosca/fatfree-core/web/openid.php',
         'Web\\Pingback' => __DIR__ . '/..' . '/bcosca/fatfree-core/web/pingback.php',
+        'registration' => __DIR__ . '/../..' . '/classes/registration.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
