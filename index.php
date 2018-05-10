@@ -80,6 +80,7 @@ $f3->route('GET|POST /', function($f3, $params) {
 $f3->route('GET|POST /logout', function($f3, $params) {
     $database = new Database();
     $_SESSION['loggedIn'] = false;
+    $_SESSION['isInstructor'] = false;
     $template = new Template();
     $f3->reroute("/");
 });
@@ -206,9 +207,15 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
 // define a message route
 $f3->route('GET|POST /message', function($f3, $params) {
+
+    // go back to home page if not logged in
     if(!$_SESSION['loggedIn']){
         $f3->reroute("/");
+    } // go to profile if logged in, but as a student
+    if($_SESSION['loggedIn'] && !$_SESSION['isInstructor']) {
+        $f3->reroute("/profile");
     }
+
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
     $f3->set("students", $dbh->getStudents());
 
