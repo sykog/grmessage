@@ -84,17 +84,21 @@ class Database
         $id = $dbh->lastInsertId();
     }//end addInstructor
 
-    function changeStudentPassword($email, $newPassword)
+    function changeStudentPassword($studentEmail, $newPassword)
     {
+
+        // encrypt password
+        $newPassword = sha1($newPassword);
+
         $dbh = $this->dbh;
         // define the query
         $sql = "UPDATE students
             SET password = :newPassword
-            WHERE studentEmail = :email";
+            WHERE studentEmail = :studentEmail";
 
         // Prepare the statement
         $statement = $dbh->prepare($sql);
-        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+        $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
         $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
 
         // Execute the statement

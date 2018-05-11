@@ -307,6 +307,8 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     //if changes were made
     if(isset($_POST['save'])) {
+
+
         if(isset ($_POST['getStudentEmails'])) {
             $getStudentEmails = 'y';
             "You will now receive announcements via your student email";
@@ -333,15 +335,15 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         }
 
         $dbh->updatePreferences($studentEmail, $getStudentEmails, $getTexts, $getPersonalEmails);
+
     }
 
-    /*
     //change password if button was clicked
-    if(isset($_POST['changePassword'])) {
+    if(isset($_POST['updatePassword'])) {
 
         $currentPassword = sha1($_POST['currentPassword']);
-        $newPassword = sha1($_POST['newPassword']);
-        $confirmPassword = sha1($_POST['confirmPassword']);
+        $newPassword = $_POST['newPassword'];
+        $confirmPassword = $_POST['confirmPassword'];
 
         if($currentPassword == $f3->get('password')) {
             if($newPassword == $confirmPassword) {
@@ -355,7 +357,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         else {
             echo 'Current password is incorrect.';
         }
-    } */
+    }
 
     $template = new Template();
     echo $template->render('views/studentProfile.html');
