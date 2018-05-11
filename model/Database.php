@@ -93,7 +93,7 @@ class Database
         $dbh = $this->dbh;
         // define the query
         $sql = "UPDATE students
-            SET password = :newPassword
+            SET password = :password
             WHERE studentEmail = :studentEmail";
 
         // Prepare the statement
