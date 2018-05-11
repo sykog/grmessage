@@ -290,7 +290,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
 
-
     $studentEmail = $_SESSION['email'];
     $student = $dbh->getStudent($studentEmail);
 
@@ -304,6 +303,9 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     $f3->set('getTexts', $student['getTexts']);
     $f3->set('getStudentEmails', $student['getStudentEmails']);
     $f3->set('getPersonalEmails', $student['getPersonalEmails']);
+
+    $f3->set('carriers', array("Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
+        "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"));
 
     //if changes were made
     if(isset($_POST['save'])) {

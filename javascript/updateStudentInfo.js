@@ -26,7 +26,6 @@ $(document).ready(function() {
 
     });
 
-
     //edit personal email
     $("#editPersonalEmail").click(function() {
         $("#updateInfo").html("<hr><p><strong>Personal Email: </strong> <input type='text' name='newPersonalEmail' id='newPersonalEmail'>" +
@@ -38,5 +37,6 @@ $(document).ready(function() {
         $("#updateInfo").html("<hr><p><strong>Phone Number: </strong> <input type='text' name='newPhone' id='newPhone'>" +
             "<button type=\"submit\" id='updatePhone' name=\"updatePhone\">Update Info</button>")
     });
+
 
 });
