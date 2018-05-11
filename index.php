@@ -348,15 +348,28 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         if($currentPassword == $f3->get('password')) {
             if($newPassword == $confirmPassword) {
                 $dbh->changeStudentPassword($studentEmail, $newPassword);
-                echo 'Password successfully changed!';
+                echo '<div class="alert alert-success" role="alert">
+            Password successfully changed!</div>';
             }
             else {
-                echo 'Passwords do not match.';
+                echo '<div class="alert alert-danger" role="alert">
+            Passwords do not match.</div>';
             }
         }
         else {
-            echo 'Current password is incorrect.';
+            echo '<div class="alert alert-danger" role="alert">
+            Current password is incorrect.</div>';
         }
+    }//end update password
+
+    //if update personal email button was clicked
+    if(isset($_POST['updatePersonalEmail'])) {
+        $dbh->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
+    }
+
+    //if update phone number button was clicked
+    if(isset($_POST['updatePhone'])) {
+        $dbh->changePhoneNumber($studentEmail, $_POST['newPhone']);
     }
 
     $template = new Template();

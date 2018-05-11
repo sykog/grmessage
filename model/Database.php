@@ -105,6 +105,42 @@ class Database
         $statement->execute();
     }//end changeStudentPassword
 
+    function changePersonalEmail($studentEmail, $personalEmail)
+    {
+
+        $dbh = $this->dbh;
+        // define the query
+        $sql = "UPDATE students
+            SET personalEmail = :personalEmail
+            WHERE studentEmail = :studentEmail";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
+        $statement->bindParam(":personalEmail", $personalEmail, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+    }//end changePersonalEmail
+
+    function changePhoneNumber($studentEmail, $phone)
+    {
+
+        $dbh = $this->dbh;
+        // define the query
+        $sql = "UPDATE students
+            SET phone = :phone
+            WHERE studentEmail = :studentEmail";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
+        $statement->bindParam(":phone", $phone, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+    }//end changePhoneNumber
+
     /**
      * Returns 1 if email is in database, 0 if not
      * @param email email being searched

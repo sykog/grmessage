@@ -33,4 +33,10 @@ $(document).ready(function() {
             "<button type=\"submit\" id='updatePersonalEmail' name=\"updatePersonalEmail\">Update Info</button>")
     });
 
+    //edit phone number
+    $("#editPhone").click(function() {
+        $("#updateInfo").html("<hr><p><strong>Phone Number: </strong> <input type='text' name='newPhone' id='newPhone'>" +
+            "<button type=\"submit\" id='updatePhone' name=\"updatePhone\">Update Info</button>")
+    });
+
 });
