@@ -337,6 +337,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         }
 
         $dbh->updatePreferences($studentEmail, $getStudentEmails, $getTexts, $getPersonalEmails);
+        header("location: profile");
 
     }
 
@@ -350,6 +351,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         if($currentPassword == $f3->get('password')) {
             if($newPassword == $confirmPassword) {
                 $dbh->changeStudentPassword($studentEmail, $newPassword);
+                header("location: profile");
                 echo '<div class="alert alert-success" role="alert">
             Password successfully changed!</div>';
             }
@@ -367,11 +369,13 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     //if update personal email button was clicked
     if(isset($_POST['updatePersonalEmail'])) {
         $dbh->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
+        header("location: profile");
     }
 
     //if update phone number button was clicked
     if(isset($_POST['updatePhone'])) {
         $dbh->changePhoneNumber($studentEmail, $_POST['newPhone']);
+        header("location: profile");
     }
 
     $template = new Template();
