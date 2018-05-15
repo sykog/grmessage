@@ -21,17 +21,19 @@ $f3->set('programs', array("Bachelors - Software Development", "Associates - Sof
 // define a default route
 $f3->route('GET|POST /', function($f3, $params) {
 
-    if (!$_SESSION['loggedIn'] || !isset($_SESSION['loggedIn'])){
+    if (!$_SESSION['loggedIn']){
         $database = new Database();
-
-           $template = new Template();
-
-        echo $template->render('views/home.html');
 
         //if login button is clicked
         if (isset($_POST['login'])) {
 
             $email = $_POST['email'];
+            $_SESSION['username'] = $email;
+            $f3->set('username', $email);
+
+            $template = new Template();
+            echo $template->render('views/home.html');
+
             $password = sha1($_POST['password']);
             $success = true;
             // if logging in as a student
@@ -77,6 +79,10 @@ $f3->route('GET|POST /', function($f3, $params) {
         $f3->reroute("/profile");
     }
 
+    // go to registration page when clicking button
+    if (isset($_POST["register"])) {
+        $f3->reroute("/register");
+    }
 });
 
 // define a route for logout
