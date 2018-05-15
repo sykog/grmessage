@@ -15,7 +15,7 @@ $f3->set('DEBUG', 3);
 
 $f3->set('carriers', array("Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
     "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"));
-$f3->set('programs', array("Bachelors - Software Develpoment", "Associates - Software Develpoment",
+$f3->set('programs', array("Bachelors - Software Development", "Associates - Software Development",
     "Bachelors - Networking", "Associates - Networking"));
 
 // define a default route

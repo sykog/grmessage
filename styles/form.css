@@ -26,6 +26,11 @@ h2#regHeader {
 }
 
 /* Input Styles */
+
+.form-control {
+    margin-bottom: 4%;
+}
+
 span.red {
     display: inline;
     color: red;
