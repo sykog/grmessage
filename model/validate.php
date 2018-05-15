@@ -65,3 +65,8 @@ ini_set('display_errors', 1);
         return $phone;
     }
 
+    //checks for valid personal email
+    function validPEmail($email) {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+

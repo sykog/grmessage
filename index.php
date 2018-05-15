@@ -313,23 +313,43 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
         if(isset ($_POST['getStudentEmails'])) {
             $getStudentEmails = 'y';
-            "You will now receive announcements via your student email";
+            echo'You will now receive updates via your student email.';
         }
         else {
             $getStudentEmails = 'n';
             "You will no longer receive announcements via your student email";
         }
         if(isset ($_POST['getTexts'])) {
-            $getTexts = 'y';
-            echo "You will now receive announcements via text message";
+            if($f3->get('phone')) {
+                if(!empty($f3->get('phone'))){
+                    $getTexts = 'y';
+                    echo "You will now receive announcements via text message";
+                }
+                else {
+                    echo '<div class="alert alert-danger" role="alert">
+                   Please provide a phone number before attempting to select this option.</div>';
+                }
+
+            }
+            else {
+                echo "You will no longer receive announcements via your personal email.";
+            }
+
         }
         else {
             $getTexts = 'n';
             echo "You will no longer receive announcements via text message";
         }
         if(isset ($_POST['getPersonalEmails'])) {
-            $getPersonalEmails = 'y';
-            "You will now receive announcements via your personal email";
+            if(!empty($f3->get('personalEmail'))) {
+                $getPersonalEmails = 'y';
+                "You will now receive announcements via your personal email";
+            }
+            else {
+                echo '<div class="alert alert-danger" role="alert">
+            Please provide a phone number before selecting this option.</div>';
+            }
+
         }
         else {
             $getPersonalEmails = 'n';
@@ -368,14 +388,32 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     //if update personal email button was clicked
     if(isset($_POST['updatePersonalEmail'])) {
-        $dbh->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
-        header("location: profile");
+        if(validPEmail($_POST['newPersonalEmail'])) {
+            $dbh->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
+            header("location: profile");
+            echo '<div class="alert alert-success" role="alert">
+            Personal email updated!</div>';
+        }
+        else {
+            echo '<div class="alert alert-danger" role="alert">
+            Please enter a valid email.</div>';
+        }
+
     }
 
     //if update phone number button was clicked
     if(isset($_POST['updatePhone'])) {
-        $dbh->changePhoneNumber($studentEmail, $_POST['newPhone']);
-        header("location: profile");
+        if(validPhone($_POST['newPhone'])) {
+            $dbh->changePhoneNumber($studentEmail, $_POST['newPhone']);
+            header("location: profile");
+            echo '<div class="alert alert-success" role="alert">
+            Phone number updated!</div>';
+        }
+        else {
+            echo '<div class="alert alert-danger" role="alert">
+            Please enter a valid phone number.</div>';
+        }
+
     }
 
     $template = new Template();
