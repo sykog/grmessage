@@ -8,9 +8,9 @@ $(document).ready(function() {
 
         $("#changePassword").hide();
         $("#password").html("<h3>Change Password</h3>" +
-            "<p><strong>Current Password: </strong> <input type='password' name='currentPassword'></p>" +
-            "<p><strong>New Password: </strong><input type='password' name='newPassword'></p>" +
-            "<p><strong>Confirm New Password: </strong><input type='password' name='confirmPassword'></p>" +
+            "<p><strong>Current Password: </strong> <input class=\"form-control\" type='password' name='currentPassword'></p>" +
+            "<p><strong>New Password: </strong><input class=\"form-control\" type='password' name='newPassword'></p>" +
+            "<p><strong>Confirm New Password: </strong><input class=\"form-control\" type='password' name='confirmPassword'></p>" +
             "<button type=\"submit\" id='updatePassword' name=\"updatePassword\">Change Password</button>" +
             "<button type=\"button\" id='cancelPassword' name=\"cancelPassword\">Cancel</button>");
 

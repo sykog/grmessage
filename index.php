@@ -312,6 +312,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     $f3->set('lname', $student['lname']);
     $f3->set('phone', $student['phone']);
     $f3->set('carrier', $student['carrier']);
+    $f3->set('program', $student['program']);
     $f3->set('personalEmail', $student['personalEmail']);
     $f3->set('getTexts', $student['getTexts']);
     $f3->set('getStudentEmails', $student['getStudentEmails']);

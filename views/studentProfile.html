@@ -8,7 +8,7 @@
         <!--Style sheets-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
         <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/main.css">
-        <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/studentProfile-styles.css">
+        <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/profile.css">
 
         <!-- Javascript-->
         <script src="http://code.jquery.com/jquery.js"></script>
@@ -28,7 +28,7 @@
             <div class="col-6">
                 <form class="form" action="" method="post">
 
-                    <p><strong>Full Name: </strong> {{ @fname }} {{ @lname }} </p>
+                    <p><strong>Full Name: </strong> {{ @fname }} {{ @lname }} <button type="button" class="btn btn-sm" id="editName">Edit</button></p>
 
                     <div id="studentFields">
 
@@ -36,6 +36,7 @@
                         <p><strong>Personal Email: </strong> {{ @personalEmail }} <button type="button" class="btn btn-sm" id="editPersonalEmail">Edit</button></p>
                         <p><strong>Phone Number: </strong> {{ @phone }} <button type="button" class="btn btn-sm" id="editPhone">Edit</button></p>
                         <p><strong>Mobile Carrier: </strong> {{ @carrier }} <button type="button" class="btn btn-sm" id="editCarrier">Edit</button></p>
+                        <p><strong>Program: </strong> {{ @program }} <button type="button" class="btn btn-sm" id="editProgram">Edit</button></p>
 
                     </div>
 
