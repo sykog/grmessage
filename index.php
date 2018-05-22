@@ -21,6 +21,10 @@ $f3->set('programs', array("Bachelors - Software Development", "Associates - Sof
 // define a default route
 $f3->route('GET|POST /', function($f3, $params) {
 
+    if (!isset($_POST['login'])) {
+        $template = new Template();
+        echo $template->render('views/home.html');
+    }
     if (!$_SESSION['loggedIn']){
         $database = new Database();
 
