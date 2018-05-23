@@ -34,14 +34,15 @@ $(document).ready(function() {
 
     //edit phone number
     $("#editPhone").click(function() {
-        $("#updatePhone").html("<input type='text' name='newPhone' id='newPhone'>" +
-            "<button type=\"submit\" id='updatePhone' name=\"updatePhone\">Update Info</button>")
+        /*$("#updatePhone").html("<input type='text' name='newPhone' id='newPhone'>" +
+            "<button type=\"submit\" id='updatePhone' name=\"updatePhone\">Update Info</button>")*/
+        $(this).hide();
+        $("#phoneInput").replaceWith("<input class='form-control sameLine' type='text' name='newPhone' id='newPhone'>" +
+            "<button class='update' type=\"submit\" id='updatePhone' name=\"updatePhone\">Update Info</button>");
+        $("#newPhone").mask("(999) 999-9999");
     });
 
     $("#update").hide();
-
-    show
-
 });
 
 function showUpdate() {

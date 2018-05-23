@@ -25,18 +25,18 @@
             <h2 id="regHeader">Welcome, {{ @fname }}</h2>
             <hr>
 
-            <div class="col-6">
+            <div class="col-10">
                 <form class="form" action="" method="post">
 
-                    <label><strong>Full Name: </strong>{{ @fname }} {{ @lname }} <button class="edit" type="button" id="editName"></button></label>
+                    <label><strong>Full Name: </strong><span id="nameInput">{{ @fname }} {{ @lname }} </span><button class="edit" type="button" id="editName"></button></label>
 
                     <div id="studentFields">
 
-                        <label><strong>Student Email: </strong> {{ @studentEmail }} </label><br>
-                        <label><strong>Personal Email: </strong>{{ @personalEmail }} <button type="button" class="edit" id="editPersonalEmail"></button><div id="updateEmail"></div></label><br>
-                        <label><strong>Phone Number: </strong> {{ @phone }} <button type="button" class="edit" id="editPhone"></button><div id="updatePhone"></div></label><br>
-                        <label><strong>Mobile Carrier: </strong> {{ @carrier }} <button type="button" class="edit" id="editCarrier"></button></label><br>
-                        <label><strong>Program: </strong> {{ @program }} <button type="button" class="edit" id="editProgram"></button></label><br>
+                        <label><strong>Student Email: </strong><span> {{ @studentEmail }} </span></label><br>
+                        <label><strong>Personal Email: </strong><span id="pEmailInput">{{ @personalEmail }} </span><button type="button" class="edit" id="editPersonalEmail"></button><div id="updateEmail"></div></label><br>
+                        <label><strong>Phone Number: </strong><span id="phoneInput"> {{ @phone }} </span><button type="button" class="edit" id="editPhone"></button><div id="updatePhone"></div></label><br>
+                        <label><strong>Mobile Carrier: </strong><span id="carrierInput"> {{ @carrier }} </span><button type="button" class="edit" id="editCarrier"></button></label><br>
+                        <label><strong>Program: </strong><span id="programInput"> {{ @program }} </span><button type="button" class="edit" id="editProgram"></button></label><br>
 
                     </div>
 

@@ -1,6 +1,5 @@
-/* Icon Styles */
-
 /* Button Styles */
+
 button#cancelPassword {
     margin-left: 6px;
     background: #eacb6e;
@@ -9,11 +8,30 @@ button#cancelPassword {
     background: linear-gradient(180deg, #f7e7b2 0%,#eacb6e 49%,#e5b72d 51%,#eaba2a 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7e7b2', endColorstr='#eaba2a',GradientType=1 );
 }
-.edit{
+
+button.edit, button.edit:hover {
     display: inline;
     background-image: url("../image/pencil.png");
     background-repeat: no-repeat;
-    background-size: 2vw 2vw;
-    width: 2vw;
+    background-size: 2.4vw 2vw;
+    width: 2.4vw;
     height: 2vw;
+    vertical-align: -10%;
+    box-shadow:  none;
+}
+
+button.update {
+    margin-left: 4px;
+    vertical-align: -4%;
+}
+
+/* Input Styles */
+
+.sameLine {
+    display: inline;
+    width: 40%;
+}
+
+label {
+    width: 80%;
 }
