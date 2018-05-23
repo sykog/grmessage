@@ -32,6 +32,11 @@ button.update {
     width: 40%;
 }
 
+#newLName, #newFName {
+    width: 28%;
+    margin-left: 4px;
+}
+
 label {
     width: 80%;
 }

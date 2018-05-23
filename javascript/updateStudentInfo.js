@@ -27,15 +27,22 @@ $(document).ready(function() {
     });
 
     //edit personal email
+    $("#editName").click(function() {
+        $(this).hide();
+        $("#nameInput").replaceWith("<input class='form-control sameLine' type='text' name='newFName' id='newFName'>" +
+            "<input class='form-control sameLine' type='text' name='newLName' id='newLName'>" +
+            "<button class='update' type=\"submit\" id='updateName' name=\"updateName\">Update Info</button>");
+    });
+
+    //edit personal email
     $("#editPersonalEmail").click(function() {
-        $("#updateEmail").html("<input type='text' name='newPersonalEmail' id='newPersonalEmail'>" +
-            "<button type=\"submit\" id='updatePersonalEmail' name=\"updatePersonalEmail\">Update Info</button>")
+        $(this).hide();
+        $("#pEmailInput").replaceWith("<input class='form-control sameLine' type='text' name='newPhone' id='newPhone'>" +
+            "<button class='update' type=\"submit\" id='updatePersonalEmail' name=\"updatePersonalEmail\">Update Info</button>");
     });
 
     //edit phone number
     $("#editPhone").click(function() {
-        /*$("#updatePhone").html("<input type='text' name='newPhone' id='newPhone'>" +
-            "<button type=\"submit\" id='updatePhone' name=\"updatePhone\">Update Info</button>")*/
         $(this).hide();
         $("#phoneInput").replaceWith("<input class='form-control sameLine' type='text' name='newPhone' id='newPhone'>" +
             "<button class='update' type=\"submit\" id='updatePhone' name=\"updatePhone\">Update Info</button>");

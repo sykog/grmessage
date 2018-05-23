@@ -79,10 +79,8 @@ $(document).ready(function() {
     function validSEmail() {
         $("input#email").on('keyup blur change', function () {
             if (semailExp.test($(this).val())) {
-
                 // if valid check if it already exists
                 $(".red").eq(0).load('studentExists.php', {studentEmail: $(this).val()});
-
             } else {
                 $(".red").eq(0).text("Not a green river student email");
             }
@@ -93,10 +91,8 @@ $(document).ready(function() {
     function validIEmail() {
         $("input#email").on('keyup blur change', function () {
             if (iemailExp.test($(this).val())) {
-
                 // if valid check if it already exists
                 $(".red").eq(0).load('instructorExists.php', {email: $(this).val()});
-
             } else {
                 $(".red").eq(0).text("Not a green river instructor email");
             }

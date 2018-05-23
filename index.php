@@ -324,7 +324,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     //if changes were made
     if(isset($_POST['save'])) {
 
-
         if(isset ($_POST['getStudentEmails'])) {
             $getStudentEmails = 'y';
             echo'You will now receive updates via your student email.';
@@ -386,8 +385,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             if($newPassword == $confirmPassword) {
                 $dbh->changeStudentPassword($studentEmail, $newPassword);
                 header("location: profile");
-                echo '<div class="alert alert-success" role="alert">
-            Password successfully changed!</div>';
             }
             else {
                 echo '<div class="alert alert-danger" role="alert">
@@ -401,12 +398,23 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     }//end update password
 
     //if update personal email button was clicked
+    if(isset($_POST['updateName'])) {
+        if(strlen($_POST['newFName']) > 0 && strlen($_POST['newLName']) > 0) {
+            $dbh->changeStudentName($studentEmail, $_POST['newFName'], $_POST['newLName']);
+            header("location: profile");
+        }
+        else {
+            echo '<div class="alert alert-danger" role="alert">
+            Please enter a valid name.</div>';
+        }
+
+    }
+
+    //if update personal email button was clicked
     if(isset($_POST['updatePersonalEmail'])) {
         if(validPEmail($_POST['newPersonalEmail'])) {
             $dbh->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
             header("location: profile");
-            echo '<div class="alert alert-success" role="alert">
-            Personal email updated!</div>';
         }
         else {
             echo '<div class="alert alert-danger" role="alert">
@@ -417,11 +425,11 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     //if update phone number button was clicked
     if(isset($_POST['updatePhone'])) {
-        if(validPhone($_POST['newPhone'])) {
-            $dbh->changePhoneNumber($studentEmail, $_POST['newPhone']);
+        $newPhone = $_POST['newPhone'];
+        $newPhone = shortenPhone($newPhone);
+        if(validPhone($newPhone)) {
+            $dbh->changePhoneNumber($studentEmail, $newPhone);
             header("location: profile");
-            echo '<div class="alert alert-success" role="alert">
-            Phone number updated!</div>';
         }
         else {
             echo '<div class="alert alert-danger" role="alert">
