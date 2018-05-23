@@ -28,13 +28,13 @@ $(document).ready(function() {
 
     //edit personal email
     $("#editPersonalEmail").click(function() {
-        $("#updateInfo").html("<strong>Personal Email: </strong> <input type='text' name='newPersonalEmail' id='newPersonalEmail'>" +
+        $("#updateEmail").html("<input type='text' name='newPersonalEmail' id='newPersonalEmail'>" +
             "<button type=\"submit\" id='updatePersonalEmail' name=\"updatePersonalEmail\">Update Info</button>")
     });
 
     //edit phone number
     $("#editPhone").click(function() {
-        $("#updateInfo").html("<hr><p><strong>Phone Number: </strong> <input type='text' name='newPhone' id='newPhone'>" +
+        $("#updatePhone").html("<input type='text' name='newPhone' id='newPhone'>" +
             "<button type=\"submit\" id='updatePhone' name=\"updatePhone\">Update Info</button>")
     });
 

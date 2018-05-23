@@ -33,8 +33,8 @@
                     <div id="studentFields">
 
                         <label><strong>Student Email: </strong> {{ @studentEmail }} </label><br>
-                        <label><strong>Personal Email: </strong><div id="updateInfo"></div>  {{ @personalEmail }} <button type="button" class="edit" id="editPersonalEmail"></button></label><br>
-                        <label><strong>Phone Number: </strong><div id="password"></div> {{ @phone }} <button type="button" class="edit" id="editPhone"></button></label><br>
+                        <label><strong>Personal Email: </strong>{{ @personalEmail }} <button type="button" class="edit" id="editPersonalEmail"></button><div id="updateEmail"></div></label><br>
+                        <label><strong>Phone Number: </strong> {{ @phone }} <button type="button" class="edit" id="editPhone"></button><div id="updatePhone"></div></label><br>
                         <label><strong>Mobile Carrier: </strong> {{ @carrier }} <button type="button" class="edit" id="editCarrier"></button></label><br>
                         <label><strong>Program: </strong> {{ @program }} <button type="button" class="edit" id="editProgram"></button></label><br>
 
@@ -44,6 +44,7 @@
 
                     <button type="button" id="changePassword" name="changePassword">Change Password</button><br>
 
+                    <div id="password"></div>
                     <br>
 
                     <h3>Notification Preferences</h3>
