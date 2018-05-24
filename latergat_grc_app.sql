@@ -18,5 +18,8 @@ ALTER TABLE `messages`
 
 ALTER TABLE `students`
   ADD COLUMN program VARCHAR(50) AFTER carrier,
+  ADD COLUMN verifiedStudent VARCHAR(50),
+  ADD COLUMN verifiedPersonal VARCHAR(50),
+  ADD COLUMN verifiedPhone VARCHAR(50),
   ADD FOREIGN KEY (carrier) REFERENCES carriers(carrier),
   ADD FOREIGN KEY (program) REFERENCES programs(program);
