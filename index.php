@@ -460,9 +460,17 @@ $f3->route('GET|POST /instructor-home', function($f3, $params) {
     $f3->set('lname', $instructor['lname']);
 
 
-
     $template = new Template();
     echo $template->render('views/instructorHome.html');
+});
+
+//route for the instructor home page
+$f3->route('GET|POST /view-messages', function($f3) {
+
+
+
+    $template = new Template();
+    echo $template->render('views/viewMessages.html');
 });
 
 
