@@ -11,7 +11,8 @@ INSERT INTO `programs` (`programid`, `program`) VALUES
 
 ALTER TABLE `instructors`
   ADD COLUMN fname VARCHAR(50) AFTER instructorid,
-  ADD COLUMN lname VARCHAR(50) AFTER instructorid;
+  ADD COLUMN lname VARCHAR(50) AFTER instructorid,
+  ADD COLUMN verified VARCHAR(50) AFTER instructorid;
 
 ALTER TABLE `messages`
   ADD FOREIGN KEY (instructorid) REFERENCES instructors(instructorid);
