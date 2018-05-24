@@ -31,6 +31,9 @@
 
                     <div id="studentFields">
 
+                        <check if="{{ isset(@errors['name']) }}">
+                            <p class="error alert alert-danger">{{ @errors['name'] }}</p>
+                        </check>
                         <label><strong>Full Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
                         <input class='form-control sameLine' type='text' name='newFName' id='newFName'>
                         <input class='form-control sameLine' type='text' name='newLName' id='newLName'>
@@ -40,12 +43,18 @@
 
                         <label><strong>Student Email: </strong><span> {{ @studentEmail }} </span></label><br>
 
+                        <check if="{{ isset(@errors['pEmail']) }}">
+                            <p class="error alert alert-danger">{{ @errors['pEmail'] }}</p>
+                        </check>
                         <label><strong>Personal Email: </strong><span id="pEmailSpan">{{ @personalEmail }} </span>
                         <input class='form-control sameLine' type='text' name='newPersonalEmail' id='newPersonalEmail'>
                         <button class='update' type="submit" id='updatePersonalEmail' name="updatePersonalEmail">Update Info</button>
                         <button type="button" class="edit" id="editPersonalEmail"></button>
                         <button type="button" class="cancelInput" id="cancelPersonalEmail" name="cancelPersonalEmail">Cancel</button></label><br>
 
+                        <check if="{{ isset(@errors['phone']) }}">
+                            <p class="error alert alert-danger">{{ @errors['phone'] }}</p>
+                        </check>
                         <label><strong>Phone Number: </strong><span id="phoneSpan"> {{ @phone }} </span>
                         <input class='form-control sameLine' type='text' name='newPhone' id='newPhone'>
                         <button class='update' type="submit" id='updatePhone' name="updatePhone">Update Info</button>
@@ -60,7 +69,7 @@
                                 {{ @carrierOption }}</option>
                             </repeat>
                         </select>
-                        <button class='update' type="submit" id='updateCarrier' name="updatePhone">Update Info</button>
+                        <button class='update' type="submit" id='updateCarrier' name="updateCarrier">Update Info</button>
                         <button type="button" class="edit" id="editCarrier"></button>
                         <button type="button" class="cancelInput" id="cancelCarrier" name="cancelCarrier">Cancel</button></label>
 
@@ -72,7 +81,7 @@
                                 {{ @programOption }}</option>
                             </repeat>
                         </select>
-                        <button class='update' type="submit" id='updateProgram' name="updatePhone">Update Info</button>
+                        <button class='update' type="submit" id='updateProgram' name="updateProgram">Update Info</button>
                         <button type="button" class="edit" id="editProgram"></button>
                         <button type="button" class="cancelInput" id="cancelProgram" name="cancelProgram">Cancel</button></label><br>
                     </div>
@@ -98,14 +107,9 @@
                         <true><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" value="getPersonalEmails" checked> Personal Email <br></true>
                         <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" value="getPersonalEmails"> Personal Email<br></false>
                     </check>
-                    <br>
 
                     <button id="update" type="submit" name="save">Save Changes</button>
-
                 </form>
-            </div>
-            <div class="col-6">
-                <label></label>
             </div>
         </div> <!-- /container -->
 

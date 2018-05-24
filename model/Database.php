@@ -105,6 +105,12 @@ class Database
         $statement->execute();
     }//end changeStudentPassword
 
+    /**
+     * change student's first and last name
+     * @param $studentEmail identifier
+     * @param $first first name
+     * @param $last last name
+     */
     function changeStudentName($studentEmail, $first, $last)
     {
         $dbh = $this->dbh;
@@ -123,6 +129,11 @@ class Database
         $statement->execute();
     }//end change name
 
+    /**
+     * change student's personal email
+     * @param $studentEmail identifier
+     * @param $personalEmail secondary email
+     */
     function changePersonalEmail($studentEmail, $personalEmail)
     {
 
@@ -141,6 +152,11 @@ class Database
         $statement->execute();
     }//end changePersonalEmail
 
+    /**
+     * change student's cell phone number
+     * @param $studentEmail identifier
+     * @param $phone cell phone number
+     */
     function changePhoneNumber($studentEmail, $phone)
     {
 
@@ -158,6 +174,52 @@ class Database
         // Execute the statement
         $statement->execute();
     }//end changePhoneNumber
+
+    /**
+     * change student's cell phone carrier
+     * @param $studentEmail identifier
+     * @param $carrier cell phone carrier
+     */
+    function changeCarrier($studentEmail, $carrier)
+    {
+
+        $dbh = $this->dbh;
+        // define the query
+        $sql = "UPDATE students
+            SET carrier = :carrier
+            WHERE studentEmail = :studentEmail";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
+        $statement->bindParam(":carrier", $carrier, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+    }//end changeCarrier
+
+    /**
+     * change program student is in
+     * @param $studentEmail identifier
+     * @param $program bachelors, associates
+     */
+    function changeProgram($studentEmail, $program)
+    {
+
+        $dbh = $this->dbh;
+        // define the query
+        $sql = "UPDATE students
+            SET program = :program
+            WHERE studentEmail = :studentEmail";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
+        $statement->bindParam(":program", $program, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+    }//end changeCarrier
 
     /**
      * Returns 1 if email is in database, 0 if not

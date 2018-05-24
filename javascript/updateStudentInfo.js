@@ -8,6 +8,7 @@ $(document).ready(function() {
     $(".sameLine").hide();
     $(".update").hide();
     $(".cancelInput").hide();
+    $("#update").hide();
 
     //change password button is clicked
     $("#changePassword").click(function() {
@@ -30,6 +31,8 @@ $(document).ready(function() {
 
         });
     });
+
+    /****************** TOGGLING EDITING FIELDS ************************/
 
     // enable name editing
     $("#editName").click(function() {
@@ -83,7 +86,6 @@ $(document).ready(function() {
         $('#newCarrier, #newCarrier, #updateCarrier').hide();
     });
 
-
     // enable carrier editing
     $("#editProgram").click(function () {
         $(this).hide();
@@ -96,8 +98,6 @@ $(document).ready(function() {
         $("#programSpan, #editProgram").show();
         $('#newProgram, #newProgram, #updateProgram').hide();
     });
-
-
 });
 
 function showUpdate() {

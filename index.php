@@ -305,6 +305,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     $studentEmail = $_SESSION['email'];
     $student = $dbh->getStudent($studentEmail);
+    $errors = array();
 
     $f3->set('studentEmail', $studentEmail);
     $f3->set('password', $student['password']);
@@ -330,7 +331,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         }
         else {
             $getStudentEmails = 'n';
-            "You will no longer receive announcements via your student email";
+            echo "You will no longer receive announcements via your student email";
         }
         if(isset ($_POST['getTexts'])) {
             if($f3->get('phone')) {
@@ -371,10 +372,9 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
         $dbh->updatePreferences($studentEmail, $getStudentEmails, $getTexts, $getPersonalEmails);
         header("location: profile");
-
     }
 
-    //change password if button was clicked
+    // change password if button was clicked
     if(isset($_POST['updatePassword'])) {
 
         $currentPassword = sha1($_POST['currentPassword']);
@@ -397,33 +397,29 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         }
     }//end update password
 
-    //if update personal email button was clicked
+    // if update personal email button was clicked
     if(isset($_POST['updateName'])) {
         if(strlen($_POST['newFName']) > 0 && strlen($_POST['newLName']) > 0) {
             $dbh->changeStudentName($studentEmail, $_POST['newFName'], $_POST['newLName']);
             header("location: profile");
         }
         else {
-            echo '<div class="alert alert-danger" role="alert">
-            Please enter a valid name.</div>';
+            $errors['name'] = "Please enter a valid name.";
         }
-
     }
 
-    //if update personal email button was clicked
+    // if update personal email button was clicked
     if(isset($_POST['updatePersonalEmail'])) {
         if(validPEmail($_POST['newPersonalEmail'])) {
             $dbh->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
             header("location: profile");
         }
         else {
-            echo '<div class="alert alert-danger" role="alert">
-            Please enter a valid email.</div>';
+            $errors['pEmail'] = "Please enter a valid email.";
         }
-
     }
 
-    //if update phone number button was clicked
+    // if update phone number button was clicked
     if(isset($_POST['updatePhone'])) {
         $newPhone = $_POST['newPhone'];
         $newPhone = shortenPhone($newPhone);
@@ -432,11 +428,28 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             header("location: profile");
         }
         else {
-            echo '<div class="alert alert-danger" role="alert">
-            Please enter a valid phone number.</div>';
+            $errors['phone'] = "Please enter a valid phone number.";
         }
 
     }
+
+    // if update phone carrier button was clicked
+    if(isset($_POST['updateCarrier'])) {
+        if(validCarrier($_POST['newCarrier'])) {
+            $dbh->changeCarrier($studentEmail, $_POST['newCarrier']);
+            header("location: profile");
+        }
+    }
+
+    // if update program button was clicked
+    if(isset($_POST['updateProgram'])) {
+        if(validProgram($_POST['newProgram'])) {
+            $dbh->changeProgram($studentEmail, $_POST['newProgram']);
+            header("location: profile");
+        }
+    }
+
+    $f3->set("errors", $errors);
 
     $template = new Template();
     echo $template->render('views/studentProfile.html');
@@ -468,11 +481,9 @@ $f3->route('GET|POST /instructor-home', function($f3, $params) {
 $f3->route('GET|POST /view-messages', function($f3) {
 
 
-
     $template = new Template();
     echo $template->render('views/viewMessages.html');
 });
-
 
 // run fat free
 $f3->run();

@@ -25,6 +25,10 @@ button.update, button.cancelInput {
     vertical-align: -4%;
 }
 
+button#update {
+    margin: 2% 0%;
+}
+
 /* Input Styles */
 
 .sameLine {
@@ -39,4 +43,10 @@ button.update, button.cancelInput {
 
 label {
     width: 100%;
+}
+
+p.error {
+    margin: 1% 0%;
+    padding: 1% 4%;
+    width: max-content;
 }
