@@ -67,7 +67,7 @@ $f3->route('GET|POST /', function($f3, $params) {
 
                 if ($_SESSION['isInstructor']) {
                     $_SESSION['email'] = $email;
-                    $f3->reroute("/message");
+                    $f3->reroute("/instructor-home");
                 } else { // is a student
                     $_SESSION['email'] = $email;
                     $f3->reroute("/profile");
@@ -212,7 +212,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
             } else {
                 $database->addInstructor($email, $password, $first, $last);
                 $_SESSION['loggedIn'] = true;
-                $f3->reroute("/profile");
+                $f3->reroute("/instructor-home");
             }
         }
     }
@@ -442,6 +442,28 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     echo $template->render('views/studentProfile.html');
 });
 
+//route for the instructor home page
+$f3->route('GET|POST /instructor-home', function($f3, $params) {
+
+    if(!$_SESSION['loggedIn']){
+        $f3->reroute("/");
+    }
+
+    $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
+    //set f3 variables
+    $email = $_SESSION['email'];
+    $instructor = $dbh->getInstructor($email);
+
+    $f3->set('email', $email);
+    $f3->set('password', $instructor['password']);
+    $f3->set('fname', $instructor['fname']);
+    $f3->set('lname', $instructor['lname']);
+
+
+
+    $template = new Template();
+    echo $template->render('views/instructorHome.html');
+});
 
 
 // run fat free
