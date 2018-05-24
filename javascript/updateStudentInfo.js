@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     $(".sameLine").hide();
     $(".update").hide();
-    $("#cancelInput").hide();
+    $(".cancelInput").hide();
 
     //change password button is clicked
     $("#changePassword").click(function() {
@@ -31,49 +31,72 @@ $(document).ready(function() {
         });
     });
 
-    //edit personal email
+    // enable name editing
     $("#editName").click(function() {
         $(this).hide();
         $("#nameSpan").hide();
-
-        $('#newFName').show();
-        $('#newLName').show();
-        $("#updateName").show();
+        $('#newFName, #newLName, #updateName, #cancelName').show();
+    });
+    // disable name editing
+    $("#cancelName").click(function() {
+        $(this).hide();
+        $("#nameSpan, #editName").show();
+        $('#newFName, #newLName, #updateName').hide();
     });
 
-    //edit personal email
+   // enable personal email editing
     $("#editPersonalEmail").click(function() {
         $(this).hide();
         $("#pEmailSpan").hide();
-
-        $('#newPersonalEmail').show();
-        $("#updatePersonalEmail").show();
+        $('#newPersonalEmail, #updatePersonalEmail, #cancelPersonalEmail').show();
+    });
+    // disable personalEmail editing
+    $("#cancelPersonalEmail").click(function() {
+        $(this).hide();
+        $("#pEmailSpanS, #editPersonalEmail").show();
+        $('#newPersonalEmail, #newPersonalEmail, #updatePersonalEmail').hide();
     });
 
-    //edit phone number
+    // enable phone editing
     $("#editPhone").click(function() {
         $(this).hide();
         $("#phoneSpan").hide();
-
-        $('#newPhone').show();
-        $("#updatePhone").show();
+        $('#newPhone, #updatePhone, #cancelPhone').show();
+    });
+    // disable phone editing
+    $("#cancelPhone").click(function() {
+        $(this).hide();
+        $("#phoneSpan, #editPhone").show();
+        $('#newPhone, #newPhone, #updatePhone').hide();
     });
 
+    // enable carrier editing
     $("#editCarrier").click(function () {
         $(this).hide();
         $("#carrierSpan").hide();
+        $('#newCarrier, #updateCarrier, #cancelCarrier').show();
+    });
+    // disable carrier editing
+    $("#cancelCarrier").click(function() {
+        $(this).hide();
+        $("#carrierSpan, #editCarrier").show();
+        $('#newCarrier, #newCarrier, #updateCarrier').hide();
+    });
 
-        $("#newCarrier").show();
-        $("#updateCarrier").show();
-    })
 
+    // enable carrier editing
     $("#editProgram").click(function () {
         $(this).hide();
         $("#programSpan").hide();
+        $('#newProgram, #updateProgram, #cancelProgram').show();
+    });
+    // disable phone editing
+    $("#cancelProgram").click(function() {
+        $(this).hide();
+        $("#programSpan, #editProgram").show();
+        $('#newProgram, #newProgram, #updateProgram').hide();
+    });
 
-        $("#newProgram").show();
-        $("#updateProgram").show();
-    })
 
 });
 
