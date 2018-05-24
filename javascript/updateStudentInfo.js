@@ -49,9 +49,18 @@ $(document).ready(function() {
         $("#newPhone").mask("(999) 999-9999");
     });
 
+    //edit carrier
+    $("#selectCarrier").hide();
+
     $("#update").hide();
+
+    $("#editCarrier").click(function () {
+        $("#selectCarrier").show();
+    })
+
 });
 
 function showUpdate() {
     $("#update").show();
 };
+

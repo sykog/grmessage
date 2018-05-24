@@ -36,6 +36,15 @@
                         <label><strong>Personal Email: </strong><span id="pEmailInput">{{ @personalEmail }} </span><button type="button" class="edit" id="editPersonalEmail"></button><div id="updateEmail"></div></label><br>
                         <label><strong>Phone Number: </strong><span id="phoneInput"> {{ @phone }} </span><button type="button" class="edit" id="editPhone"></button><div id="updatePhone"></div></label><br>
                         <label><strong>Mobile Carrier: </strong><span id="carrierInput"> {{ @carrier }} </span><button type="button" class="edit" id="editCarrier"></button></label><br>
+                        <div id="selectCarrier">
+                            <label class="d-block"></label>
+                            <select class="form-control dropdown" id="carrier" name="carrier">
+                                <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
+                                    <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
+                                    {{ @carrierOption }}</option>
+                                </repeat>
+                            </select>
+                        </div>
                         <label><strong>Program: </strong><span id="programInput"> {{ @program }} </span><button type="button" class="edit" id="editProgram"></button></label><br>
 
                     </div>
