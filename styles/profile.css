@@ -1,6 +1,6 @@
 /* Button Styles */
 
-button#cancelPassword {
+button#cancelPassword, button.cancelInput {
     margin-left: 6px;
     background: #eacb6e;
     background: -moz-linear-gradient(0deg, #f7e7b2 0%, #eacb6e 49%, #e5b72d 51%, #eaba2a 100%);
@@ -20,7 +20,7 @@ button.edit, button.edit:hover {
     box-shadow:  none;
 }
 
-button.update {
+button.update, button.cancelInput {
     margin-left: 4px;
     vertical-align: -4%;
 }
@@ -29,14 +29,14 @@ button.update {
 
 .sameLine {
     display: inline;
-    width: 40%;
+    width: 30%;
 }
 
 #newLName, #newFName {
-    width: 28%;
+    width: 25%;
     margin-left: 4px;
 }
 
 label {
-    width: 80%;
+    width: 100%;
 }

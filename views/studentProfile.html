@@ -29,34 +29,53 @@
             <div class="col-10">
                 <form class="form" action="" method="post">
 
-                    <label><strong>Full Name: </strong><span id="nameInput">{{ @fname }} {{ @lname }} </span><button class="edit" type="button" id="editName"></button></label>
-
                     <div id="studentFields">
 
+                        <label><strong>Full Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
+                        <input class='form-control sameLine' type='text' name='newFName' id='newFName'>
+                        <input class='form-control sameLine' type='text' name='newLName' id='newLName'>
+                        <button class='update' type="submit" id='updateName' name="updateName">Update Info</button>
+                        <button class="edit" type="button" id="editName"></button>
+                        <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button></label>
+
                         <label><strong>Student Email: </strong><span> {{ @studentEmail }} </span></label><br>
-                        <label><strong>Personal Email: </strong><span id="pEmailInput">{{ @personalEmail }} </span><button type="button" class="edit" id="editPersonalEmail"></button><div id="updateEmail"></div></label><br>
-                        <label><strong>Phone Number: </strong><span id="phoneInput"> {{ @phone }} </span><button type="button" class="edit" id="editPhone"></button><div id="updatePhone"></div></label><br>
-                        <label><strong>Mobile Carrier: </strong><span id="carrierInput"> {{ @carrier }} </span><button type="button" class="edit" id="editCarrier"></button></label>
-                        <div id="selectCarrier">
-                            <label class="d-block"></label>
-                            <select class="form-control sameLine dropdown" id="carrier" name="carrier">
-                                <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
-                                    <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
-                                    {{ @carrierOption }}</option>
-                                </repeat>
-                            </select>
-                        </div>
-                        <label><strong>Program: </strong><span id="programInput"> {{ @program }} </span><button type="button" class="edit" id="editProgram"></button>
-                        <label class="d-block"></label>
-                        <select class="form-control dropdown" id="program" name="program">
+
+                        <label><strong>Personal Email: </strong><span id="pEmailSpan">{{ @personalEmail }} </span>
+                        <input class='form-control sameLine' type='text' name='newPersonalEmail' id='newPersonalEmail'>
+                        <button class='update' type="submit" id='updatePersonalEmail' name="updatePersonalEmail">Update Info</button>
+                        <button type="button" class="edit" id="editPersonalEmail"></button>
+                        <button type="button" class="cancelInput" id="cancelPersonalEmail" name="cancelPersonalEmail">Cancel</button></label><br>
+
+                        <label><strong>Phone Number: </strong><span id="phoneSpan"> {{ @phone }} </span>
+                        <input class='form-control sameLine' type='text' name='newPhone' id='newPhone'>
+                        <button class='update' type="submit" id='updatePhone' name="updatePhone">Update Info</button>
+                        <button type="button" class="edit" id="editPhone"></button>
+                        <button type="button" class="cancelInput" id="cancelPhone" name="cancelPhone">Cancel</button></label><br>
+
+
+                        <label><strong>Mobile Carrier: </strong><span id="carrierSpan"> {{ @carrier }} </span>
+                        <select class="form-control dropdown sameLine" id="newCarrier" name="newCarrier">
+                            <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
+                                <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
+                                {{ @carrierOption }}</option>
+                            </repeat>
+                        </select>
+                        <button class='update' type="submit" id='updateCarrier' name="updatePhone">Update Info</button>
+                        <button type="button" class="edit" id="editCarrier"></button>
+                        <button type="button" class="cancelInput" id="cancelCarrier" name="cancelCarrier">Cancel</button></label>
+
+
+                        <label><strong>Program: </strong><span id="programSpan"> {{ @program }} </span>
+                        <select class="form-control dropdown sameLine" id="newProgram" name="newProgram">
                             <repeat group = "{{ @programs }}" value = "{{ @programOption }}">
                                 <option <check if="{{ @programOption == @program }}">selected</check>>
                                 {{ @programOption }}</option>
                             </repeat>
                         </select>
-                    </div></label><br>
-
-
+                        <button class='update' type="submit" id='updateProgram' name="updatePhone">Update Info</button>
+                        <button type="button" class="edit" id="editProgram"></button>
+                        <button type="button" class="cancelInput" id="cancelProgram" name="cancelProgram">Cancel</button></label><br>
+                    </div>
 
                     <button type="button" id="changePassword" name="changePassword">Change Password</button><br>
 

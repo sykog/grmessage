@@ -3,6 +3,12 @@
 // waits till page is loaded
 $(document).ready(function() {
 
+    $("#newPhone").mask("(999) 999-9999");
+
+    $(".sameLine").hide();
+    $(".update").hide();
+    $("#cancelInput").hide();
+
     //change password button is clicked
     $("#changePassword").click(function() {
 
@@ -23,46 +29,50 @@ $(document).ready(function() {
             $("#changePassword").show();
 
         });
-
     });
 
     //edit personal email
     $("#editName").click(function() {
         $(this).hide();
-        $("#nameInput").replaceWith("<input class='form-control sameLine' type='text' name='newFName' id='newFName'>" +
-            "<input class='form-control sameLine' type='text' name='newLName' id='newLName'>" +
-            "<button class='update' type=\"submit\" id='updateName' name=\"updateName\">Update Info</button>");
+        $("#nameSpan").hide();
+
+        $('#newFName').show();
+        $('#newLName').show();
+        $("#updateName").show();
     });
 
     //edit personal email
     $("#editPersonalEmail").click(function() {
         $(this).hide();
-        $("#pEmailInput").replaceWith("<input class='form-control sameLine' type='text' name='newPhone' id='newPhone'>" +
-            "<button class='update' type=\"submit\" id='updatePersonalEmail' name=\"updatePersonalEmail\">Update Info</button>");
+        $("#pEmailSpan").hide();
+
+        $('#newPersonalEmail').show();
+        $("#updatePersonalEmail").show();
     });
 
     //edit phone number
     $("#editPhone").click(function() {
         $(this).hide();
-        $("#phoneInput").replaceWith("<input class='form-control sameLine' type='text' name='newPhone' id='newPhone'>" +
-            "<button class='update' type=\"submit\" id='updatePhone' name=\"updatePhone\">Update Info</button>");
-        $("#newPhone").mask("(999) 999-9999");
+        $("#phoneSpan").hide();
+
+        $('#newPhone').show();
+        $("#updatePhone").show();
     });
 
-    //hide carrier
-    $("#selectCarrier").hide();
-
-    //hide program
-    $("#program").hide();
-
-    $("#update").hide();
-
     $("#editCarrier").click(function () {
-        $("#selectCarrier").show();
+        $(this).hide();
+        $("#carrierSpan").hide();
+
+        $("#newCarrier").show();
+        $("#updateCarrier").show();
     })
 
     $("#editProgram").click(function () {
-        $("#program").show();
+        $(this).hide();
+        $("#programSpan").hide();
+
+        $("#newProgram").show();
+        $("#updateProgram").show();
     })
 
 });
@@ -70,4 +80,3 @@ $(document).ready(function() {
 function showUpdate() {
     $("#update").show();
 };
-
