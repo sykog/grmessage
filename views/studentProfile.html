@@ -10,6 +10,7 @@
         <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/main.css">
         <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/profile.css">
 
+
         <!-- Javascript-->
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js" type="text/javascript"></script>
@@ -35,19 +36,25 @@
                         <label><strong>Student Email: </strong><span> {{ @studentEmail }} </span></label><br>
                         <label><strong>Personal Email: </strong><span id="pEmailInput">{{ @personalEmail }} </span><button type="button" class="edit" id="editPersonalEmail"></button><div id="updateEmail"></div></label><br>
                         <label><strong>Phone Number: </strong><span id="phoneInput"> {{ @phone }} </span><button type="button" class="edit" id="editPhone"></button><div id="updatePhone"></div></label><br>
-                        <label><strong>Mobile Carrier: </strong><span id="carrierInput"> {{ @carrier }} </span><button type="button" class="edit" id="editCarrier"></button></label><br>
+                        <label><strong>Mobile Carrier: </strong><span id="carrierInput"> {{ @carrier }} </span><button type="button" class="edit" id="editCarrier"></button></label>
                         <div id="selectCarrier">
                             <label class="d-block"></label>
-                            <select class="form-control dropdown" id="carrier" name="carrier">
+                            <select class="form-control sameLine dropdown" id="carrier" name="carrier">
                                 <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
                                     <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
                                     {{ @carrierOption }}</option>
                                 </repeat>
                             </select>
                         </div>
-                        <label><strong>Program: </strong><span id="programInput"> {{ @program }} </span><button type="button" class="edit" id="editProgram"></button></label><br>
-
-                    </div>
+                        <label><strong>Program: </strong><span id="programInput"> {{ @program }} </span><button type="button" class="edit" id="editProgram"></button>
+                        <label class="d-block"></label>
+                        <select class="form-control dropdown" id="program" name="program">
+                            <repeat group = "{{ @programs }}" value = "{{ @programOption }}">
+                                <option <check if="{{ @programOption == @program }}">selected</check>>
+                                {{ @programOption }}</option>
+                            </repeat>
+                        </select>
+                    </div></label><br>
 
 
 
