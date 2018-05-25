@@ -97,19 +97,16 @@
                         <true><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails" checked><p>Student Email</p><br></true>
                         <false><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails"><p>Student Email</p><br></false>
                     </check>
-                    <!--<p class="error alert alert-success">{{ @notifications['sEmail'] }}</p>-->
 
                     <check if="{{ @getTexts == 'y' }}">
                         <true><input onclick="showUpdate();" type="checkbox" name="getTexts" id="getTexts" value="getTexts" checked><p>Text Messages</p><br></true>
                         <false><input onclick="showUpdate();" type="checkbox" name="getTexts" id="getTexts" value="getTexts"><p>Text Messages</p><br></false>
                     </check>
-                    <!--<p class="error alert alert-success">{{ @notifications['texts'] }}</p>-->
 
                     <check if="""{{ @getPersonalEmails == 'y' }}">
                         <true><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails" checked><p>Personal Email</p><br></true>
                     <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
                     </check>
-                    <!--<p class="error alert alert-success">{{ @notifications['pEmail'] }}</p>-->
 
                     <button id="update" type="submit" name="save">Save Changes</button>
                 </form>

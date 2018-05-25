@@ -26,7 +26,6 @@ button.update, button.cancelInput {
 }
 
 button#update {
-    display: block;
     margin: 2% 0%;
 }
 

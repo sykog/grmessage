@@ -67,7 +67,7 @@ $f3->route('GET|POST /', function($f3, $params) {
 
                 if ($_SESSION['isInstructor']) {
                     $_SESSION['email'] = $email;
-                    $f3->reroute("/instructor-home");
+                    $f3->reroute("/profile");
                 } else { // is a student
                     $_SESSION['email'] = $email;
                     $f3->reroute("/profile");
@@ -212,7 +212,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
             } else {
                 $database->addInstructor($email, $password, $first, $last);
                 $_SESSION['loggedIn'] = true;
-                $f3->reroute("/instructor-home");
+                $f3->reroute("/profile");
             }
         }
     }
@@ -456,7 +456,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 });
 
 //route for the instructor home page
-$f3->route('GET|POST /instructor-home', function($f3, $params) {
+/*$f3->route('GET|POST /profile', function($f3, $params) {
 
     if(!$_SESSION['loggedIn']){
         $f3->reroute("/");
@@ -475,11 +475,10 @@ $f3->route('GET|POST /instructor-home', function($f3, $params) {
 
     $template = new Template();
     echo $template->render('views/instructorHome.html');
-});
+});*/
 
 //route for the instructor home page
 $f3->route('GET|POST /view-messages', function($f3) {
-
 
     $template = new Template();
     echo $template->render('views/viewMessages.html');
