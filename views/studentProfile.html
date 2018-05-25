@@ -61,18 +61,18 @@
                         <button type="button" class="edit" id="editPhone"></button>
                         <button type="button" class="cancelInput" id="cancelPhone" name="cancelPhone">Cancel</button></label><br>
 
-
-                        <label><strong>Mobile Carrier: </strong><span id="carrierSpan"> {{ @carrier }} </span>
-                        <select class="form-control dropdown sameLine" id="newCarrier" name="newCarrier">
-                            <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
-                                <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
-                                {{ @carrierOption }}</option>
-                            </repeat>
-                        </select>
-                        <button class='update' type="submit" id='updateCarrier' name="updateCarrier">Update Info</button>
-                        <button type="button" class="edit" id="editCarrier"></button>
-                        <button type="button" class="cancelInput" id="cancelCarrier" name="cancelCarrier">Cancel</button></label>
-
+                        <div id="carrierDiv">
+                            <label><strong>Mobile Carrier: </strong><span id="carrierSpan"> {{ @carrier }} </span>
+                            <select class="form-control dropdown sameLine" id="newCarrier" name="newCarrier">
+                                <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
+                                    <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
+                                    {{ @carrierOption }}</option>
+                                </repeat>
+                            </select>
+                            <button class='update' type="submit" id='updateCarrier' name="updateCarrier">Update Info</button>
+                            <button type="button" class="edit" id="editCarrier"></button>
+                            <button type="button" class="cancelInput" id="cancelCarrier" name="cancelCarrier">Cancel</button></label>
+                        </div>
 
                         <label><strong>Program: </strong><span id="programSpan"> {{ @program }} </span>
                         <select class="form-control dropdown sameLine" id="newProgram" name="newProgram">
@@ -97,16 +97,19 @@
                         <true><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails" checked><p>Student Email</p><br></true>
                         <false><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails"><p>Student Email</p><br></false>
                     </check>
+                    <!--<p class="error alert alert-success">{{ @notifications['sEmail'] }}</p>-->
 
                     <check if="{{ @getTexts == 'y' }}">
                         <true><input onclick="showUpdate();" type="checkbox" name="getTexts" id="getTexts" value="getTexts" checked><p>Text Messages</p><br></true>
                         <false><input onclick="showUpdate();" type="checkbox" name="getTexts" id="getTexts" value="getTexts"><p>Text Messages</p><br></false>
                     </check>
+                    <!--<p class="error alert alert-success">{{ @notifications['texts'] }}</p>-->
 
-                    <check if="{{ @getPersonalEmails == 'y' }}">
+                    <check if="""{{ @getPersonalEmails == 'y' }}">
                         <true><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails" checked><p>Personal Email</p><br></true>
                     <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
                     </check>
+                    <!--<p class="error alert alert-success">{{ @notifications['pEmail'] }}</p>-->
 
                     <button id="update" type="submit" name="save">Save Changes</button>
                 </form>

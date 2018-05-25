@@ -11,8 +11,11 @@ $(document).ready(function() {
     $("#update").hide();
 
     // hide checkboxes if value are empty
-    if ($("#phoneSpan").val().length == 0) $("#getTexts, #getTexts + p, p + br").remove();
-    if ($("#pEmailSpan").val().length == 0) $("#getPersonalEmails, #getPersonalEmails + p, p + br").remove();
+    if ($("#phoneSpan").text().length <= 2) {
+        $("#getTexts, #getTexts + p, p + br").remove();
+        $("#carrierDiv").hide();
+    }
+    if ($("#pEmailSpan").text().length <= 2) $("#getPersonalEmails, #getPersonalEmails + p").remove();
 
     //change password button is clicked
     $("#changePassword").click(function() {
