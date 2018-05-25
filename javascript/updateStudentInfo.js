@@ -10,6 +10,10 @@ $(document).ready(function() {
     $(".cancelInput").hide();
     $("#update").hide();
 
+    // hide checkboxes if value are empty
+    if ($("#phoneSpan").val().length == 0) $("#getTexts, #getTexts + p, p + br").remove();
+    if ($("#pEmailSpan").val().length == 0) $("#getPersonalEmails, #getPersonalEmails + p, p + br").remove();
+
     //change password button is clicked
     $("#changePassword").click(function() {
 
@@ -56,7 +60,7 @@ $(document).ready(function() {
     // disable personalEmail editing
     $("#cancelPersonalEmail").click(function() {
         $(this).hide();
-        $("#pEmailSpanS, #editPersonalEmail").show();
+        $("#pEmailSpan, #editPersonalEmail").show();
         $('#newPersonalEmail, #newPersonalEmail, #updatePersonalEmail').hide();
     });
 

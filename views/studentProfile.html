@@ -35,8 +35,8 @@
                             <p class="error alert alert-danger">{{ @errors['name'] }}</p>
                         </check>
                         <label><strong>Full Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
-                        <input class='form-control sameLine' type='text' name='newFName' id='newFName'>
-                        <input class='form-control sameLine' type='text' name='newLName' id='newLName'>
+                        <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
+                        <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
                         <button class='update' type="submit" id='updateName' name="updateName">Update Info</button>
                         <button class="edit" type="button" id="editName"></button>
                         <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button></label>
@@ -47,7 +47,7 @@
                             <p class="error alert alert-danger">{{ @errors['pEmail'] }}</p>
                         </check>
                         <label><strong>Personal Email: </strong><span id="pEmailSpan">{{ @personalEmail }} </span>
-                        <input class='form-control sameLine' type='text' name='newPersonalEmail' id='newPersonalEmail'>
+                        <input class='form-control sameLine' type='text' name='newPersonalEmail' id='newPersonalEmail' value="{{ @personalEmail }}">
                         <button class='update' type="submit" id='updatePersonalEmail' name="updatePersonalEmail">Update Info</button>
                         <button type="button" class="edit" id="editPersonalEmail"></button>
                         <button type="button" class="cancelInput" id="cancelPersonalEmail" name="cancelPersonalEmail">Cancel</button></label><br>
@@ -56,7 +56,7 @@
                             <p class="error alert alert-danger">{{ @errors['phone'] }}</p>
                         </check>
                         <label><strong>Phone Number: </strong><span id="phoneSpan"> {{ @phone }} </span>
-                        <input class='form-control sameLine' type='text' name='newPhone' id='newPhone'>
+                        <input class='form-control sameLine' type='text' name='newPhone' id='newPhone' value="{{ @phone }}">
                         <button class='update' type="submit" id='updatePhone' name="updatePhone">Update Info</button>
                         <button type="button" class="edit" id="editPhone"></button>
                         <button type="button" class="cancelInput" id="cancelPhone" name="cancelPhone">Cancel</button></label><br>
@@ -94,24 +94,23 @@
                     <h3>Notification Preferences</h3>
 
                     <check if="{{ @getStudentEmails == 'y' }}">
-                        <true><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" value="getStudentEmails" checked> Student Email <br></true>
-                        <false><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" value="getStudentEmails"> Student Email<br></false>
+                        <true><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails" checked><p>Student Email</p><br></true>
+                        <false><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails"><p>Student Email</p><br></false>
                     </check>
 
                     <check if="{{ @getTexts == 'y' }}">
-                        <true><input onclick="showUpdate();" type="checkbox" name="getTexts" value="getTexts" checked> Text Messages<br></true>
-                        <false><input onclick="showUpdate();" type="checkbox" name="getTexts" value="getTexts"> Text Messages<br></false>
+                        <true><input onclick="showUpdate();" type="checkbox" name="getTexts" id="getTexts" value="getTexts" checked><p>Text Messages</p><br></true>
+                        <false><input onclick="showUpdate();" type="checkbox" name="getTexts" id="getTexts" value="getTexts"><p>Text Messages</p><br></false>
                     </check>
 
-                    <check onclick="showUpdate();" if="{{ @getPersonalEmails == 'y' }}">
-                        <true><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" value="getPersonalEmails" checked> Personal Email <br></true>
-                        <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" value="getPersonalEmails"> Personal Email<br></false>
+                    <check if="{{ @getPersonalEmails == 'y' }}">
+                        <true><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails" checked><p>Personal Email</p><br></true>
+                    <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
                     </check>
 
                     <button id="update" type="submit" name="save">Save Changes</button>
                 </form>
             </div>
         </div> <!-- /container -->
-
     </body>
 </html>

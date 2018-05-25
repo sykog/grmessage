@@ -423,7 +423,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     if(isset($_POST['updatePhone'])) {
         $newPhone = $_POST['newPhone'];
         $newPhone = shortenPhone($newPhone);
-        if(validPhone($newPhone)) {
+        if(validPhone($newPhone) && strlen($newPhone) != 0) {
             $dbh->changePhoneNumber($studentEmail, $newPhone);
             header("location: profile");
         }

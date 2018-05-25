@@ -26,6 +26,7 @@ button.update, button.cancelInput {
 }
 
 button#update {
+    display: block;
     margin: 2% 0%;
 }
 
@@ -45,8 +46,15 @@ label {
     width: 100%;
 }
 
+/* Paragraph Styles */
+
 p.error {
     margin: 1% 0%;
     padding: 1% 4%;
     width: max-content;
+}
+
+input + p {
+    margin-left: 6px;
+    display: inline;
 }
