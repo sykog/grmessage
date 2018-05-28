@@ -551,7 +551,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 });
 
 //route for the instructor home page
-/*$f3->route('GET|POST /profile', function($f3, $params) {
+$f3->route('GET|POST /profile', function($f3, $params) {
 
     if(!$_SESSION['loggedIn']){
         $f3->reroute("/");
@@ -570,9 +570,9 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     $template = new Template();
     echo $template->render('views/instructorHome.html');
-});*/
+});
 
-//route for the instructor home page
+//route for the view messages page
 $f3->route('GET|POST /view-messages', function($f3) {
 
     $template = new Template();
