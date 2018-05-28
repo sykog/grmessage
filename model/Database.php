@@ -411,7 +411,8 @@ class Database
     function getMessages() {
         $dbh = $this->dbh;
         // Define the query
-        $sql = "SELECT * FROM messages";
+        $sql = "SELECT * FROM messages
+                ORDER BY datetime DESC ";
 
         //prepare the statement
         $statement = $dbh->prepare($sql);
