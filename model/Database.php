@@ -393,6 +393,35 @@ class Database
         $statement->execute();
     }
 
+    function storeMessage($instuctorid, $content) {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "INSERT INTO messages (instructorid, content, datetime)
+                VALUES (:instructorid, :content, NOW());";
+
+        //prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":instructorid", $instuctorid, PDO::PARAM_INT);
+        $statement->bindParam(":content", $content, PDO::PARAM_STR);
+
+        $statement->execute();
+    }
+
+    function getMessages() {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM messages";
+
+        //prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->execute();
+
+        // Process the result
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
 
 
 
