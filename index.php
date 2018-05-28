@@ -301,6 +301,11 @@ $f3->route('GET|POST /message', function($f3, $params) {
                         // confirmation and remove message
                         $f3->set('sent', true);
                         $f3->set('textMessage', "");
+
+                        //get instructor's id from database
+                        //$id = $instructor['id'];
+                        //store message in the database
+                        //$dbh->storeMessage($id, $textMessage);
                     }
                 }
             }
@@ -576,6 +581,11 @@ $f3->route('GET|POST /view-messages', function($f3) {
     if(trim($instructor['verified']) != 'y'){
         $f3->reroute('/verify');
     }
+
+    //get all messages
+    $messages = $dbh->getMessages();
+    $f3->set('messages', $messages);
+
     echo $template->render('views/viewMessages.html');
 });
 
