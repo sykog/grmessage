@@ -24,7 +24,16 @@
         <div class="container" id="mainContainer">
 
             <h1>Messages</h1>
+
             <hr>
+
+            <repeat group="{{@messages}}" value="{{@messages}}">
+                <p><strong>Sent By: </strong>{{ @messages['instructorEmail'] }} </p><br>
+                <p><strong>Message: </strong>{{ @messages['content'] }} </p><br>
+                <p><strong>Date: </strong>{{ @messages['datetime'] }} </p><br>
+                <hr>
+            </repeat>
+
         </div>
     </body>
 </html>
