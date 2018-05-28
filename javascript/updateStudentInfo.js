@@ -9,6 +9,7 @@ $(document).ready(function() {
     $(".update").hide();
     $(".cancelInput").hide();
     $("#update").hide();
+    $(".verify").show();
 
     // hide checkboxes if value are empty
     if ($("#phoneSpan").text().length <= 2) {

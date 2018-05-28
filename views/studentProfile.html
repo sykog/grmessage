@@ -52,6 +52,15 @@
                         <button type="button" class="edit" id="editPersonalEmail"></button>
                         <button type="button" class="cancelInput" id="cancelPersonalEmail" name="cancelPersonalEmail">Cancel</button></label><br>
 
+                        <check if="{{!@verifiedPersonal}}">
+                            <check if="{{ isset(@errors['personalVerificaton']) }}">
+                                <p class="error alert alert-danger">{{ @errors['personalVerificaton'] }}</p>
+                            </check>
+                            <label><strong>Enter Verificaton Code: </strong><span id="PersonalVerificationSpan"> </span>
+                                <input class='form-control sameLine verify' type='text' name='personalVerification' id='perssonalVerificatioin'>
+                                <button class='update verify' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button></label><br>
+                        </check>
+
                         <check if="{{ isset(@errors['phone']) }}">
                             <p class="error alert alert-danger">{{ @errors['phone'] }}</p>
                         </check>
@@ -73,6 +82,15 @@
                             <button type="button" class="edit" id="editCarrier"></button>
                             <button type="button" class="cancelInput" id="cancelCarrier" name="cancelCarrier">Cancel</button></label>
                         </div>
+
+                        <check if="{{!@verifiedPhone}}">
+                            <check if="{{ isset(@errors['phoneVerificaton']) }}">
+                                <p class="error alert alert-danger">{{ @errors['phoneVerificaton'] }}</p>
+                            </check>
+                            <label><strong>Enter Verificaton Code: </strong><span id="PhoneVerificationSpan"> </span>
+                                <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerificatioin'>
+                                <button class='update verify' type="submit" id='verifyPhone' name="verifyPhone">Verify Phone</button></label><br>
+                        </check>
 
                         <label><strong>Program: </strong><span id="programSpan"> {{ @program }} </span>
                         <select class="form-control dropdown sameLine" id="newProgram" name="newProgram">
@@ -103,7 +121,7 @@
                         <false><input onclick="showUpdate();" type="checkbox" name="getTexts" id="getTexts" value="getTexts"><p>Text Messages</p><br></false>
                     </check>
 
-                    <check if="""{{ @getPersonalEmails == 'y' }}">
+                    <check if="{{ @getPersonalEmails == 'y' }}">
                         <true><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails" checked><p>Personal Email</p><br></true>
                     <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
                     </check>

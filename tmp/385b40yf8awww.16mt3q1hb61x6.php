@@ -31,7 +31,7 @@
                 <form method="post" class="form mx-auto">
                     <div class="row mx-auto">
                         <label class="form-control-label mx-auto" for="email">Green River Email </label>
-                        <input class="form-control" type="text" id="email" name="email">
+                        <input class="form-control" type="text" id="email" name="email" value="<?= ($username) ?>">
                     </div>
 
                     <div class="row mx-auto">
@@ -41,7 +41,7 @@
 
                     <div class="row align-bottom mx-auto my-2">
                         <button type="submit" name="login">Login</button>
-                        <button id="register"><a id="none" href="register">Not a member? Register</a></button>
+                        <button type="submit" name="register" id="register">Not a member? Register</button>
                     </div>
                 </form>
             </div>
