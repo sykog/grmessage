@@ -301,16 +301,13 @@ $f3->route('GET|POST /message', function($f3, $params) {
                         // confirmation and remove message
                         $f3->set('sent', true);
                         $f3->set('textMessage', "");
-
-                        //get instructor's id from database
-                        //$id = $instructor['id'];
-                        //store message in the database
-                        //$dbh->storeMessage($id, $textMessage);
                     }
                 }
             }
-        }
-        else{
+
+            //store message in the database
+            $dbh->storeMessage($_SESSION['username'], $textMessage);
+        } else {
             echo "must be between 1 and 250 characters";
         }
 
@@ -320,260 +317,257 @@ $f3->route('GET|POST /message', function($f3, $params) {
 });
 
 $f3->route('GET|POST /profile', function($f3, $params) {
-    $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
-    $studentEmail = $_SESSION['email'];
-    $student = $dbh->getStudent($studentEmail);
-
-    if(trim($student['verifiedStudent']) != 'y'){
-        $f3->reroute('/verify');
-    }
-
-    if(!$_SESSION['loggedIn']){
+    // go to login page if not logged in
+    if(!$_SESSION['loggedIn']) {
         $f3->reroute("/");
     }
+    // instructor profile page
+    if($_SESSION['loggedIn'] && $_SESSION['isInstructor']) {
+
+        $dbh = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        //set f3 variables
+        $email = $_SESSION['email'];
+        $instructor = $dbh->getInstructor($email);
+
+        $f3->set('email', $email);
+        $f3->set('password', $instructor['password']);
+        $f3->set('fname', $instructor['fname']);
+        $f3->set('lname', $instructor['lname']);
 
 
-    $errors = array();
+        $template = new Template();
+        echo $template->render('views/instructorHome.html');
+    }
 
-    $f3->set('studentEmail', $studentEmail);
-    $f3->set('password', $student['password']);
-    $f3->set('fname', $student['fname']);
-    $f3->set('lname', $student['lname']);
-    $f3->set('phone', $student['phone']);
-    $f3->set('carrier', $student['carrier']);
-    $f3->set('program', $student['program']);
-    $f3->set('personalEmail', $student['personalEmail']);
-    $f3->set('getTexts', $student['getTexts']);
-    $f3->set('getStudentEmails', $student['getStudentEmails']);
-    $f3->set('getPersonalEmails', $student['getPersonalEmails']);
-    $f3->set('verifiedPersonal', $student['verifiedPersonal'] == 'y'
-        || empty($f3->get('personalEmail')));
-    $f3->set('verifiedPhone', $student['verifiedPhone'] == 'y');
+    // student profile page
+    else {
 
-    $f3->set('carriers', array("Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
-        "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"));
+        $dbh = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $studentEmail = $_SESSION['email'];
+        $student = $dbh->getStudent($studentEmail);
 
-    //if changes were made
-    if(isset($_POST['save'])) {
-
-        if(isset ($_POST['getStudentEmails'])) {
-            $getStudentEmails = 'y';
-            echo'You will now receive updates via your student email.';
+        if (trim($student['verifiedStudent']) != 'y') {
+            $f3->reroute('/verify');
         }
-        else {
-            $getStudentEmails = 'n';
-            echo "You will no longer receive announcements via your student email";
+
+        if (!$_SESSION['loggedIn']) {
+            $f3->reroute("/");
         }
-        if(isset ($_POST['getTexts'])) {
-            if($f3->get('phone')) {
-                if(!empty($f3->get('phone'))){
-                    $getTexts = 'y';
-                    if($student['verifiedPhone'] == 'y') {
-                        echo "You will now receive announcements via text message";
+
+
+        $errors = array();
+
+        $f3->set('studentEmail', $studentEmail);
+        $f3->set('password', $student['password']);
+        $f3->set('fname', $student['fname']);
+        $f3->set('lname', $student['lname']);
+        $f3->set('phone', $student['phone']);
+        $f3->set('carrier', $student['carrier']);
+        $f3->set('program', $student['program']);
+        $f3->set('personalEmail', $student['personalEmail']);
+        $f3->set('getTexts', $student['getTexts']);
+        $f3->set('getStudentEmails', $student['getStudentEmails']);
+        $f3->set('getPersonalEmails', $student['getPersonalEmails']);
+        $f3->set('verifiedPersonal', $student['verifiedPersonal'] == 'y'
+            || empty($f3->get('personalEmail')));
+        $f3->set('verifiedPhone', $student['verifiedPhone'] == 'y');
+
+        $f3->set('carriers', array("Verizon", "AT&T", "Sprint", "T-Mobile", "Boost Mobile",
+            "Cricket Wireless", "Virgin Mobile", "Republic Wireless", "U.S. Cellular", "Alltel"));
+
+        //if changes were made
+        if (isset($_POST['save'])) {
+
+            if (isset ($_POST['getStudentEmails'])) {
+                $getStudentEmails = 'y';
+                echo 'You will now receive updates via your student email.';
+            } else {
+                $getStudentEmails = 'n';
+                echo "You will no longer receive announcements via your student email";
+            }
+            if (isset ($_POST['getTexts'])) {
+                if ($f3->get('phone')) {
+                    if (!empty($f3->get('phone'))) {
+                        $getTexts = 'y';
+                        if ($student['verifiedPhone'] == 'y') {
+                            echo "You will now receive announcements via text message";
+                        } else {
+                            echo "Verify your phone number to receive announcements via text message";
+                        }
+                    } else {
+                        echo '<div class="alert alert-danger" role="alert">
+                       Please provide a phone number before attempting to select this option.</div>';
                     }
-                    else {
-                        echo "Verify your phone number to receive announcements via text message";
-                    }
+
+                } else {
+                    echo "You will no longer receive announcements via your personal email.";
                 }
-                else {
+
+            } else {
+                $getTexts = 'n';
+                echo "You will no longer receive announcements via text message";
+            }
+            if (isset ($_POST['getPersonalEmails'])) {
+                if (!empty($f3->get('personalEmail'))) {
+                    $getPersonalEmails = 'y';
+                    if ($student['verifiedPersonal'] == 'y') {
+                        echo "You will now receive announcements via your personal email";
+                    } else {
+                        echo "Verify your personal email to receive announcements via your personal email";
+                    }
+
+                } else {
                     echo '<div class="alert alert-danger" role="alert">
-                   Please provide a phone number before attempting to select this option.</div>';
+                Please provide a phone number before selecting this option.</div>';
                 }
 
-            }
-            else {
-                echo "You will no longer receive announcements via your personal email.";
+            } else {
+                $getPersonalEmails = 'n';
+                echo "You will no longer receive announcements via your personal email";
             }
 
+            $dbh->updatePreferences($studentEmail, $getStudentEmails, $getTexts, $getPersonalEmails);
+            header("location: profile");
         }
-        else {
-            $getTexts = 'n';
-            echo "You will no longer receive announcements via text message";
-        }
-        if(isset ($_POST['getPersonalEmails'])) {
-            if(!empty($f3->get('personalEmail'))) {
-                $getPersonalEmails = 'y';
-                if($student['verifiedPersonal'] == 'y') {
-                    echo "You will now receive announcements via your personal email";
-                }
-                else {
-                    echo "Verify your personal email to receive announcements via your personal email";
-                }
 
-            }
-            else {
+        // change password if button was clicked
+        if (isset($_POST['updatePassword'])) {
+
+            $currentPassword = sha1($_POST['currentPassword']);
+            $newPassword = $_POST['newPassword'];
+            $confirmPassword = $_POST['confirmPassword'];
+
+            if ($currentPassword == $f3->get('password')) {
+                if ($newPassword == $confirmPassword) {
+                    $dbh->changeStudentPassword($studentEmail, $newPassword);
+                    header("location: profile");
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">
+                Passwords do not match.</div>';
+                }
+            } else {
                 echo '<div class="alert alert-danger" role="alert">
-            Please provide a phone number before selecting this option.</div>';
+                Current password is incorrect.</div>';
             }
+        }//end update password
 
-        }
-        else {
-            $getPersonalEmails = 'n';
-            echo "You will no longer receive announcements via your personal email";
-        }
-
-        $dbh->updatePreferences($studentEmail, $getStudentEmails, $getTexts, $getPersonalEmails);
-        header("location: profile");
-    }
-
-    // change password if button was clicked
-    if(isset($_POST['updatePassword'])) {
-
-        $currentPassword = sha1($_POST['currentPassword']);
-        $newPassword = $_POST['newPassword'];
-        $confirmPassword = $_POST['confirmPassword'];
-
-        if($currentPassword == $f3->get('password')) {
-            if($newPassword == $confirmPassword) {
-                $dbh->changeStudentPassword($studentEmail, $newPassword);
+        // if update personal email button was clicked
+        if (isset($_POST['updateName'])) {
+            if (strlen($_POST['newFName']) > 0 && strlen($_POST['newLName']) > 0) {
+                $dbh->changeStudentName($studentEmail, $_POST['newFName'], $_POST['newLName']);
                 header("location: profile");
-            }
-            else {
-                echo '<div class="alert alert-danger" role="alert">
-            Passwords do not match.</div>';
+            } else {
+                $errors['name'] = "Please enter a valid name.";
             }
         }
-        else {
-            echo '<div class="alert alert-danger" role="alert">
-            Current password is incorrect.</div>';
-        }
-    }//end update password
 
-    // if update personal email button was clicked
-    if(isset($_POST['updateName'])) {
-        if(strlen($_POST['newFName']) > 0 && strlen($_POST['newLName']) > 0) {
-            $dbh->changeStudentName($studentEmail, $_POST['newFName'], $_POST['newLName']);
-            header("location: profile");
-        }
-        else {
-            $errors['name'] = "Please enter a valid name.";
-        }
-    }
-
-    // if update personal email button was clicked
-    if(isset($_POST['updatePersonalEmail'])) {
-        if(validPEmail($_POST['newPersonalEmail'])) {
-            $dbh->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
-            header("location: profile");
-            $personalCode = rand(1111, 9999) . "";
-            $dbh->setStudentCode("verifiedPersonal", $personalCode, $studentEmail);
-            $headers = "From: LaterGators\n";
-            mail($_POST['newPersonalEmail'], 'Verification Code',
-                $personalCode . "\n", $headers);
-        }
-        else {
-            $errors['pEmail'] = "Please enter a valid email.";
-        }
-    }
-
-    //if the personal email verification button was clicked
-    if(isset($_POST['verifyPersonal'])) {
-        if($_POST['personalVerification'] == $student['verifiedPersonal']){
-            $column = "verifiedPersonal";
-            $value = "y";
-            $dbh->setStudentCode($column, $value, $studentEmail);
-        }
-        else {
-            $errors['personalVerificaton'] = "Incorrect verification code.";
-        }
-    }
-
-    // if update phone number button was clicked
-    if(isset($_POST['updatePhone'])) {
-        $newPhone = $_POST['newPhone'];
-        $newPhone = shortenPhone($newPhone);
-        if(validPhone($newPhone) && strlen($newPhone) != 0) {
-            $dbh->changePhoneNumber($studentEmail, $newPhone);
-            header("location: profile");
-
-            $phoneCode = rand(1111, 9999) . "";
-            $column = "verifiedPhone";
-            $dbh->setStudentCode($column, $phoneCode, $studentEmail);
-            $headers = "From: LaterGators\n";
-            if(isset($_POST['newCarrier'])){
-                $carrierInfo = $dbh->getCarrierInfo($_POST['newCarrier']);
+        // if update personal email button was clicked
+        if (isset($_POST['updatePersonalEmail'])) {
+            if (validPEmail($_POST['newPersonalEmail'])) {
+                $dbh->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
+                header("location: profile");
+                /*$personalCode = rand(1111, 9999) . "";
+                $dbh->setStudentCode("verifiedPersonal", $personalCode, $studentEmail);
+                $headers = "From: LaterGators\n";
+                mail($_POST['newPersonalEmail'], 'Verification Code',
+                    $personalCode . "\n", $headers);*/
+            } else {
+                $errors['pEmail'] = "Please enter a valid email.";
             }
-            else{
-                $carrierInfo = $dbh->getCarrierInfo($student['carrier']);
+        }
+
+        //if the personal email verification button was clicked
+        if (isset($_POST['verifyPersonal'])) {
+            if ($_POST['personalVerification'] == $student['verifiedPersonal']) {
+                $column = "verifiedPersonal";
+                $value = "y";
+                $dbh->setStudentCode($column, $value, $studentEmail);
+            } else {
+                $errors['personalVerificaton'] = "Incorrect verification code.";
             }
-            $carrierEmail = $carrierInfo['carrierEmail'];
-            $to = $student['phone'] . "@" . $carrierEmail;
-            mail($to, '', "Verification Code: " . $phoneCode . "\n", $headers);
-        }
-        else {
-            $errors['phone'] = "Please enter a valid phone number.";
         }
 
-    }
+        // if update phone number button was clicked
+        if (isset($_POST['updatePhone'])) {
+            $newPhone = $_POST['newPhone'];
+            $newPhone = shortenPhone($newPhone);
+            if (validPhone($newPhone) && strlen($newPhone) != 0) {
+                $dbh->changePhoneNumber($studentEmail, $newPhone);
+                header("location: profile");
 
-    // if update phone carrier button was clicked
-    if(isset($_POST['updateCarrier'])) {
-        if(validCarrier($_POST['newCarrier'])) {
-            $dbh->changeCarrier($studentEmail, $_POST['newCarrier']);
-            header("location: profile");
-            if(!isset($_POST['updatePhone'])){
-                $phoneCode = rand(1111, 9999) . "";
+                /*$phoneCode = rand(1111, 9999) . "";
                 $column = "verifiedPhone";
                 $dbh->setStudentCode($column, $phoneCode, $studentEmail);
                 $headers = "From: LaterGators\n";
-                $carrierInfo = $dbh->getCarrierInfo($_POST['newCarrier']);
+                if (isset($_POST['newCarrier'])) {
+                    $carrierInfo = $dbh->getCarrierInfo($_POST['newCarrier']);
+                } else {
+                    $carrierInfo = $dbh->getCarrierInfo($student['carrier']);
+                }
                 $carrierEmail = $carrierInfo['carrierEmail'];
                 $to = $student['phone'] . "@" . $carrierEmail;
-                mail($to, '', "Verification Code: " . $phoneCode . "\n", $headers);
+                mail($to, '', "Verification Code: " . $phoneCode . "\n", $headers);*/
+            } else {
+                $errors['phone'] = "Please enter a valid phone number.";
+            }
+
+        }
+
+        // if update phone carrier button was clicked
+        if (isset($_POST['updateCarrier'])) {
+            if (validCarrier($_POST['newCarrier'])) {
+                $dbh->changeCarrier($studentEmail, $_POST['newCarrier']);
+                header("location: profile");
+                if (!isset($_POST['updatePhone'])) {
+                    $phoneCode = rand(1111, 9999) . "";
+                    $column = "verifiedPhone";
+                    $dbh->setStudentCode($column, $phoneCode, $studentEmail);
+                    $headers = "From: LaterGators\n";
+                    $carrierInfo = $dbh->getCarrierInfo($_POST['newCarrier']);
+                    $carrierEmail = $carrierInfo['carrierEmail'];
+                    $to = $student['phone'] . "@" . $carrierEmail;
+                    mail($to, '', "Verification Code: " . $phoneCode . "\n", $headers);
+                }
             }
         }
-    }
 
-    //if the phone verification button was clicked
-    if(isset($_POST['verifyPhone'])) {
-        if($_POST['phoneVerification'] == $student['verifiedPhone']){
-            $column = 'verifiedPhone';
-            $value = 'y';
-            $dbh->setStudentCode($column, $value, $_POST['email']);
+        //if the phone verification button was clicked
+        if (isset($_POST['verifyPhone'])) {
+            if ($_POST['phoneVerification'] == $student['verifiedPhone']) {
+                $column = 'verifiedPhone';
+                $value = 'y';
+                $dbh->setStudentCode($column, $value, $_POST['email']);
+            } else {
+                $errors['phoneVerificaton'] = "Incorrect verification code.";
+            }
         }
-        else {
-            $errors['phoneVerificaton'] = "Incorrect verification code.";
+
+        // if update program button was clicked
+        if (isset($_POST['updateProgram'])) {
+            if (validProgram($_POST['newProgram'])) {
+                $dbh->changeProgram($studentEmail, $_POST['newProgram']);
+                header("location: profile");
+            }
         }
+
+        $f3->set("errors", $errors);
+
+        $template = new Template();
+        echo $template->render('views/studentProfile.html');
     }
-
-    // if update program button was clicked
-    if(isset($_POST['updateProgram'])) {
-        if(validProgram($_POST['newProgram'])) {
-            $dbh->changeProgram($studentEmail, $_POST['newProgram']);
-            header("location: profile");
-        }
-    }
-
-    $f3->set("errors", $errors);
-
-    $template = new Template();
-    echo $template->render('views/studentProfile.html');
-});
-
-//route for the instructor home page
-$f3->route('GET|POST /profile', function($f3, $params) {
-
-    if(!$_SESSION['loggedIn']){
-        $f3->reroute("/");
-    }
-
-    $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
-    //set f3 variables
-    $email = $_SESSION['email'];
-    $instructor = $dbh->getInstructor($email);
-
-    $f3->set('email', $email);
-    $f3->set('password', $instructor['password']);
-    $f3->set('fname', $instructor['fname']);
-    $f3->set('lname', $instructor['lname']);
-
-
-    $template = new Template();
-    echo $template->render('views/instructorHome.html');
 });
 
 //route for the view messages page
 $f3->route('GET|POST /view-messages', function($f3) {
+
+    // go to login page if not logged in
+    if(!$_SESSION['loggedIn']) {
+        $f3->reroute("/");
+    }
+    // go to profile page if logged in as a student
+    if($_SESSION['loggedIn'] && !$_SESSION['isInstructor']) {
+        $f3->reroute("/profile");
+    }
 
     $template = new Template();
     $dbh = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
