@@ -591,8 +591,6 @@ $f3->route('GET|POST /view-messages', function($f3) {
 
 $f3->route('GET|POST /verify', function ($f3) {
 
-    $template = new Template();
-    echo $template->render('views/verifyAccount.html');
     $dbh = new Database();
     $code = '';
     if(validIEmail($_POST['email'])){
@@ -601,7 +599,7 @@ $f3->route('GET|POST /verify', function ($f3) {
         $f3->set('email', $_POST['email']);
         if(isset($_POST['resend'])){
             $code = rand(1111, 9999) . "";
-            $dbh->setStudentCode("verifiedStudent", $code, $_POST['email']);
+            $dbh->setInstructorCode("verified", $code, $_POST['email']);
             $to = $_POST['email'];
             $headers = "From: LaterGators\n";
             mail($to, 'Verification Code', $code . "\n", $headers);
@@ -609,7 +607,7 @@ $f3->route('GET|POST /verify', function ($f3) {
         elseif (isset($_POST['verify'])){
             if($_POST['verificationCode'] == $code){
                 $value = 'y';
-                $dbh->setInstructorCode($value, $_POST['email']);
+                $dbh->setInstructorCode("verified", $value, $_POST['email']);
                 $f3->reroute('/profile');
             }
             else{
@@ -640,7 +638,8 @@ $f3->route('GET|POST /verify', function ($f3) {
             }
         }
     }
-
+    $template = new Template();
+    echo $template->render('views/verifyAccount.html');
 });
 
 // run fat free

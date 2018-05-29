@@ -377,18 +377,18 @@ class Database
         $statement->execute();
     }
 
-    function setInstructorCode($code, $email){
+    function setInstructorCode($column, $code, $email){
         $dbh = $this->dbh;
         // Define the query
         $sql = "UPDATE instructors
-                SET verified = :verification
+                SET verified = :verified
                 WHERE email = :email";
 
         // Prepare the statement
         $statement = $dbh->prepare($sql);
 
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
-        $statement->bindParam(":verification", $code, PDO::PARAM_STR);
+        $statement->bindParam(":verified", $code, PDO::PARAM_STR);
 
         $statement->execute();
     }
