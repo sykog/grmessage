@@ -1,4 +1,6 @@
 <?php
+// Connects to the database and uses functions to update and select from it
+
 require_once $_SERVER['DOCUMENT_ROOT']."/../config.php";
 class Database
 {
@@ -8,8 +10,7 @@ class Database
      * Establishes connection with database
      * @return void
      */
-    function __construct()
-    {
+    function __construct() {
         try {
             // instantiate a PDO object
             $this->dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
@@ -28,8 +29,7 @@ class Database
      * @param $lname last name
      * @param $carrier cell phone carrier
      */
-    function addStudent($email, $password, $phone, $fname, $lname, $carrier, $program)
-    {
+    function addStudent($email, $password, $phone, $fname, $lname, $carrier, $program) {
         // encrypt password
         $password = sha1($password);
         if (strlen($phone) == 0) {
@@ -62,8 +62,7 @@ class Database
      * @param $fname
      * @param $lname
      */
-    function addInstructor($email, $password, $fname, $lname)
-    {
+    function addInstructor($email, $password, $fname, $lname) {
         // encrypt password
         $password = sha1($password);
         $dbh = $this->dbh;
@@ -84,8 +83,12 @@ class Database
         $id = $dbh->lastInsertId();
     }//end addInstructor
 
-    function changeStudentPassword($studentEmail, $newPassword)
-    {
+    /**
+     * change password for students
+     * @param $studentEmail
+     * @param $newPassword
+     */
+    function changeStudentPassword($studentEmail, $newPassword) {
 
         // encrypt password
         $newPassword = sha1($newPassword);
@@ -111,8 +114,7 @@ class Database
      * @param $first first name
      * @param $last last name
      */
-    function changeStudentName($studentEmail, $first, $last)
-    {
+    function changeStudentName($studentEmail, $first, $last) {
         $dbh = $this->dbh;
         // define the query
         $sql = "UPDATE students
@@ -134,8 +136,7 @@ class Database
      * @param $studentEmail identifier
      * @param $personalEmail secondary email
      */
-    function changePersonalEmail($studentEmail, $personalEmail)
-    {
+    function changePersonalEmail($studentEmail, $personalEmail) {
 
         $dbh = $this->dbh;
         // define the query
@@ -157,8 +158,7 @@ class Database
      * @param $studentEmail identifier
      * @param $phone cell phone number
      */
-    function changePhoneNumber($studentEmail, $phone)
-    {
+    function changePhoneNumber($studentEmail, $phone) {
 
         $dbh = $this->dbh;
         // define the query
@@ -180,8 +180,7 @@ class Database
      * @param $studentEmail identifier
      * @param $carrier cell phone carrier
      */
-    function changeCarrier($studentEmail, $carrier)
-    {
+    function changeCarrier($studentEmail, $carrier) {
 
         $dbh = $this->dbh;
         // define the query
@@ -203,8 +202,7 @@ class Database
      * @param $studentEmail identifier
      * @param $program bachelors, associates
      */
-    function changeProgram($studentEmail, $program)
-    {
+    function changeProgram($studentEmail, $program) {
 
         $dbh = $this->dbh;
         // define the query
@@ -222,12 +220,11 @@ class Database
     }//end changeCarrier
 
     /**
-     * Returns 1 if email is in database, 0 if not
+     * Returns true if email is in database
      * @param email email being searched
-     * @return bool 1 if email is found
+     * @return bool true if email is found
      */
-    function studentExists($email)
-    {
+    function studentExists($email) {
         $dbh = $this->dbh;
 
         // Define the query
@@ -245,12 +242,11 @@ class Database
     }//end memberExists()
 
     /**
-     * Returns 1 if email is in database, 0 if not
+     * Returns true if email is in database
      * @param email email being searched
-     * @return bool 1 if email is found
+     * @return bool true if email is found
      */
-    function InstructorExists($email)
-    {
+    function InstructorExists($email) {
         $dbh = $this->dbh;
         // Define the query
         $sql = "SELECT * FROM instructors WHERE email= :email";
@@ -266,7 +262,11 @@ class Database
         return $row['email'] == $email;
     }//end memberExists()
 
-    //retrieve student from database
+    /**
+     * retrieve student from the database
+     * @param $email
+     * @return student and all of the columns
+     */
     function getStudent($email) {
         $dbh = $this->dbh;
         // Define the query
@@ -285,7 +285,11 @@ class Database
         return $result;
     }
 
-    //retrieve student from database
+    /**
+     * retrieve instructor from the database
+     * @param $email
+     * @return instructor and all of the columns
+     */
     function getInstructor($email) {
         $dbh = $this->dbh;
         // Define the query
@@ -304,7 +308,11 @@ class Database
         return $result;
     }
 
-    //retrieve all students from the database
+    /**
+     * retrieve every student from the database
+     * @param $email
+     * @return each students in the array
+     */
     function getStudents() {
         $dbh = $this->dbh;
         // Define the query
@@ -321,7 +329,11 @@ class Database
         return $results;
     }
 
-    //retrieve carrier info from database
+    /**
+     * retrieve the phone carrier from the database
+     * @param $carrier
+     * @return carrier and each of the columns
+     */
     function getCarrierInfo($carrier) {
         $dbh = $this->dbh;
         // Define the query
@@ -340,7 +352,13 @@ class Database
         return $result;
     }
 
-    //update changed student notification preferences
+    /**
+     * sets each of the preferences for recieving messages
+     * @param $email
+     * @param $getStudentEmails y for yes, n for no
+     * @param $getTexts y for yes, n for no
+     * @param $getPersonalEmails y for yes, n for no
+     */
     function updatePreferences ($email, $getStudentEmails, $getTexts, $getPersonalEmails) {
         $dbh = $this->dbh;
         // Define the query
@@ -361,7 +379,13 @@ class Database
 
     }
 
-    function setStudentCode($column, $code, $email){
+    /**
+     * Adds a verification code for a student to the database
+     * @param $column texts, student email, or personal email
+     * @param $code
+     * @param $email
+     */
+    function setStudentCode($column, $code, $email) {
         $dbh = $this->dbh;
         // Define the query
         $sql = "UPDATE students
@@ -377,7 +401,13 @@ class Database
         $statement->execute();
     }
 
-    function setInstructorCode($column, $code, $email){
+    /**
+     * Adds a verification code for an instructor to the database
+     * @param $column
+     * @param $code
+     * @param $email
+     */
+    function setInstructorCode($column, $code, $email) {
         $dbh = $this->dbh;
         // Define the query
         $sql = "UPDATE instructors
@@ -393,6 +423,11 @@ class Database
         $statement->execute();
     }
 
+    /**
+     * Stores a sent message to the database
+     * @param $instuctorEmail
+     * @param $content
+     */
     function storeMessage($instuctorEmail, $content) {
         $dbh = $this->dbh;
         // Define the query
@@ -408,6 +443,10 @@ class Database
         $statement->execute();
     }
 
+    /**
+     * retrieve each message from the database
+     * @return each of the messages in an array
+     */
     function getMessages() {
         $dbh = $this->dbh;
         // Define the query
@@ -423,7 +462,5 @@ class Database
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $results;
     }
-
-
 
 }//end Database class

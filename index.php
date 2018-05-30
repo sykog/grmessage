@@ -25,7 +25,7 @@ $f3->route('GET|POST /', function($f3, $params) {
         $template = new Template();
         echo $template->render('views/home.html');
     }
-    if (!$_SESSION['loggedIn']){
+    if (!$_SESSION['loggedIn']) {
         $database = new Database();
 
         //if login button is clicked
@@ -104,7 +104,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
     $errors = array();
 
     // if registering as a student
-    if(isset($_POST['submitS'])){
+    if(isset($_POST['submitS'])) {
         $email = $_POST['semail'];
         $password = $_POST['password'];
         $confirm = $_POST['confirm'];
@@ -121,22 +121,23 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $_SESSION['phone'] = $phone;
         $_SESSION['carrier'] = $carrier;
         $_SESSION['program'] = $program;
-        if(!validSEmail($email)){
+
+        if(!validSEmail($email)) {
             $errors['email'] = "Please enter a student email";
         }
-        if(!validPassword($password)){
+        if(!validPassword($password)) {
             $errors['password'] = "Please enter a valid password";
         }
-        if(!validPassword($confirm)){
+        if(!validPassword($confirm)) {
             $errors['confirm'] = "Please confirm your password";
         }
-        if(!validPhone($phone)){
+        if(!validPhone($phone)) {
             $errors['phone'] = "Invalid phone number" . strlen($phone);
         }
-        if(!validCarrier($carrier)){
+        if(!validCarrier($carrier)) {
             $errors['carrier'] = "Invalid carrier" . strlen($phone);
         }
-        if(!validProgram($program)){
+        if(!validProgram($program)) {
             $errors['program'] = "Invalid program" . strlen($phone);
         }
         $success = sizeof($errors) == 0;
@@ -152,7 +153,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $f3->set('success', $success);
     }
     // if registering as an instructor
-    if(isset($_POST['submitI'])){
+    if(isset($_POST['submitI'])) {
         $email = $_POST['iemail'];
         $password = $_POST['password'];
         $confirm = $_POST['confirm'];
@@ -165,6 +166,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $_SESSION['confirm'] = $confirm;
         $_SESSION['first'] = $first;
         $_SESSION['last'] = $last;
+
         if(!validIEmail($email)){
             $errors['iemail'] = "Please enter an instructor email";
         }
@@ -205,6 +207,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 $headers = "From: LaterGators\n";
                 mail($email, 'Verification Code', $studentCode . "\n", $headers);
 
+                // generate code
                 $phoneCode = rand(1111, 9999) . "";
                 $database->setStudentCode("verifiedPhone", $phoneCode, $email);
                 $headers = "From: LaterGators\n";
@@ -224,6 +227,8 @@ $f3->route('GET|POST /register', function($f3, $params) {
             } else {
                 $database->addInstructor($email, $password, $first, $last);
                 $_SESSION['loggedIn'] = true;
+
+                // generate code
                 $instructorCode = rand(1111, 9999) . "";
                 $database->setInstructorCode($instructorCode, $email);
                 $headers = "From: LaterGators\n";
@@ -249,16 +254,16 @@ $f3->route('GET|POST /message', function($f3, $params) {
     $f3->set("students", $dbh->getStudents());
     $instructor = $dbh->getInstructor($_SESSION['username']);
 
-    if(trim($instructor['verified']) != 'y'){
+    if(trim($instructor['verified']) != 'y') {
         $f3->reroute('/verify');
     }
-    if(isset($_POST['submit'])){
+    if(isset($_POST['submit'])) {
         $textMessage = $_POST['textMessage'];
         $textMessage = trim($textMessage);
         $f3->set('textMessage', $textMessage);
         $f3->set('sent', false);
 
-        if(validTextMessage ($textMessage)){
+        if(validTextMessage ($textMessage)) {
             $chosen = $_POST['chosenPrograms']; // gets the selected program(s)
             $students = $dbh->getStudents();
             // select the program, then the student
@@ -341,7 +346,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     // student profile page
     else {
-
         $dbh = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
         $studentEmail = $_SESSION['email'];
         $student = $dbh->getStudent($studentEmail);
@@ -371,7 +375,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('verifiedPersonal', $student['verifiedPersonal'] == 'y'
             || empty($f3->get('personalEmail')));
         $f3->set('verifiedPhone', $student['verifiedPhone'] == 'y');
-
         $f3->set('carriers', array("Verizon", "AT&T", "Sprint", "T-Mobile", "Boost Mobile",
             "Cricket Wireless", "Virgin Mobile", "Republic Wireless", "U.S. Cellular", "Alltel"));
 
@@ -386,7 +389,9 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 echo "You will no longer receive announcements via your student email";
             }
             if (isset ($_POST['getTexts'])) {
+                // if checked
                 if ($f3->get('phone')) {
+                    // if there is a phone number
                     if (!empty($f3->get('phone'))) {
                         $getTexts = 'y';
                         if ($student['verifiedPhone'] == 'y') {
@@ -407,7 +412,9 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 $getTexts = 'n';
                 echo "You will no longer receive announcements via text message";
             }
+
             if (isset ($_POST['getPersonalEmails'])) {
+                // if an email exists
                 if (!empty($f3->get('personalEmail'))) {
                     $getPersonalEmails = 'y';
                     if ($student['verifiedPersonal'] == 'y') {
@@ -591,6 +598,7 @@ $f3->route('GET|POST /verify', function ($f3) {
         $instructor = $dbh->getInstructor($_POST['email']);
         $code = trim($instructor['verified']);
         $f3->set('email', $_POST['email']);
+
         if(isset($_POST['resend'])){
             $code = rand(1111, 9999) . "";
             $dbh->setInstructorCode("verified", $code, $_POST['email']);
@@ -609,10 +617,12 @@ $f3->route('GET|POST /verify', function ($f3) {
             }
         }
     }
+
     elseif(validSEmail($_POST['email'])) {
         $student = $dbh->getStudent($_POST['email']);
         $code = trim($student['verifiedStudent']);
         $f3->set('email', $_POST['email']);
+
         if(isset($_POST['resend'])){
             $code = rand(1111, 9999) . "";
             $dbh->setStudentCode("verifiedStudent", $code, $_POST['email']);

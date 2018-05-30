@@ -18,7 +18,7 @@ $(document).ready(function() {
     }
     if ($("#pEmailSpan").text().length <= 2) $("#getPersonalEmails, #getPersonalEmails + p").remove();
 
-    //change password button is clicked
+    // change password button is clicked
     $("#changePassword").click(function() {
 
         $("#changePassword").hide();
@@ -29,9 +29,9 @@ $(document).ready(function() {
             "<button type=\"submit\" id='updatePassword' name=\"updatePassword\">Change Password</button>" +
             "<button type=\"button\" id='cancelPassword' name=\"cancelPassword\">Cancel</button>");
 
-        //cancel password is clicked
+        // cancel password is clicked
         $("#cancelPassword").click(function() {
-            //clear password div, show change password button
+            // clear password div, show change password button
             $("#cancelPassword").hide();
             $("#updatePassword").hide();
             $("#password").html("");

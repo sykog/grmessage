@@ -3,6 +3,7 @@
  * Created by PhpStorm.
  * User: Pavel Radchuk
  * Date: 4/20/18
+ * Checks if different inputs (registration, profile updating) are valid
  */
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
