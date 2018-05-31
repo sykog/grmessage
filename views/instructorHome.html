@@ -24,15 +24,37 @@
         <div class="container" id="mainContainer">
             <h2 id="regHeader">Welcome, {{ @fname }}</h2>
             <hr>
+            <div class="col-10">
+                <form class="form" action="" method="post">
 
-            <a href="../grmessage/message">
-            <button id="sendMessage" type="button" name="sendMessage">Send Message</button>
-            </a>
+                    <div id="instructorFields">
 
-            <a href="../grmessage/view-messages">
-                <button id="viewMessages" type="button" name="viewMessages">View Messages</button>
-            </a>
+                        <check if="{{ isset(@errors['name']) }}">
+                            <p class="error alert alert-danger">{{ @errors['name'] }}</p>
+                        </check>
+                        <label><strong>Full Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
+                            <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
+                            <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
+                            <button class='update' type="submit" id='updateName' name="updateName">Update Info</button>
+                            <button class="edit" type="button" id="editName"></button>
+                            <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button></label>
 
+                        <label><strong>Instructor Email: </strong><span> {{ @instructorEmail }} </span></label><br>
+
+                        <button type="button" id="changePassword" name="changePassword">Change Password</button><br>
+
+                        <div id="password"></div>
+
+                        <a href="../grmessage/message">
+                            <button id="sendMessage" type="button" name="sendMessage">Send Message</button>
+                        </a>
+
+                        <a href="../grmessage/view-messages">
+                            <button id="viewMessages" type="button" name="viewMessages">View Messages</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div> <!-- /container -->
 
     </body>
