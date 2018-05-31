@@ -473,11 +473,13 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             if (validPEmail($_POST['newPersonalEmail'])) {
                 $dbh->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
                 header("location: profile");
-                /*$personalCode = rand(1111, 9999) . "";
+
+                // send a code when changing email
+                $personalCode = rand(1111, 9999) . "";
                 $dbh->setStudentCode("verifiedPersonal", $personalCode, $studentEmail);
                 $headers = "From: LaterGators\n";
                 mail($_POST['newPersonalEmail'], 'Verification Code',
-                    $personalCode . "\n", $headers);*/
+                    $personalCode . "\n", $headers);
             } else {
                 $errors['pEmail'] = "Please enter a valid email.";
             }
@@ -488,6 +490,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             if ($_POST['personalVerification'] == $student['verifiedPersonal']) {
                 $column = "verifiedPersonal";
                 $value = "y";
+                $f3->set('verifiedPersonal', true);
                 $dbh->setStudentCode($column, $value, $studentEmail);
             } else {
                 $errors['personalVerificaton'] = "Incorrect verification code.";
@@ -502,7 +505,8 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 $dbh->changePhoneNumber($studentEmail, $newPhone);
                 header("location: profile");
 
-                /*$phoneCode = rand(1111, 9999) . "";
+                // send a code when changing phone number
+                $phoneCode = rand(1111, 9999) . "";
                 $column = "verifiedPhone";
                 $dbh->setStudentCode($column, $phoneCode, $studentEmail);
                 $headers = "From: LaterGators\n";
@@ -513,7 +517,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 }
                 $carrierEmail = $carrierInfo['carrierEmail'];
                 $to = $student['phone'] . "@" . $carrierEmail;
-                mail($to, '', "Verification Code: " . $phoneCode . "\n", $headers);*/
+                mail($to, '', "Verification Code: " . $phoneCode . "\n", $headers);
             } else {
                 $errors['phone'] = "Please enter a valid phone number.";
             }
@@ -543,7 +547,8 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             if ($_POST['phoneVerification'] == $student['verifiedPhone']) {
                 $column = 'verifiedPhone';
                 $value = 'y';
-                $dbh->setStudentCode($column, $value, $_POST['email']);
+                $dbh->setStudentCode($column, $value, $studentEmail);
+                $f3->set('verifiedPhone', true);
             } else {
                 $errors['phoneVerificaton'] = "Incorrect verification code.";
             }

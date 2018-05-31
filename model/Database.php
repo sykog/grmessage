@@ -382,14 +382,14 @@ class Database
     /**
      * Adds a verification code for a student to the database
      * @param $column texts, student email, or personal email
-     * @param $code
+     * @param $code 'y' for a correct code
      * @param $email
      */
     function setStudentCode($column, $code, $email) {
         $dbh = $this->dbh;
         // Define the query
         $sql = "UPDATE students
-                SET verifiedStudent = :verifiedStudent
+                SET $column = :verifiedStudent
                 WHERE studentEmail = :email";
 
         // Prepare the statement
