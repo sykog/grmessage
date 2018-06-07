@@ -11,36 +11,43 @@
     <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/accountVerification.css">
 </head>
 <body>
-<div class="container">
-    <p class="alert alert-warning text-dark my-3" role="alert">
-        Please enter the verification code you received in your Green River email.
-    </p>
-    <form method="post" class="form mx-auto">
-        <div class="container">
-            <div class="row mx-auto">
-                <check if="{{@emailError}}">
-                    <p class="alert alert-danger text-dark my-3" role="alert">
-                        Invalid email.
-                    </p>
-                </check>
-                <label class="form-control-label mx-auto" for="email">Green River Email </label>
-                <input class="form-control" type="text" id="email" name="email" value="{{@email}}">
+    <header class="header clearfix" id="mainHeader">
+        <a href="profile"><h1>Green River Messaging</h1></a>
+        <a href="logout"><h1 id="logout">Logout</h1></a>
+    </header>
+
+    <div class="container">
+        <p class="alert alert-warning text-dark my-3" role="alert">
+            Please enter the verification code you received in your Green River email.
+        </p>
+        <form method="post" class="form mx-auto">
+            <div class="container">
+                <div class="row mx-auto">
+                    <div class="container">
+                        <div class="row mx-auto my-1">
+                            <check if="{{@codeError}}">
+                                <p class="alert alert-danger text-dark my-3" role="alert">
+                                    Invalid verification code.
+                                </p>
+                            </check>
+                        </div>
+                        <div class="row mx-auto my-1">
+                            <label class="form-control-label mx-auto"><b>Verify Account for:</b> {{ @email }} <input class="form-control" type="text" id="verificationCode" name="verificationCode"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-bottom mx-auto my-2">
+                    <div class="container">
+                        <div class="row mx-auto my-1">
+                            <button type="submit" name="verify">Verify Account</button>
+                        </div>
+                        <div class="row mx-auto my-1">
+                            <button type="submit" name="resend" id="resend">Resend verification code</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row mx-auto">
-                <check if="{{@codeError}}">
-                    <p class="alert alert-danger text-dark my-3" role="alert">
-                        Invalid verification code.
-                    </p>
-                </check>
-                <label class="form-control-label mx-auto" for="verificationCode">Verification Code </label>
-                <input class="form-control" type="text" id="verificationCode" name="verificationCode">
-            </div>
-            <div class="row align-bottom mx-auto my-2">
-                <button type="submit" name="verify">Verify Account</button>
-                <button type="submit" name="resend" id="resend">Resend verification code</button>
-            </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 </body>
 </html>

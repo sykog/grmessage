@@ -56,8 +56,8 @@
                             <check if="{{ isset(@errors['personalVerificaton']) }}">
                                 <p class="error alert alert-danger">{{ @errors['personalVerificaton'] }}</p>
                             </check>
-                            <label><strong>Personal Email Verificaton Code: </strong><span id="PersonalVerificationSpan"> </span>
-                                <input class='form-control sameLine verify' type='text' name='personalVerification' id='perssonalVerificatioin'>
+                            <label><strong>Personal Email Verificaton: </strong><span id="PersonalVerificationSpan"> </span>
+                                <input class='form-control sameLine verify' type='text' name='personalVerification' id='personalVerification'>
                                 <button class='update verify' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
                                 <button type="submit" name="resendPEmail" class="resend">Resend code</button></label><br>
                         </check>
@@ -88,8 +88,8 @@
                             <check if="{{ isset(@errors['phoneVerificaton']) }}">
                                 <p class="error alert alert-danger">{{ @errors['phoneVerificaton'] }}</p>
                             </check>
-                            <label><strong>Phone Verificaton Code: </strong><span id="PhoneVerificationSpan"> </span>
-                                <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerificatioin'>
+                            <label><strong>Phone Verificaton: </strong><span id="PhoneVerificationSpan"> </span>
+                                <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerificatiion'>
                                 <button class='update verify' type="submit" id='verifyPhone' name="verifyPhone">Verify Phone</button>
                                 <button type="submit" name="resendPhone" class="resend">Resend code</button></label><br>
                         </check>

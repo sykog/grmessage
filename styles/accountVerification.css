@@ -1,6 +1,28 @@
-button {
+/* Label and Input Styles */
+
+label {
+    width: 50%;
+    text-align: center;
+}
+
+p {
+    text-align:center;
+    margin: auto;
+}
+
+p.alert-danger {
+    width: 50%;
+}
+
+input.form-control {
     width: 100%;
-    margin: 6px 0px;
+}
+
+/* Button Styles */
+
+button {
+    width: 50%;
+    margin: 6px auto;
 }
 
 button#resend {
@@ -9,9 +31,4 @@ button#resend {
     background: -webkit-linear-gradient(0deg, #f7e7b2 0%,#eacb6e 49%,#e5b72d 51%,#eaba2a 100%);
     background: linear-gradient(180deg, #f7e7b2 0%,#eacb6e 49%,#e5b72d 51%,#eaba2a 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7e7b2', endColorstr='#eaba2a',GradientType=1 );
-}
-
-.error {
-    margin-left: auto;
-    margin-right: auto;
 }
