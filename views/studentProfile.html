@@ -56,9 +56,10 @@
                             <check if="{{ isset(@errors['personalVerificaton']) }}">
                                 <p class="error alert alert-danger">{{ @errors['personalVerificaton'] }}</p>
                             </check>
-                            <label><strong>Enter Verificaton Code: </strong><span id="PersonalVerificationSpan"> </span>
+                            <label><strong>Personal Email Verificaton Code: </strong><span id="PersonalVerificationSpan"> </span>
                                 <input class='form-control sameLine verify' type='text' name='personalVerification' id='perssonalVerificatioin'>
-                                <button class='update verify' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button></label><br>
+                                <button class='update verify' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
+                                <button type="submit" name="resendPEmail" class="resend">Resend code</button></label><br>
                         </check>
 
                         <check if="{{ isset(@errors['phone']) }}">
@@ -87,9 +88,10 @@
                             <check if="{{ isset(@errors['phoneVerificaton']) }}">
                                 <p class="error alert alert-danger">{{ @errors['phoneVerificaton'] }}</p>
                             </check>
-                            <label><strong>Enter Verificaton Code: </strong><span id="PhoneVerificationSpan"> </span>
+                            <label><strong>Phone Verificaton Code: </strong><span id="PhoneVerificationSpan"> </span>
                                 <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerificatioin'>
-                                <button class='update verify' type="submit" id='verifyPhone' name="verifyPhone">Verify Phone</button></label><br>
+                                <button class='update verify' type="submit" id='verifyPhone' name="verifyPhone">Verify Phone</button>
+                                <button type="submit" name="resendPhone" class="resend">Resend code</button></label><br>
                         </check>
 
                         <label><strong>Program: </strong><span id="programSpan"> {{ @program }} </span>

@@ -339,7 +339,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('fname', $instructor['fname']);
         $f3->set('lname', $instructor['lname']);
 
-
         $template = new Template();
         echo $template->render('views/instructorHome.html');
     }
@@ -497,6 +496,16 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             }
         }
 
+        // resend phone verification
+        if(isset($_POST['resendPEmail'])){
+            $code = rand(1111, 9999) . "";
+            $column = "verifiedPersonal";
+            $dbh->setStudentCode($column, $code, $studentEmail);
+            $to = $student['personalEmail'];
+            $headers = "From: LaterGators\n";
+            mail($to, 'Verification Code', $code . "\n", $headers);
+        }
+
         // if update phone number button was clicked
         if (isset($_POST['updatePhone'])) {
             $newPhone = $_POST['newPhone'];
@@ -552,6 +561,18 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             } else {
                 $errors['phoneVerificaton'] = "Incorrect verification code.";
             }
+        }
+
+        // resend phone verification
+        if(isset($_POST['resendPhone'])){
+            $code = rand(1111, 9999) . "";
+            $column = 'verifiedPhone';
+            $dbh->setStudentCode($column, $code, $studentEmail);
+            $carrierInfo = $dbh->getCarrierInfo($student['carrier']);
+            $carrierEmail = $carrierInfo['carrierEmail'];
+            $to = $student['phone'] . "@" . $carrierEmail;
+            $headers = "From: LaterGators\n";
+            mail($to, 'Verification Code', $code . "\n", $headers);
         }
 
         // if update program button was clicked
