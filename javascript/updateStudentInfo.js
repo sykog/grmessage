@@ -110,4 +110,5 @@ $(document).ready(function() {
 
 function showUpdate() {
     $("#update").show();
+    $("html, body").animate({ scrollTop: $(document).height() }, 1000);
 };

@@ -365,6 +365,27 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('fname', $instructor['fname']);
         $f3->set('lname', $instructor['lname']);
 
+        // change password if button was clicked
+        if (isset($_POST['updatePassword'])) {
+
+            $currentPassword = sha1($_POST['currentPassword']);
+            $newPassword = $_POST['newPassword'];
+            $confirmPassword = $_POST['confirmPassword'];
+
+            if ($currentPassword == $f3->get('password')) {
+                if ($newPassword == $confirmPassword) {
+                    $dbh->changeInstructorPassword($email, $newPassword);
+                    header("location: profile");
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">
+                Passwords do not match.</div>';
+                }
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
+                Current password is incorrect.</div>';
+            }
+        }//end update password
+
         $template = new Template();
         echo $template->render('views/instructorHome.html');
     }
