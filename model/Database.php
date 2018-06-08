@@ -451,7 +451,8 @@ class Database
         $dbh = $this->dbh;
         // Define the query
         $sql = "SELECT * FROM messages
-                ORDER BY datetime DESC ";
+                ORDER BY datetime DESC
+                LIMIT 50 ";
 
         //prepare the statement
         $statement = $dbh->prepare($sql);

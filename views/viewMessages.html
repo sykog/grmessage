@@ -31,15 +31,15 @@
             </a>
             <hr>
 
-            <repeat group="{{@messages}}" value="{{@message}}">
+            <!--<repeat group="{{@messages}}" value="{{@message}}">
                 <p><strong>Sent By: </strong>{{ @message['instructorEmail'] }} </p><br>
                 <p><strong>Message: </strong>{{ @message['content'] }} </p><br>
                 <p><strong>Date: </strong>{{ @message['datetime'] }} </p><br>
                 <hr>
-            </repeat>
+            </repeat> -->
 
             <!--DataTable-->
-            <table id="table_id" class="display">
+            <table id="messagesTable" class="display">
                 <thead>
                 <tr>
                     <th>Sent By</th>
@@ -64,8 +64,11 @@
 
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
         <script>
-            $(document).ready( function () {
-                $('#myTable').DataTable();
+
+            $(document).ready(function() {
+                $('#messagesTable').DataTable( {
+                    "pagingType": "full_numbers"
+                } );
             } );
 
         </script>
