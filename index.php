@@ -235,6 +235,9 @@ $f3->route('GET|POST /register', function($f3, $params) {
 // define a message route
 $f3->route('GET|POST /message', function($f3, $params) {
 
+
+    $optOut = "\n\nTo no longer receive messages optout from your profile page. \nlatergators.greenriverdev.com/355/grmessage/";
+
     // go back to home page if not logged in
     if(!$_SESSION['loggedIn']){
         $f3->reroute("/");
@@ -269,7 +272,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                             $carrierEmail = $carrierInfo['carrierEmail'];
                             $to = $studentInfo['phone'] . "@" . $carrierEmail;
                             $headers = "From: LaterGators\n";
-                            mail($to, '', $textMessage . "\n", $headers);
+                            mail($to, '', $textMessage. $optOut . "\n", $headers);
 
                             // confirmation and remove message
                             $f3->set('sent', true);
@@ -279,7 +282,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                         if ($studentInfo['getPersonalEmails'] == "y" && $studentInfo['verifiedPersonal'] == 'y') {
                             $to = $studentInfo['personalEmail'];
                             $headers = "From: LaterGators\n";
-                            mail($to, '', $textMessage . "\n", $headers);
+                            mail($to, '', $textMessage. $optOut . "\n", $headers);
 
                             // confirmation and remove message
                             $f3->set('sent', true);
@@ -289,7 +292,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                         if ($studentInfo['getStudentEmails'] == "y" && $studentInfo['verifiedStudent'] == 'y') {
                             $to = $studentInfo['studentEmail'];
                             $headers = "From: LaterGators\n";
-                            mail($to, '', $textMessage . "\n", $headers);
+                            mail($to, '', $textMessage. $optOut . "\n", $headers);
 
                             // confirmation and remove message
                             $f3->set('sent', true);
