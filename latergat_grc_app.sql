@@ -15,7 +15,10 @@ ALTER TABLE `instructors`
   ADD COLUMN verified VARCHAR(50) AFTER instructorid;
 
 ALTER TABLE `messages`
-  ADD FOREIGN KEY (instructorid) REFERENCES instructors(instructorid);
+  ADD COLUMN instructorEmail VARCHAR(50),
+  ADD FOREIGN KEY (instructorEmail) REFERENCES instructors(email),
+  ADD COLUMN datetime datetime,
+  DROP instructorid;
 
 ALTER TABLE `students`
   ADD COLUMN program VARCHAR(50) AFTER carrier,
