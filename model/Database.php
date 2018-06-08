@@ -109,6 +109,31 @@ class Database
     }//end changeStudentPassword
 
     /**
+     * change password for instructors
+     * @param $instructorEmail
+     * @param $newPassword
+     */
+    function changeInstructorPassword($instructorEmail, $newPassword) {
+
+        // encrypt password
+        $newPassword = sha1($newPassword);
+
+        $dbh = $this->dbh;
+        // define the query
+        $sql = "UPDATE instructors
+            SET password = :password
+            WHERE email = :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":email", $instructorEmail, PDO::PARAM_STR);
+        $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+    }//end changeStudentPassword
+
+    /**
      * change student's first and last name
      * @param $studentEmail identifier
      * @param $first first name

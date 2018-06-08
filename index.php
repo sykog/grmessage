@@ -8,6 +8,7 @@ require_once('vendor/autoload.php');
 //Start the session
 session_start();
 include ('model/validate.php');
+include ('randomString.php');
 
 // create instance of base class
 $f3 = Base::instance();
@@ -25,6 +26,7 @@ $f3->route('GET|POST /', function($f3, $params) {
         $template = new Template();
         echo $template->render('views/home.html');
     }
+
     if (!$_SESSION['loggedIn']) {
         $database = new Database();
 
@@ -40,6 +42,7 @@ $f3->route('GET|POST /', function($f3, $params) {
 
             $password = sha1($_POST['password']);
             $success = true;
+
             // if logging in as a student
             if (validSEmail($email)) {
                 $student = $database->getStudent($email);
@@ -49,6 +52,7 @@ $f3->route('GET|POST /', function($f3, $params) {
                     $success = true;
                 } else $success = false;
             }
+
             // if logging in as an instructor
             elseif (validIEmail($email)) {
                 $instructor = $database->getInstructor($email);
@@ -76,6 +80,31 @@ $f3->route('GET|POST /', function($f3, $params) {
             else {
                 echo "<div class=\"error alert alert-danger\" role=\"alert\">
                 Incorrect email or password</div>";
+            }
+        }
+
+        if (isset($_POST['resend'])) {
+
+            $email2 = $_POST['email2'];
+            $newPassword = randomString(8);
+
+            // if logging in as a student
+            if (validSEmail($email2)) {
+                $student = $database->getStudent($email2);
+                $database->changeStudentPassword($email2, $newPassword);
+                $headers = "From: LaterGators\n";
+                mail($email2, 'Password Reset',
+                    "Here is your new password: " .$newPassword . "\n", $headers);
+
+            }
+
+            // if logging in as an instructor
+            elseif (validIEmail($email2)) {
+                $instructor = $database->getInstructor($email2);
+                $database->changeInstructorPassword($email2, $newPassword);
+                $headers = "From: LaterGators\n";
+                mail($email2, 'Password Reset',
+                    "Here is your new password: " .$newPassword . "\n", $headers);
             }
         }
     }
@@ -211,6 +240,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 $f3->reroute("/verify");
             }
         }
+
         // if instructor account
         if ($email == $_POST['iemail']) {
             // only submit if the email doesnt exist
