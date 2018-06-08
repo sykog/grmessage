@@ -1,15 +1,16 @@
 // shows the option to change password
 
 // waits till page is loaded
-$(document).ready(function() {
+$(document).ready(function(){
 
-    //change password button is clicked
-    $("#reset").click(function() {
+    // hide box initially
+    $("#forgotPassword").hide();
 
-        console.log("its working");
+    $("#openDialog").click(function() {
+        $("#forgotPassword").show();
+    });
 
-        //$("#change").hide();
-        $("#myModal").modal('show');
-
+    $("#close").click(function() {
+        $("#forgotPassword").hide();
     });
 });
