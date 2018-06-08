@@ -2,13 +2,15 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Home</title>
+        <title>View Messages</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--Style sheets-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
         <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/main.css">
         <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/profile.css">
+        <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/viewMessages-styles.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
 
         <!-- Javascript-->
         <script src="http://code.jquery.com/jquery.js"></script>
@@ -29,13 +31,43 @@
             </a>
             <hr>
 
-            <repeat group="{{@messages}}" value="{{@messages}}">
-                <p><strong>Sent By: </strong>{{ @messages['instructorEmail'] }} </p><br>
-                <p><strong>Message: </strong>{{ @messages['content'] }} </p><br>
-                <p><strong>Date: </strong>{{ @messages['datetime'] }} </p><br>
+            <repeat group="{{@messages}}" value="{{@message}}">
+                <p><strong>Sent By: </strong>{{ @message['instructorEmail'] }} </p><br>
+                <p><strong>Message: </strong>{{ @message['content'] }} </p><br>
+                <p><strong>Date: </strong>{{ @message['datetime'] }} </p><br>
                 <hr>
             </repeat>
 
+            <!--DataTable-->
+            <table id="table_id" class="display">
+                <thead>
+                <tr>
+                    <th>Sent By</th>
+                    <th>Message</th>
+                    <th>Date: </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <repeat group="{{@messages}}" value="{{@message}}">
+                <tr>
+
+                        <td>{{ @message['instructorEmail'] }} </td>
+                        <td>{{ @message['content'] }} </td>
+                        <td>{{ @message['datetime'] }} </td>
+                </tr>
+                </repeat>
+                </tbody>
+            </table>
+
         </div>
+
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+        <script>
+            $(document).ready( function () {
+                $('#myTable').DataTable();
+            } );
+
+        </script>
     </body>
 </html>
