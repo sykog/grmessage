@@ -337,7 +337,10 @@ $f3->route('GET|POST /message', function($f3, $params) {
             }
 
             //store message in the database
-            $dbh->storeMessage($_SESSION['username'], $textMessage);
+            //get chosen programs
+            $recipient = implode(" ", $chosen);
+
+            $dbh->storeMessage($_SESSION['username'], $textMessage, $recipient);
         } else {
             echo "must be between 1 and 250 characters";
         }
