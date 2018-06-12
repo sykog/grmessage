@@ -453,17 +453,18 @@ class Database
      * @param $instuctorEmail
      * @param $content
      */
-    function storeMessage($instuctorEmail, $content) {
+    function storeMessage($instuctorEmail, $content, $recipient) {
         $dbh = $this->dbh;
         // Define the query
         $sql = "INSERT INTO messages (instructorEmail, content, datetime)
-                VALUES (:instructorEmail, :content, NOW());";
+                VALUES (:instructorEmail, :content, NOW(), :recipient);";
 
         //prepare the statement
         $statement = $dbh->prepare($sql);
 
         $statement->bindParam(":instructorEmail", $instuctorEmail, PDO::PARAM_STR);
         $statement->bindParam(":content", $content, PDO::PARAM_STR);
+        $statement->bindParam(":recipient", $recipient, PDO::PARAM_STR);
 
         $statement->execute();
     }
