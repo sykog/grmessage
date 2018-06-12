@@ -266,7 +266,8 @@ $f3->route('GET|POST /register', function($f3, $params) {
 $f3->route('GET|POST /message', function($f3, $params) {
 
 
-    $optOut = "\n\nTo no longer receive messages optout from your profile page. \nlatergators.greenriverdev.com/355/grmessage/";
+    $optOut = "\n\nIf you would like to
+     stop recieving updates, visit your profile page to opt-out. \nlatergators.greenriverdev.com/355/grmessage/";
 
     // go back to home page if not logged in
     if(!$_SESSION['loggedIn']){

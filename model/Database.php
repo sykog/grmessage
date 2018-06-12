@@ -456,7 +456,7 @@ class Database
     function storeMessage($instuctorEmail, $content, $recipient) {
         $dbh = $this->dbh;
         // Define the query
-        $sql = "INSERT INTO messages (instructorEmail, content, datetime)
+        $sql = "INSERT INTO messages (instructorEmail, content, datetime, recipient)
                 VALUES (:instructorEmail, :content, NOW(), :recipient);";
 
         //prepare the statement
