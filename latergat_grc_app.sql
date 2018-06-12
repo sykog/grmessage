@@ -27,3 +27,6 @@ ALTER TABLE `students`
   ADD COLUMN verifiedPhone VARCHAR(50),
   ADD FOREIGN KEY (carrier) REFERENCES carriers(carrier),
   ADD FOREIGN KEY (program) REFERENCES programs(program);
+
+ALTER TABLE `messages`
+ADD COLUMN recipient varchar(80);

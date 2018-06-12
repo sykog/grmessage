@@ -44,6 +44,7 @@
                 <tr>
                     <th>Sent By</th>
                     <th>Message</th>
+                    <th>Recipient(s): </th>
                     <th>Date: </th>
                 </tr>
                 </thead>
@@ -54,6 +55,7 @@
 
                         <td>{{ @message['instructorEmail'] }} </td>
                         <td>{{ @message['content'] }} </td>
+                        <td>{{ @message['recipient'] }} </td>
                         <td>{{ @message['datetime'] }} </td>
                 </tr>
                 </repeat>
