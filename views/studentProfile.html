@@ -106,17 +106,15 @@
                         <button type="button" class="cancelInput" id="cancelProgram" name="cancelProgram">Cancel</button></label><br>
                     </div>
 
-                    <button type="button" id="changePassword" name="changePassword">Change Password</button><br>
+                    <button type="button" id="changePassword" name="changePassword">Change Password</button>
                     <check if="{{ @passChanged }}">
-                        <true>
-                            <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
-                        </true>
-                        <false>
-                            <p id="passChanged" class="alert alert-danger" role="alert">Password Not Changed</p>
-                        </false>
+                        <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
                     </check>
-                    <div id="password"></div>
-                    <br>
+                    <check if="{{ isset(@errors['password']) }}">
+                        <p id="passChanged" class="alert alert-danger" role="alert">{{ @errors['password'] }}</p>
+                    </check><br>
+
+                    <div id="password"></div><br>
 
                     <h3>Notification Preferences</h3>
 

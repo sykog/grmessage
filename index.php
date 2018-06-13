@@ -378,16 +378,17 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
             if ($currentPassword == $f3->get('password')) {
                 if ($newPassword == $confirmPassword) {
-                    $dbh->changeInstructorPassword($email, $newPassword);
-                    $f3->set('passChanged', true);
-                    $f3->reroute("/profile");
+                    if (strlen($newPassword) > 7) {
+                        $dbh->changeInstructorPassword($email, $newPassword);
+                        $f3->set('passChanged', true);
+                    } else {
+                        $errors['password'] = "Password must be at least 8 characters";
+                    }
                 } else {
-                    echo '<div class="alert alert-danger" role="alert">
-                Passwords do not match.</div>';
+                    $f3->set("errors['password']", "Passwords do not match");
                 }
             } else {
-                echo '<div class="alert alert-danger" role="alert">
-                Current password is incorrect.</div>';
+                $f3->set("errors['password']", "Current password is incorrect");
             }
         }//end update password
 
@@ -427,7 +428,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('verifiedPhone', $student['verifiedPhone'] == 'y');
         $f3->set('carriers', array("Verizon", "AT&T", "Sprint", "T-Mobile", "Boost Mobile",
             "Cricket Wireless", "Virgin Mobile", "Republic Wireless", "U.S. Cellular", "Alltel"));
-        $f3->set('passChanged', false);
 
         //if changes were made
         if (isset($_POST['save'])) {
@@ -497,16 +497,17 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
             if ($currentPassword == $f3->get('password')) {
                 if ($newPassword == $confirmPassword) {
-                    $dbh->changeStudentPassword($studentEmail, $newPassword);
-                    $f3->set('passChanged', true);
-                    $f3->reroute("/profile");
+                    if (strlen($newPassword) > 7) {
+                        $dbh->changeStudentPassword($studentEmail, $newPassword);
+                        $f3->set('passChanged', true);
+                    } else {
+                        $errors['password'] = "Password must be at least 8 characters";
+                    }
                 } else {
-                    echo '<div class="alert alert-danger" role="alert">
-                Passwords do not match.</div>';
+                    $errors['password'] = "Passwords do not match";
                 }
             } else {
-                echo '<div class="alert alert-danger" role="alert">
-                Current password is incorrect.</div>';
+                $errors['password'] = "Current password is incorrect";
             }
         }//end update password
 

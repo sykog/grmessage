@@ -41,9 +41,15 @@
 
                         <label><strong>Instructor Email: </strong><span> {{ @email }} </span></label><br>
 
-                        <button type="button" id="changePassword" name="changePassword">Change Password</button><br>
+                        <button type="button" id="changePassword" name="changePassword">Change Password</button>
+                        <check if="{{ @passChanged }}">
+                            <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
+                        </check>
+                        <check if="{{ isset(@errors['password']) }}">
+                            <p id="passChanged" class="alert alert-danger" role="alert">{{ @errors['password'] }}</p>
+                        </check><br>
 
-                        <div id="password"></div>
+                        <div id="password"></div><br>
 
                         <a href="../grmessage/message">
                             <button id="sendMessage" type="button" name="sendMessage">Send Message</button>
