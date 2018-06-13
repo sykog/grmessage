@@ -21,9 +21,10 @@ button#register, button#close, button#openDialog {
 div#forgotPassword {
     display: none;
     position: fixed;
-    top: 10%;
+    top: 30%;
     right: 20%;
     width: 60%;
+    padding-bottom: 10px;
     height: max-content;
     background-color: white;
     border: 3px solid green;
