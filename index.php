@@ -293,7 +293,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
             $chosen = $_POST['chosenPrograms']; // gets the selected program(s)
             $students = $dbh->getStudents();
             // select the program, then the student
-            foreach ($chosen as $current) {
+            foreach ((array)$chosen as $current) {
                 foreach ($students as $studentInfo) {
                     if ($studentInfo['program'] == $current) {
                         // only send text if opted in
@@ -334,13 +334,15 @@ $f3->route('GET|POST /message', function($f3, $params) {
                         $f3->set('textMessage', "");
                     }
                 }
+
             }
 
             //store message in the database
             //get chosen programs
-            $recipient = implode(" ", $chosen);
+            $recipient = implode(", ", (array)$chosen);
 
             $dbh->storeMessage($_SESSION['username'], $textMessage, $recipient);
+
         } else {
             echo "must be between 1 and 250 characters";
         }
