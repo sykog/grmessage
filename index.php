@@ -231,7 +231,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
             } else {
                 $database->addStudent($email, $password, $phone, $first, $last, $carrier, $program);
                 $_SESSION['loggedIn'] = true;
-                $studentCode = rand(1111, 9999) . "";
+                $studentCode = randomString(6);
                 $database->setStudentCode("verifiedStudent", $studentCode, $email);
                 $headers = "From: LaterGators\n";
                 mail($email, 'Account Verification Code',
@@ -252,7 +252,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 $_SESSION['loggedIn'] = true;
 
                 // generate code
-                $instructorCode = rand(1111, 9999) . "";
+                $instructorCode = randomString(6);
                 $database->setInstructorCode($instructorCode, $email);
                 $headers = "From: LaterGators\n";
                 mail($email, 'Verification Code', $instructorCode . "\n", $headers);
@@ -265,9 +265,8 @@ $f3->route('GET|POST /register', function($f3, $params) {
 // define a message route
 $f3->route('GET|POST /message', function($f3, $params) {
 
-
     $optOut = "\n\nIf you would like to
-     stop recieving updates, visit your profile page to opt-out. \nlatergators.greenriverdev.com/355/grmessage/";
+     stop recieving updates, visit your profile page to opt-out: latergators.greenriverdev.com/355/grmessage/";
 
     // go back to home page if not logged in
     if(!$_SESSION['loggedIn']){
@@ -368,6 +367,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('password', $instructor['password']);
         $f3->set('fname', $instructor['fname']);
         $f3->set('lname', $instructor['lname']);
+        $f3->set('passChanged', false);
 
         // change password if button was clicked
         if (isset($_POST['updatePassword'])) {
@@ -379,7 +379,8 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             if ($currentPassword == $f3->get('password')) {
                 if ($newPassword == $confirmPassword) {
                     $dbh->changeInstructorPassword($email, $newPassword);
-                    header("location: profile");
+                    $f3->set('passChanged', true);
+                    $f3->reroute("/profile");
                 } else {
                     echo '<div class="alert alert-danger" role="alert">
                 Passwords do not match.</div>';
@@ -408,7 +409,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             $f3->reroute("/");
         }
 
-
         $errors = array();
 
         $f3->set('studentEmail', $studentEmail);
@@ -427,6 +427,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('verifiedPhone', $student['verifiedPhone'] == 'y');
         $f3->set('carriers', array("Verizon", "AT&T", "Sprint", "T-Mobile", "Boost Mobile",
             "Cricket Wireless", "Virgin Mobile", "Republic Wireless", "U.S. Cellular", "Alltel"));
+        $f3->set('passChanged', false);
 
         //if changes were made
         if (isset($_POST['save'])) {
@@ -497,7 +498,8 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             if ($currentPassword == $f3->get('password')) {
                 if ($newPassword == $confirmPassword) {
                     $dbh->changeStudentPassword($studentEmail, $newPassword);
-                    header("location: profile");
+                    $f3->set('passChanged', true);
+                    $f3->reroute("/profile");
                 } else {
                     echo '<div class="alert alert-danger" role="alert">
                 Passwords do not match.</div>';
@@ -525,7 +527,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 header("location: profile");
 
                 // send a code when changing email
-                $personalCode = rand(1111, 9999) . "";
+                $personalCode = randomString(6);
                 $dbh->setStudentCode("verifiedPersonal", $personalCode, $studentEmail);
                 $headers = "From: LaterGators\n";
                 mail($_POST['newPersonalEmail'], 'Verification Code',
@@ -549,12 +551,12 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
         // resend phone verification
         if(isset($_POST['resendPEmail'])){
-            $code = rand(1111, 9999) . "";
+            $code = randomString(6);
             $column = "verifiedPersonal";
             $dbh->setStudentCode($column, $code, $studentEmail);
             $to = $student['personalEmail'];
             $headers = "From: LaterGators\n";
-            mail($to, 'Verification Code', $code . "\n", $headers);
+            mail($to, "Personal Email Verification Code: ", $code . "\n", $headers);
         }
 
         // if update phone number button was clicked
@@ -566,7 +568,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 header("location: profile");
 
                 // send a code when changing phone number
-                $phoneCode = rand(1111, 9999) . "";
+                $phoneCode = randomString(6);
                 $column = "verifiedPhone";
                 $dbh->setStudentCode($column, $phoneCode, $studentEmail);
                 $headers = "From: LaterGators\n";
@@ -576,7 +578,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                     $carrierInfo = $dbh->getCarrierInfo($student['carrier']);
                 }
                 $carrierEmail = $carrierInfo['carrierEmail'];
-                $to = $student['phone'] . "@" . $carrierEmail;
+                $to = $newPhone . "@" . $carrierEmail;
                 mail($to, '', "Phone Verification Code: " . $phoneCode . "\n", $headers);
             } else {
                 $errors['phone'] = "Please enter a valid phone number.";
@@ -590,14 +592,14 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 $dbh->changeCarrier($studentEmail, $_POST['newCarrier']);
                 header("location: profile");
                 if (!isset($_POST['updatePhone'])) {
-                    $phoneCode = rand(1111, 9999) . "";
+                    $phoneCode = randomString(6);
                     $column = "verifiedPhone";
                     $dbh->setStudentCode($column, $phoneCode, $studentEmail);
                     $headers = "From: LaterGators\n";
                     $carrierInfo = $dbh->getCarrierInfo($_POST['newCarrier']);
                     $carrierEmail = $carrierInfo['carrierEmail'];
                     $to = $student['phone'] . "@" . $carrierEmail;
-                    mail($to, '', "Verification Code: " . $phoneCode . "\n", $headers);
+                    mail($to, '', "Phone Verification Code: " . $phoneCode . "\n", $headers);
                 }
             }
         }
@@ -616,14 +618,14 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
         // resend phone verification
         if(isset($_POST['resendPhone'])){
-            $code = rand(1111, 9999) . "";
+            $code = randomString(6);
             $column = 'verifiedPhone';
             $dbh->setStudentCode($column, $code, $studentEmail);
             $carrierInfo = $dbh->getCarrierInfo($student['carrier']);
             $carrierEmail = $carrierInfo['carrierEmail'];
             $to = $student['phone'] . "@" . $carrierEmail;
             $headers = "From: LaterGators\n";
-            mail($to, 'Verification Code', $code . "\n", $headers);
+            mail($to, '', "Phone Verification Code: " . $code . "\n", $headers);
         }
 
         // if update program button was clicked
@@ -678,7 +680,7 @@ $f3->route('GET|POST /verify', function ($f3) {
         $code = trim($instructor['verified']);
 
         if(isset($_POST['resend'])){
-            $code = rand(1111, 9999) . "";
+            $code = randomString(6);
             $dbh->setInstructorCode("verified", $code, $_SESSION['email']);
             $to = $_SESSION['email'];
             $headers = "From: LaterGators\n";
@@ -701,7 +703,7 @@ $f3->route('GET|POST /verify', function ($f3) {
         $code = trim($student['verifiedStudent']);
 
         if(isset($_POST['resend'])){
-            $code = rand(1111, 9999) . "";
+            $code = randomString(6);
             $dbh->setStudentCode("verifiedStudent", $code, $_SESSION['email']);
             $to = $_SESSION['email'];
             $headers = "From: LaterGators\n";

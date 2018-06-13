@@ -107,7 +107,14 @@
                     </div>
 
                     <button type="button" id="changePassword" name="changePassword">Change Password</button><br>
-
+                    <check if="{{ @passChanged }}">
+                        <true>
+                            <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
+                        </true>
+                        <false>
+                            <p id="passChanged" class="alert alert-danger" role="alert">Password Not Changed</p>
+                        </false>
+                    </check>
                     <div id="password"></div>
                     <br>
 

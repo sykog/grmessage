@@ -4,9 +4,9 @@ CREATE TABLE IF NOT EXISTS `programs` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 INSERT INTO `programs` (`programid`, `program`) VALUES
-(1, 'Bachelors - Software Develpoment'),
-(2, 'Associates - Software Develpoment'),
-(3, 'Bahelors - Networking'),
+(1, 'Bachelors - Software Development'),
+(2, 'Associates - Software Development'),
+(3, 'Bachelors - Networking'),
 (4, 'Associates - Networking');
 
 ALTER TABLE `instructors`

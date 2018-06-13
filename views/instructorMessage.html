@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Messaging</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--Style sheets-->
@@ -12,7 +13,7 @@
 
     <!-- Javascript-->
     <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js" type="text/javascript"></script>
 </head>
 <body>
 <header class="header clearfix" id="mainHeader">
@@ -28,19 +29,7 @@
     <hr>
 
     <div class="col-6">
-        <!--<input title="it-355 10am" id="it-355am" type="checkbox">
-        <label>IT-355 10am</label>
-        <br>
-        <input title="it-355 1pm" id="it-355pm" type="checkbox">
-        <label>IT-355 1pm</label>
-        <br>
-        <input title="it-334 11am" id="it-334am" type="checkbox">
-        <label>IT-334 11am</label>
-        <br>
-        <input title="it-334 2pm" id="it-334pm" type="checkbox">
-        <label>IT-334 2pm</label>
-        <br>-->
-        <form class="form" action="#" method="post">
+        <form class="form" action="" method="post">
             <repeat group="{{ @programs }}" value="{{ @programOption }}">
                 <label>
                     <input type="checkbox" name="chosenPrograms[]" value="{{@programOption}}">
