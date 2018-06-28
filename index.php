@@ -8,7 +8,7 @@ require_once('vendor/autoload.php');
 //Start the session
 session_start();
 include ('model/validate.php');
-include ('randomString.php');
+include('model/randomString.php');
 
 // create instance of base class
 $f3 = Base::instance();
@@ -334,7 +334,6 @@ $f3->route('GET|POST /message', function($f3, $params) {
                         $f3->set('textMessage', "");
                     }
                 }
-
             }
 
             //store message in the database
