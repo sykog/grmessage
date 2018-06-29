@@ -36,7 +36,7 @@ button#update {
     width: 30%;
 }
 
-#newLName, #newFName {
+#newLName, #newFName, #personalVerification, #phoneVerification {
     width: 25%;
     margin-left: 4px;
 }
