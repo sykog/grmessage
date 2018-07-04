@@ -21,6 +21,8 @@ $f3->set('programs', array("Bachelors - Software Development", "Associates - Sof
 
 // define a default route
 $f3->route('GET|POST /', function($f3, $params) {
+    var_dump($_SESSION);
+    $headers = "From: Green River Messaging\n";
 
     if (!isset($_POST['login'])) {
         $template = new Template();
@@ -34,7 +36,6 @@ $f3->route('GET|POST /', function($f3, $params) {
         if (isset($_POST['login'])) {
 
             $email = $_POST['email'];
-            $_SESSION['username'] = $email;
             $f3->set('username', $email);
 
             $template = new Template();
@@ -87,7 +88,6 @@ $f3->route('GET|POST /', function($f3, $params) {
             if (validSEmail($email2)) {
                 $student = $database->getStudent($email2);
                 $database->changeStudentPassword($email2, $newPassword);
-                $headers = "From: Green River Messaging\n";
                 mail($email2, 'Password Reset',
                     "Here is your new password: " .$newPassword . "\n", $headers);
             }
@@ -96,7 +96,6 @@ $f3->route('GET|POST /', function($f3, $params) {
             elseif (validIEmail($email2)) {
                 $instructor = $database->getInstructor($email2);
                 $database->changeInstructorPassword($email2, $newPassword);
-                $headers = "From: LaterGators\n";
                 mail($email2, 'Password Reset',
                     "Here is your new password: " .$newPassword . "\n", $headers);
             }
@@ -114,17 +113,22 @@ $f3->route('GET|POST /', function($f3, $params) {
 
 // define a route for logout
 $f3->route('GET|POST /logout', function($f3, $params) {
+    var_dump($_SESSION);
 
     $_SESSION['loggedIn'] = false;
     $_SESSION['isInstructor'] = false;
+    unset($_SESSION['email']);
     $template = new Template();
     $f3->reroute("/");
 });
 
 // define a route for registration
 $f3->route('GET|POST /register', function($f3, $params) {
+    var_dump($_SESSION);
+
     $database = new Database();
     $errors = array();
+    $headers = "From: Green River Messaging\n";
 
     // if registering as a student
     if(isset($_POST['submitS'])) {
@@ -136,14 +140,6 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $phone = shortenPhone($_POST['phone']);
         $carrier = $_POST['carrier'];
         $program = $_POST['program'];
-        $_SESSION['email'] = $email;
-        $_SESSION['password'] = $password;
-        $_SESSION['confirm'] = $confirm;
-        $_SESSION['first'] = $first;
-        $_SESSION['last'] = $last;
-        $_SESSION['phone'] = $phone;
-        $_SESSION['carrier'] = $carrier;
-        $_SESSION['program'] = $program;
 
         if(!validSEmail($email)) {
             $errors['email'] = "Please enter a student email";
@@ -185,11 +181,6 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $last = $_POST['last'];
         $phone = $_POST['phone'];
         $carrier = $_POST['carrier'];
-        $_SESSION['email'] = $email;
-        $_SESSION['password'] = $password;
-        $_SESSION['confirm'] = $confirm;
-        $_SESSION['first'] = $first;
-        $_SESSION['last'] = $last;
 
         if(!validIEmail($email)){
             $errors['iemail'] = "Please enter an instructor email";
@@ -217,6 +208,8 @@ $f3->route('GET|POST /register', function($f3, $params) {
     echo $template->render('views/registration.html');
 
     if($success) {
+        $_SESSION['email'] = $email;
+
         // if student account
         if ($email == $_POST['semail']) {
             // only submit if the email doesn't exist
@@ -228,7 +221,6 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 $_SESSION['loggedIn'] = true;
                 $studentCode = randomString(6);
                 $database->setStudentCode("verifiedStudent", $studentCode, $email);
-                $headers = "From: Green River Messaging\n";
                 mail($email, 'Account Verification Code',
                     "Account Verification Code: " .$studentCode . "\n", $headers);
 
@@ -249,7 +241,6 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 // generate code
                 $instructorCode = randomString(6);
                 $database->setInstructorCode($instructorCode, $email);
-                $headers = "From: LaterGators\n";
                 mail($email, 'Verification Code', $instructorCode . "\n", $headers);
                 $f3->reroute("/verify");
             }
@@ -259,6 +250,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
 // define a message route
 $f3->route('GET|POST /message', function($f3, $params) {
+    var_dump($_SESSION);
 
     $optOut = "\n\nIf you would like to stop receiving updates, 
         visit your profile page to opt-out: latergators.greenriverdev.com/355/grmessage/";
@@ -270,10 +262,10 @@ $f3->route('GET|POST /message', function($f3, $params) {
     if($_SESSION['loggedIn'] && !$_SESSION['isInstructor']) {
         $f3->reroute("/profile");
     }
-
+    $email = $_SESSION['email'];
     $database = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
     $f3->set("students", $database->getStudents());
-    $instructor = $database->getInstructor($_SESSION['username']);
+    $instructor = $database->getInstructor($email);
 
     // go to verification page if not account hasn't been verified
     if(trim($instructor['verified']) != 'y') {
@@ -332,7 +324,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
 
             // store message in the database, get chosen programs
             $recipient = implode(", ", (array)$chosen);
-            $database->storeMessage($_SESSION['username'], $textMessage, $recipient);
+            $database->storeMessage($email, $textMessage, $recipient);
         } else {
             echo "<div class=\"error alert alert-danger\" role=\"alert\">
                 Message must be between 1 and 250 characters</div>";
@@ -345,19 +337,21 @@ $f3->route('GET|POST /message', function($f3, $params) {
 
 // define a profile route (used for students and instructors)
 $f3->route('GET|POST /profile', function($f3, $params) {
+    var_dump($_SESSION);
+
     // go to login page if not logged in
     if(!$_SESSION['loggedIn']) {
         $f3->reroute("/");
     }
 
     $headers = "From: Green River Messaging\n";
+    $email = $_SESSION['email'];
 
     // instructor profile page
     if($_SESSION['loggedIn'] && $_SESSION['isInstructor']) {
 
         $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
         //set f3 variables
-        $email = $_SESSION['email'];
         $instructor = $database->getInstructor($email);
 
         $f3->set('email', $email);
@@ -396,8 +390,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     // student profile page
     else {
         $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
-        $studentEmail = $_SESSION['email'];
-        $student = $database->getStudent($studentEmail);
+        $student = $database->getStudent($email);
 
         // if account hasn't been verified
         if (trim($student['verifiedStudent']) != 'y') {
@@ -406,7 +399,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
         $errors = array();
 
-        $f3->set('studentEmail', $studentEmail);
+        $f3->set('studentEmail', $email);
         $f3->set('password', $student['password']);
         $f3->set('fname', $student['fname']);
         $f3->set('lname', $student['lname']);
@@ -435,7 +428,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             if (isset ($_POST['getPersonalEmails'])) $getPersonalEmails = 'y';
             else $getPersonalEmails = 'n';
 
-            $database->updatePreferences($studentEmail, $getStudentEmails, $getTexts, $getPersonalEmails);
+            $database->updatePreferences($email, $getStudentEmails, $getTexts, $getPersonalEmails);
             $f3->reroute("/profile");
         }
 
@@ -449,7 +442,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             if ($currentPassword == $f3->get('password')) {
                 if ($newPassword == $confirmPassword) {
                     if (strlen($newPassword) > 7) {
-                        $database->changeStudentPassword($studentEmail, $newPassword);
+                        $database->changeStudentPassword($email, $newPassword);
                         $f3->set('passChanged', true);
                     } else {
                         $errors['password'] = "Password must be at least 8 characters";
@@ -465,7 +458,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         // if update personal email button was clicked
         if (isset($_POST['updateName'])) {
             if (strlen($_POST['newFName']) > 0 && strlen($_POST['newLName']) > 0) {
-                $database->changeStudentName($studentEmail, $_POST['newFName'], $_POST['newLName']);
+                $database->changeStudentName($email, $_POST['newFName'], $_POST['newLName']);
                 $f3->reroute("/profile");
             } else {
                 $errors['name'] = "Please enter a valid name.";
@@ -475,12 +468,12 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         // if update personal email button was clicked
         if (isset($_POST['updatePersonalEmail'])) {
             if (validPEmail($_POST['newPersonalEmail'])) {
-                $database->changePersonalEmail($studentEmail, $_POST['newPersonalEmail']);
+                $database->changePersonalEmail($email, $_POST['newPersonalEmail']);
                 $f3->reroute("/profile");
 
                 // send a code when changing email
                 $personalCode = randomString(6);
-                $database->setStudentCode("verifiedPersonal", $personalCode, $studentEmail);
+                $database->setStudentCode("verifiedPersonal", $personalCode, $email);
                 mail($_POST['newPersonalEmail'], 'Verification Code',
                     "GREEN RIVER MESSAGING\n\n Personal Email Verification Code: ". $personalCode . "\n", $headers);
             } else {
@@ -494,7 +487,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 $column = "verifiedPersonal";
                 $value = "y";
                 $f3->set('verifiedPersonal', true);
-                $database->setStudentCode($column, $value, $studentEmail);
+                $database->setStudentCode($column, $value, $email);
             } else {
                 $errors['personalVerificaton'] = "Incorrect verification code.";
             }
@@ -504,7 +497,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         if(isset($_POST['resendPEmail'])){
             $code = randomString(6);
             $column = "verifiedPersonal";
-            $database->setStudentCode($column, $code, $studentEmail);
+            $database->setStudentCode($column, $code, $email);
             $to = $student['personalEmail'];
             mail($to, "GREEN RIVER MESSAGING\n\n Personal Email Verification Code: ", $code . "\n", $headers);
         }
@@ -514,13 +507,13 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             $newPhone = $_POST['newPhone'];
             $newPhone = shortenPhone($newPhone);
             if (validPhone($newPhone) && strlen($newPhone) != 0) {
-                $database->changePhoneNumber($studentEmail, $newPhone);
+                $database->changePhoneNumber($email, $newPhone);
                 $f3->reroute("/profile");
 
                 // send a code when changing phone number
                 $phoneCode = randomString(6);
                 $column = "verifiedPhone";
-                $database->setStudentCode($column, $phoneCode, $studentEmail);
+                $database->setStudentCode($column, $phoneCode, $email);
 
                 if (isset($_POST['newCarrier'])) $carrierInfo = $database->getCarrierInfo($_POST['newCarrier']);
                 else $carrierInfo = $database->getCarrierInfo($student['carrier']);
@@ -536,13 +529,13 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         // if update phone carrier button was clicked
         if (isset($_POST['updateCarrier'])) {
             if (validCarrier($_POST['newCarrier'])) {
-                $database->changeCarrier($studentEmail, $_POST['newCarrier']);
+                $database->changeCarrier($email, $_POST['newCarrier']);
                 $f3->reroute("/profile");
 
                 if (!isset($_POST['updatePhone'])) {
                     $phoneCode = randomString(6);
                     $column = "verifiedPhone";
-                    $database->setStudentCode($column, $phoneCode, $studentEmail);
+                    $database->setStudentCode($column, $phoneCode, $email);
                     $carrierInfo = $database->getCarrierInfo($_POST['newCarrier']);
                     $carrierEmail = $carrierInfo['carrierEmail'];
                     $to = $student['phone'] . "@" . $carrierEmail;
@@ -556,7 +549,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             if ($_POST['phoneVerification'] == $student['verifiedPhone']) {
                 $column = 'verifiedPhone';
                 $value = 'y';
-                $database->setStudentCode($column, $value, $studentEmail);
+                $database->setStudentCode($column, $value, $email);
                 $f3->set('verifiedPhone', true);
             } else {
                 $errors['phoneVerificaton'] = "Incorrect verification code.";
@@ -567,7 +560,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         if(isset($_POST['resendPhone'])){
             $code = randomString(6);
             $column = 'verifiedPhone';
-            $database->setStudentCode($column, $code, $studentEmail);
+            $database->setStudentCode($column, $code, $email);
             $carrierInfo = $database->getCarrierInfo($student['carrier']);
             $carrierEmail = $carrierInfo['carrierEmail'];
             $to = $student['phone'] . "@" . $carrierEmail;
@@ -577,7 +570,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         // if update program button was clicked
         if (isset($_POST['updateProgram'])) {
             if (validProgram($_POST['newProgram'])) {
-                $database->changeProgram($studentEmail, $_POST['newProgram']);
+                $database->changeProgram($email, $_POST['newProgram']);
                 $f3->reroute("/profile");
             }
         }
@@ -591,6 +584,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
 // define a message viewing route
 $f3->route('GET|POST /view-messages', function($f3) {
+    var_dump($_SESSION);
 
     // go to login page if not logged in
     if(!$_SESSION['loggedIn']) $f3->reroute("/");
@@ -601,7 +595,7 @@ $f3->route('GET|POST /view-messages', function($f3) {
     }
 
     $database = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
-    $instructor = $database->getInstructor($_SESSION['username']);
+    $instructor = $database->getInstructor($_SESSION['email']);
     if(trim($instructor['verified']) != 'y'){
         $f3->reroute('/verify');
     }
@@ -615,23 +609,25 @@ $f3->route('GET|POST /view-messages', function($f3) {
 });
 
 $f3->route('GET|POST /verify', function ($f3) {
+    var_dump($_SESSION);
 
     $database = new Database();
 
-    $f3->set("email", $_SESSION['email']);
+    $email = $_SESSION['email'];
+    $f3->set("email", $email);
     $code = '';
     $headers = "From: Green River Messaging\n";
 
     // if an instructor account
-    if (validIEmail($_SESSION['email'])){
-        $instructor = $database->getInstructor($_SESSION['email']);
+    if (validIEmail($email)){
+        $instructor = $database->getInstructor($email);
         $code = trim($instructor['verified']);
 
         // send new code when pressing resend
         if (isset($_POST['resend'])){
             $code = randomString(6);
-            $database->setInstructorCode("verified", $code, $_SESSION['email']);
-            $to = $_SESSION['email'];
+            $database->setInstructorCode("verified", $code, $email);
+            $to = $email;
             mail($to, "GREEN RIVER MESSAGING\n\n Account Verification Code: ", $code . "\n", $headers);
         }
 
@@ -639,7 +635,7 @@ $f3->route('GET|POST /verify', function ($f3) {
             // if code is correct, verify in database
             if ($_POST['verificationCode'] == $code){
                 $value = 'y';
-                $database->setInstructorCode("verified", $value, $_SESSION['email']);
+                $database->setInstructorCode("verified", $value, $email);
                 $f3->reroute('/profile');
             }
             else {
@@ -649,15 +645,15 @@ $f3->route('GET|POST /verify', function ($f3) {
     }
 
     // if a student account
-    elseif (validSEmail($_SESSION['email'])) {
-        $student = $database->getStudent($_SESSION['email']);
+    elseif (validSEmail($email)) {
+        $student = $database->getStudent($email);
         $code = trim($student['verifiedStudent']);
 
         // send new code when pressing resend
         if (isset($_POST['resend'])){
             $code = randomString(6);
-            $database->setStudentCode("verifiedStudent", $code, $_SESSION['email']);
-            $to = $_SESSION['email'];
+            $database->setStudentCode("verifiedStudent", $code, $email);
+            $to = $email;
             mail($to, 'Account Verification Code',
                 "GREEN RIVER MESSAGING\n\n Account Verification Code: " .$code . "\n", $headers);
         }
@@ -667,7 +663,7 @@ $f3->route('GET|POST /verify', function ($f3) {
             if($_POST['verificationCode'] == $code){
                 $column = 'verifiedStudent';
                 $value = 'y';
-                $database->setStudentCode($column, $value, $_SESSION['email']);
+                $database->setStudentCode($column, $value, $email);
                 $f3->reroute('/profile');
             }
             else {
