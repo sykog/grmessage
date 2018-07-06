@@ -252,8 +252,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
 $f3->route('GET|POST /message', function($f3, $params) {
     var_dump($_SESSION);
 
-    $optOut = "\n\nIf you would like to stop receiving updates, 
-        visit your profile page to opt-out: latergators.greenriverdev.com/355/grmessage/";
+    $optOut = "\n\nIf you would like to stop receiving updates, visit your profile page to opt-out: latergators.greenriverdev.com/355/grmessage/";
     $headers = "From: Green River Messaging\n";
 
     // go back to home page if not logged in
@@ -290,34 +289,18 @@ $f3->route('GET|POST /message', function($f3, $params) {
                             $carrierInfo = $database->getCarrierInfo($studentInfo['carrier']);
                             $carrierEmail = $carrierInfo['carrierEmail'];
                             $to = $studentInfo['phone'] . "@" . $carrierEmail;
-                            mail($to, '', $textMessage . $optOut, $headers);
-
-                            // confirmation and remove message
-                            $f3->set('sent', true);
-                            $f3->set('textMessage', "");
+                            mail($to, '', $textMessage, "", "-fmessaging@greenriverdev.com");
                         }
                         // only send secondary email if opted in and verified
                         if ($studentInfo['getPersonalEmails'] == "y" && $studentInfo['verifiedPersonal'] == 'y') {
                             $to = $studentInfo['personalEmail'];
                             mail($to, '', $textMessage . $optOut, $headers);
-
-                            // confirmation and remove message
-                            $f3->set('sent', true);
-                            $f3->set('textMessage', "");
                         }
                         // only send email if opted in and verified
                         if ($studentInfo['getStudentEmails'] == "y" && $studentInfo['verifiedStudent'] == 'y') {
                             $to = $studentInfo['studentEmail'];
                             mail($to, '', $textMessage . $optOut, $headers);
-
-                            // confirmation and remove message
-                            $f3->set('sent', true);
-                            $f3->set('textMessage', "");
                         }
-
-                        // confirmation and remove message
-                        $f3->set('sent', true);
-                        $f3->set('textMessage', "");
                     }
                 }
             }
@@ -325,11 +308,18 @@ $f3->route('GET|POST /message', function($f3, $params) {
             // store message in the database, get chosen programs
             $recipient = implode(", ", (array)$chosen);
             $database->storeMessage($email, $textMessage, $recipient);
+
+            // confirmation and remove message
+            $f3->set('sent', true);
+            $f3->set('textMessage', "");
         } else {
             echo "<div class=\"error alert alert-danger\" role=\"alert\">
                 Message must be between 1 and 250 characters</div>";
         }
 
+        // prevents posting again on page refresh
+        //$f3->reroute("/message");
+        //return;
     }
     $template = new Template();
     echo $template->render('views/instructorMessage.html');
@@ -469,7 +459,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         if (isset($_POST['updatePersonalEmail'])) {
             if (validPEmail($_POST['newPersonalEmail'])) {
                 $database->changePersonalEmail($email, $_POST['newPersonalEmail']);
-                $f3->reroute("/profile");
 
                 // send a code when changing email
                 $personalCode = randomString(6);
@@ -479,6 +468,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             } else {
                 $errors['pEmail'] = "Please enter a valid email.";
             }
+            $f3->reroute("/profile");
         }
 
         //if the personal email verification button was clicked
@@ -499,7 +489,8 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             $column = "verifiedPersonal";
             $database->setStudentCode($column, $code, $email);
             $to = $student['personalEmail'];
-            mail($to, "GREEN RIVER MESSAGING\n\n Personal Email Verification Code: ", $code . "\n", $headers);
+            mail($_POST['newPersonalEmail'], 'Verification Code',
+                    "GREEN RIVER MESSAGING\n\n Personal Email Verification Code: ". $personalCode . "\n", $headers);
         }
 
         // if update phone number button was clicked
@@ -508,7 +499,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             $newPhone = shortenPhone($newPhone);
             if (validPhone($newPhone) && strlen($newPhone) != 0) {
                 $database->changePhoneNumber($email, $newPhone);
-                $f3->reroute("/profile");
 
                 // send a code when changing phone number
                 $phoneCode = randomString(6);
@@ -520,17 +510,17 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
                 $carrierEmail = $carrierInfo['carrierEmail'];
                 $to = $newPhone . "@" . $carrierEmail;
-                mail($to, '', "Phone Verification Code: " . $phoneCode . "\n", $headers);
+                mail($to, "", "Phone Verification Code: " . $phoneCode . "\n", "", "-fmessaging@greenriverdev.com");
             } else {
                 $errors['phone'] = "Please enter a valid phone number.";
             }
+            $f3->reroute("/profile");
         }
 
         // if update phone carrier button was clicked
         if (isset($_POST['updateCarrier'])) {
             if (validCarrier($_POST['newCarrier'])) {
                 $database->changeCarrier($email, $_POST['newCarrier']);
-                $f3->reroute("/profile");
 
                 if (!isset($_POST['updatePhone'])) {
                     $phoneCode = randomString(6);
@@ -539,9 +529,10 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                     $carrierInfo = $database->getCarrierInfo($_POST['newCarrier']);
                     $carrierEmail = $carrierInfo['carrierEmail'];
                     $to = $student['phone'] . "@" . $carrierEmail;
-                    mail($to, '', "Phone Verification Code: " . $phoneCode . "\n", $headers);
+                    mail($to, "", "Phone Verification Code: " . $phoneCode . "\n", "", "-fmessaging@greenriverdev.com");
                 }
             }
+            $f3->reroute("/profile");
         }
 
         //if the phone verification button was clicked
@@ -564,7 +555,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             $carrierInfo = $database->getCarrierInfo($student['carrier']);
             $carrierEmail = $carrierInfo['carrierEmail'];
             $to = $student['phone'] . "@" . $carrierEmail;
-            mail($to, '', "Phone Verification Code: " . $code . "\n", $headers);
+            mail($to, "", "Phone Verification Code: " . $code . "\n", "", "-fmessaging@greenriverdev.com");
         }
 
         // if update program button was clicked
@@ -576,7 +567,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         }
 
         $f3->set("errors", $errors);
-
         $template = new Template();
         echo $template->render('views/studentProfile.html');
     }
@@ -608,6 +598,7 @@ $f3->route('GET|POST /view-messages', function($f3) {
     echo $template->render('views/viewMessages.html');
 });
 
+// define a route for verifying account
 $f3->route('GET|POST /verify', function ($f3) {
     var_dump($_SESSION);
 
