@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 
 // require autoload file
 require_once('vendor/autoload.php');
+require_once $_SERVER['DOCUMENT_ROOT']."/../config.php";
 
 //Start the session
 session_start();
@@ -21,7 +22,6 @@ $f3->set('programs', array("Bachelors - Software Development", "Associates - Sof
 
 // define a default route
 $f3->route('GET|POST /', function($f3, $params) {
-    var_dump($_SESSION);
     $headers = "From: Green River Messaging\n";
 
     if (!isset($_POST['login'])) {
@@ -113,7 +113,6 @@ $f3->route('GET|POST /', function($f3, $params) {
 
 // define a route for logout
 $f3->route('GET|POST /logout', function($f3, $params) {
-    var_dump($_SESSION);
 
     $_SESSION['loggedIn'] = false;
     $_SESSION['isInstructor'] = false;
@@ -124,7 +123,6 @@ $f3->route('GET|POST /logout', function($f3, $params) {
 
 // define a route for registration
 $f3->route('GET|POST /register', function($f3, $params) {
-    var_dump($_SESSION);
 
     $database = new Database();
     $errors = array();
@@ -250,9 +248,14 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
 // define a message route
 $f3->route('GET|POST /message', function($f3, $params) {
-    var_dump($_SESSION);
 
-    $optOut = "\n\nIf you would like to stop receiving updates, visit your profile page to opt-out: latergators.greenriverdev.com/355/grmessage/";
+    // Create the transport
+    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465))
+        ->setUsername(EMAIL_USERNAME)
+        ->setPassword(EMAIL_PASSWORD);
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+    $optOut = "<hr>If you would like to stop receiving updates, visit your profile page to opt-out: <a href='asuarez.greenriverdev.com/355/grmessage/'>latergators.greenriverdev.com/355/grmessage/</a>";
     $headers = "From: Green River Messaging\n";
 
     // go back to home page if not logged in
@@ -262,7 +265,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
         $f3->reroute("/profile");
     }
     $email = $_SESSION['email'];
-    $database = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
+    $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
     $f3->set("students", $database->getStudents());
     $instructor = $database->getInstructor($email);
 
@@ -289,7 +292,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                             $carrierInfo = $database->getCarrierInfo($studentInfo['carrier']);
                             $carrierEmail = $carrierInfo['carrierEmail'];
                             $to = $studentInfo['phone'] . "@" . $carrierEmail;
-                            mail($to, '', $textMessage, "", "-fmessaging@greenriverdev.com");
+                            mail($to, '', $textMessage, "", "-fmessaging@greenrivertech.net");
                         }
                         // only send secondary email if opted in and verified
                         if ($studentInfo['getPersonalEmails'] == "y" && $studentInfo['verifiedPersonal'] == 'y') {
@@ -298,8 +301,18 @@ $f3->route('GET|POST /message', function($f3, $params) {
                         }
                         // only send email if opted in and verified
                         if ($studentInfo['getStudentEmails'] == "y" && $studentInfo['verifiedStudent'] == 'y') {
-                            $to = $studentInfo['studentEmail'];
-                            mail($to, '', $textMessage . $optOut, $headers);
+                            // create the message
+                            $message = (new Swift_Message())
+                                ->setSubject('Green River Messaging IT')
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($studentInfo['studentEmail'])
+                                ->setBody($textMessage)
+                                ->addPart($optOut, 'text/html');
+                            $headers = $message->getHeaders();
+                            $headers->addTextHeader('Green River Messaging', 'Green River Messaging');
+
+                            // send the message
+                            $result = $mailer->send($message);
                         }
                     }
                 }
@@ -327,7 +340,6 @@ $f3->route('GET|POST /message', function($f3, $params) {
 
 // define a profile route (used for students and instructors)
 $f3->route('GET|POST /profile', function($f3, $params) {
-    var_dump($_SESSION);
 
     // go to login page if not logged in
     if(!$_SESSION['loggedIn']) {
@@ -403,8 +415,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('verifiedPersonal', $student['verifiedPersonal'] == 'y'
             || empty($f3->get('personalEmail')));
         $f3->set('verifiedPhone', $student['verifiedPhone'] == 'y');
-        $f3->set('carriers', array("Verizon", "AT&T", "Sprint", "T-Mobile", "Boost Mobile",
-            "Cricket Wireless", "Virgin Mobile", "Republic Wireless", "U.S. Cellular", "Alltel"));
 
         //if changes were made
         if (isset($_POST['save'])) {
@@ -574,7 +584,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
 // define a message viewing route
 $f3->route('GET|POST /view-messages', function($f3) {
-    var_dump($_SESSION);
 
     // go to login page if not logged in
     if(!$_SESSION['loggedIn']) $f3->reroute("/");
@@ -599,8 +608,7 @@ $f3->route('GET|POST /view-messages', function($f3) {
 });
 
 // define a route for verifying account
-$f3->route('GET|POST /verify', function ($f3) {
-    var_dump($_SESSION);
+$f3->route('GET|POST /verify', function($f3) {
 
     $database = new Database();
 
