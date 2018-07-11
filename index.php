@@ -126,7 +126,12 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
     $database = new Database();
     $errors = array();
-    $headers = "From: Green River Messaging\n";
+    // Create the transport
+    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
+        ->setUsername(EMAIL_USERNAME)
+        ->setPassword(EMAIL_PASSWORD);
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
 
     // if registering as a student
     if(isset($_POST['submitS'])) {
@@ -219,8 +224,16 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 $_SESSION['loggedIn'] = true;
                 $studentCode = randomString(6);
                 $database->setStudentCode("verifiedStudent", $studentCode, $email);
-                mail($email, 'Account Verification Code',
-                    "Account Verification Code: " .$studentCode . "\n", $headers);
+
+                // create the message
+                $message = (new Swift_Message())
+                    ->setSubject('Account Verification Code')
+                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                    ->setTo($email)
+                    ->setBody("Account Verification Code: " . $studentCode, 'text/html');
+
+                // send the message
+                $result = $mailer->send($message);
 
                 $f3->reroute("/verify");
             }
@@ -239,7 +252,17 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 // generate code
                 $instructorCode = randomString(6);
                 $database->setInstructorCode($instructorCode, $email);
-                mail($email, 'Verification Code', $instructorCode . "\n", $headers);
+
+                // create the message
+                $message = (new Swift_Message())
+                    ->setSubject('Account Verification Code')
+                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                    ->setTo($email)
+                    ->setBody("Account Verification Code: " . $instructorCode, 'text/html');
+
+                // send the message
+                $result = $mailer->send($message);
+
                 $f3->reroute("/verify");
             }
         }
@@ -250,13 +273,12 @@ $f3->route('GET|POST /register', function($f3, $params) {
 $f3->route('GET|POST /message', function($f3, $params) {
 
     // Create the transport
-    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465))
+    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
         ->setUsername(EMAIL_USERNAME)
         ->setPassword(EMAIL_PASSWORD);
     // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
-    $optOut = "<hr>If you would like to stop receiving updates, visit your profile page to opt-out: <a href='asuarez.greenriverdev.com/355/grmessage/'>latergators.greenriverdev.com/355/grmessage/</a>";
-    $headers = "From: Green River Messaging\n";
+    $optOut = "<hr>If you would like to stop receiving updates, visit your profile page to opt-out: <a href='asuarez.greenriverdev.com/355/grmessage/'>asuarez.greenriverdev.com/355/grmessage/</a>";
 
     // go back to home page if not logged in
     if(!$_SESSION['loggedIn']) $f3->reroute("/");
@@ -292,12 +314,27 @@ $f3->route('GET|POST /message', function($f3, $params) {
                             $carrierInfo = $database->getCarrierInfo($studentInfo['carrier']);
                             $carrierEmail = $carrierInfo['carrierEmail'];
                             $to = $studentInfo['phone'] . "@" . $carrierEmail;
-                            mail($to, '', $textMessage, "", "-fmessaging@greenrivertech.net");
+
+                            // create the message
+                            $message = (new Swift_Message())
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($to)
+                                ->setBody($textMessage, 'text/html');
+
+                            // send the message
+                            $result = $mailer->send($message);
                         }
                         // only send secondary email if opted in and verified
                         if ($studentInfo['getPersonalEmails'] == "y" && $studentInfo['verifiedPersonal'] == 'y') {
-                            $to = $studentInfo['personalEmail'];
-                            mail($to, '', $textMessage . $optOut, $headers);
+                            // create the message
+                            $message = (new Swift_Message())
+                                ->setSubject('Green River Messaging IT')
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($studentInfo['personalEmail'])
+                                ->setBody($textMessage . $optOut, 'text/html');
+
+                            // send the message
+                            $result = $mailer->send($message);
                         }
                         // only send email if opted in and verified
                         if ($studentInfo['getStudentEmails'] == "y" && $studentInfo['verifiedStudent'] == 'y') {
@@ -306,10 +343,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                                 ->setSubject('Green River Messaging IT')
                                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                                 ->setTo($studentInfo['studentEmail'])
-                                ->setBody($textMessage)
-                                ->addPart($optOut, 'text/html');
-                            $headers = $message->getHeaders();
-                            $headers->addTextHeader('Green River Messaging', 'Green River Messaging');
+                                ->setBody($textMessage . $optOut, 'text/html');
 
                             // send the message
                             $result = $mailer->send($message);
@@ -340,6 +374,13 @@ $f3->route('GET|POST /message', function($f3, $params) {
 
 // define a profile route (used for students and instructors)
 $f3->route('GET|POST /profile', function($f3, $params) {
+
+    // Create the transport
+    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
+        ->setUsername(EMAIL_USERNAME)
+        ->setPassword(EMAIL_PASSWORD);
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
 
     // go to login page if not logged in
     if(!$_SESSION['loggedIn']) {
@@ -471,10 +512,18 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 $database->changePersonalEmail($email, $_POST['newPersonalEmail']);
 
                 // send a code when changing email
-                $personalCode = randomString(6);
-                $database->setStudentCode("verifiedPersonal", $personalCode, $email);
-                mail($_POST['newPersonalEmail'], 'Verification Code',
-                    "GREEN RIVER MESSAGING\n\n Personal Email Verification Code: ". $personalCode . "\n", $headers);
+                $code = randomString(6);
+                $database->setStudentCode("verifiedPersonal", $code, $email);
+
+                // create the message
+                $message = (new Swift_Message())
+                    ->setSubject('Verification Code')
+                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                    ->setTo($_POST['newPersonalEmail'])
+                    ->setBody("Personal Email Verification Code: ". $code, 'text/html');
+
+                // send the message
+                $result = $mailer->send($message);
             } else {
                 $errors['pEmail'] = "Please enter a valid email.";
             }
@@ -498,9 +547,16 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             $code = randomString(6);
             $column = "verifiedPersonal";
             $database->setStudentCode($column, $code, $email);
-            $to = $student['personalEmail'];
-            mail($_POST['newPersonalEmail'], 'Verification Code',
-                    "GREEN RIVER MESSAGING\n\n Personal Email Verification Code: ". $personalCode . "\n", $headers);
+
+            // create the message
+            $message = (new Swift_Message())
+                ->setSubject('Verification Code')
+                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                ->setTo($student['personalEmail'])
+                ->setBody("Personal Email Verification Code: ". $code, 'text/html');
+
+            // send the message
+            $result = $mailer->send($message);
         }
 
         // if update phone number button was clicked
@@ -520,7 +576,15 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
                 $carrierEmail = $carrierInfo['carrierEmail'];
                 $to = $newPhone . "@" . $carrierEmail;
-                mail($to, "", "Phone Verification Code: " . $phoneCode . "\n", "", "-fmessaging@greenriverdev.com");
+
+                // create the message
+                $message = (new Swift_Message())
+                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                    ->setTo($to)
+                    ->setBody("Phone Verification Code: ". $phoneCode, 'text/html');
+
+                // send the message
+                $result = $mailer->send($message);
             } else {
                 $errors['phone'] = "Please enter a valid phone number.";
             }
@@ -539,7 +603,15 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                     $carrierInfo = $database->getCarrierInfo($_POST['newCarrier']);
                     $carrierEmail = $carrierInfo['carrierEmail'];
                     $to = $student['phone'] . "@" . $carrierEmail;
-                    mail($to, "", "Phone Verification Code: " . $phoneCode . "\n", "", "-fmessaging@greenriverdev.com");
+
+                    // create the message
+                    $message = (new Swift_Message())
+                        ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                        ->setTo($to)
+                        ->setBody("Phone Verification Code: ". $phoneCode, 'text/html');
+
+                    // send the message
+                    $result = $mailer->send($message);
                 }
             }
             $f3->reroute("/profile");
@@ -559,13 +631,21 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
         // resend phone verification
         if(isset($_POST['resendPhone'])){
-            $code = randomString(6);
+            $phoneCode = randomString(6);
             $column = 'verifiedPhone';
             $database->setStudentCode($column, $code, $email);
             $carrierInfo = $database->getCarrierInfo($student['carrier']);
             $carrierEmail = $carrierInfo['carrierEmail'];
             $to = $student['phone'] . "@" . $carrierEmail;
-            mail($to, "", "Phone Verification Code: " . $code . "\n", "", "-fmessaging@greenriverdev.com");
+
+            // create the message
+            $message = (new Swift_Message())
+                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                ->setTo($to)
+                ->setBody("Phone Verification Code: ". $phoneCode, 'text/html');
+
+            // send the message
+            $result = $mailer->send($message);
         }
 
         // if update program button was clicked
