@@ -691,11 +691,15 @@ $f3->route('GET|POST /view-messages', function($f3) {
 $f3->route('GET|POST /verify', function($f3) {
 
     $database = new Database();
-
     $email = $_SESSION['email'];
     $f3->set("email", $email);
-    $code = '';
-    $headers = "From: Green River Messaging\n";
+
+    // Create the transport
+    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
+        ->setUsername(EMAIL_USERNAME)
+        ->setPassword(EMAIL_PASSWORD);
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
 
     // if an instructor account
     if (validIEmail($email)){
@@ -705,9 +709,21 @@ $f3->route('GET|POST /verify', function($f3) {
         // send new code when pressing resend
         if (isset($_POST['resend'])){
             $code = randomString(6);
+            $_SESSION['resendCode'] = $code; // store in session so is saves on redirect
             $database->setInstructorCode("verified", $code, $email);
-            $to = $email;
-            mail($to, "GREEN RIVER MESSAGING\n\n Account Verification Code: ", $code . "\n", $headers);
+
+            // create the message
+            $message = (new Swift_Message())
+                ->setSubject('Account Verification Code')
+                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                ->setTo($email)
+                ->setBody("Account Verification Code: " . $code, 'text/html');
+
+            // send the message
+            $result = $mailer->send($message);
+            $f3->reroute("/verify");
+            return; // prevents another POST on refresh
+            echo "code: " . $code . " - " . $_SESSION['resendCode'];
         }
 
         elseif (isset($_POST['verify'])){
@@ -731,10 +747,20 @@ $f3->route('GET|POST /verify', function($f3) {
         // send new code when pressing resend
         if (isset($_POST['resend'])){
             $code = randomString(6);
+            $_SESSION['resendCode'] = $code;
             $database->setStudentCode("verifiedStudent", $code, $email);
-            $to = $email;
-            mail($to, 'Account Verification Code',
-                "GREEN RIVER MESSAGING\n\n Account Verification Code: " .$code . "\n", $headers);
+
+            // create the message
+            $message = (new Swift_Message())
+                ->setSubject('Account Verification Code')
+                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                ->setTo($email)
+                ->setBody("Account Verification Code: " . $code, 'text/html');
+
+            // send the message
+            $result = $mailer->send($message);
+            $f3->reroute("/verify");
+            return; // prevents another POST on refresh
         }
 
         elseif (isset($_POST['verify'])){
