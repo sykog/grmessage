@@ -1,3 +1,13 @@
+/* Header Styles */
+
+h3#green {
+    position: relative;
+    font-size: 1.2rem;
+    color: green;
+    width: max-content;
+    margin: auto;
+}
+
 /* Label and Input Styles */
 
 label {

@@ -22,7 +22,11 @@ $f3->set('programs', array("Bachelors - Software Development", "Associates - Sof
 
 // define a default route
 $f3->route('GET|POST /', function($f3, $params) {
-    $headers = "From: Green River Messaging\n";
+
+    unset($_SESSION['resendCode']);
+    unset($_SESSION['oldCode']);
+    unset($_SESSION['codeError']);
+    unset($_SESSION['verificationCode']);
 
     if (!isset($_POST['login'])) {
         $template = new Template();
@@ -117,6 +121,7 @@ $f3->route('GET|POST /logout', function($f3, $params) {
     $_SESSION['loggedIn'] = false;
     $_SESSION['isInstructor'] = false;
     unset($_SESSION['email']);
+
     $template = new Template();
     $f3->reroute("/");
 });
@@ -269,8 +274,13 @@ $f3->route('GET|POST /register', function($f3, $params) {
     }
 });
 
-// define a message route
-$f3->route('GET|POST /message', function($f3, $params) {
+// define a route for verifying account
+$f3->route('GET|POST /verify', function($f3) {
+
+    $database = new Database();
+    $email = $_SESSION['email'];
+    $f3->set("email", $email);
+    if (isset($_SESSION['codeError'])) $f3->set('codeError', $_SESSION['codeError']);
 
     // Create the transport
     $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
@@ -278,102 +288,75 @@ $f3->route('GET|POST /message', function($f3, $params) {
         ->setPassword(EMAIL_PASSWORD);
     // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
-    $optOut = "<hr>If you would like to stop receiving updates, visit your profile page to opt-out: <a href='asuarez.greenriverdev.com/355/grmessage/'>asuarez.greenriverdev.com/355/grmessage/</a>";
 
-    // go back to home page if not logged in
-    if(!$_SESSION['loggedIn']) $f3->reroute("/");
-    // go to profile if logged in, but as a student
-    if($_SESSION['loggedIn'] && !$_SESSION['isInstructor']) {
-        $f3->reroute("/profile");
+    // if an instructor account
+    if (validIEmail($email)) $code = trim($database->getInstructor($email)['verified']);
+    // if a student account
+    else $code = trim($database->getStudent($email)['verifiedStudent']);
+
+    // send new code when pressing resend
+    if (isset($_POST['resend'])){
+        $_SESSION['oldCode'] = $code; // for checking if a new code was sent
+        $code = randomString(6);
+        $_SESSION['resendCode'] = $code; // store in session so is saves on redirect
+
+        if (validIEmail($email)) $database->setInstructorCode("verified", $code, $email);
+        else $database->setStudentCode("verifiedStudent", $code, $email);
+
+        // create the message
+        $message = (new Swift_Message())
+            ->setSubject('Account Verification Code')
+            ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+            ->setTo($email)
+            ->setBody("Account Verification Code: " . $code, 'text/html');
+
+        // send the message
+        $result = $mailer->send($message);
+        $f3->reroute("/verify");
+        return; // prevents another POST on refresh
     }
-    $email = $_SESSION['email'];
-    $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
-    $f3->set("students", $database->getStudents());
-    $instructor = $database->getInstructor($email);
 
-    // go to verification page if not account hasn't been verified
-    if(trim($instructor['verified']) != 'y') {
-        $f3->reroute('/verify');
-    }
-    if(isset($_POST['submit'])) {
-        $textMessage = $_POST['textMessage'];
-        $textMessage = trim($textMessage);
-        $f3->set('textMessage', $textMessage);
-        $f3->set('sent', false);
+    elseif (isset($_POST['verify'])){
+        // if code is correct, verify in database
+        if ($_POST['verificationCode'] == $code && strlen($_POST['verificationCode']) > 0){
+            // store in session so is saves on redirect
+            $_SESSION['verificationCode'] == $_POST['verificationCode'];
+            $value = 'y';
 
-        if(validTextMessage ($textMessage)) {
-            $chosen = $_POST['chosenPrograms']; // gets the selected program(s)
-            $students = $database->getStudents();
+            if (validIEmail($email))  $database->setInstructorCode("verified", $value, $email);
+            else $database->setStudentCode("verifiedStudent", $value, $email);
 
-            // send message to every student by selecting the program, then the student
-            foreach ((array)$chosen as $current) {
-                foreach ($students as $studentInfo) {
-                    if ($studentInfo['program'] == $current) {
-                        // only send text if opted in and verified
-                        if ($studentInfo['getTexts'] == "y" && $studentInfo['verifiedPhone'] == 'y') {
-                            $carrierInfo = $database->getCarrierInfo($studentInfo['carrier']);
-                            $carrierEmail = $carrierInfo['carrierEmail'];
-                            $to = $studentInfo['phone'] . "@" . $carrierEmail;
-
-                            // create the message
-                            $message = (new Swift_Message())
-                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                                ->setTo($to)
-                                ->setBody($textMessage, 'text/html');
-
-                            // send the message
-                            $result = $mailer->send($message);
-                        }
-                        // only send secondary email if opted in and verified
-                        if ($studentInfo['getPersonalEmails'] == "y" && $studentInfo['verifiedPersonal'] == 'y') {
-                            // create the message
-                            $message = (new Swift_Message())
-                                ->setSubject('Green River Messaging IT')
-                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                                ->setTo($studentInfo['personalEmail'])
-                                ->setBody($textMessage . $optOut, 'text/html');
-
-                            // send the message
-                            $result = $mailer->send($message);
-                        }
-                        // only send email if opted in and verified
-                        if ($studentInfo['getStudentEmails'] == "y" && $studentInfo['verifiedStudent'] == 'y') {
-                            // create the message
-                            $message = (new Swift_Message())
-                                ->setSubject('Green River Messaging IT')
-                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                                ->setTo($studentInfo['studentEmail'])
-                                ->setBody($textMessage . $optOut, 'text/html');
-
-                            // send the message
-                            $result = $mailer->send($message);
-                        }
-                    }
-                }
-            }
-
-            // store message in the database, get chosen programs
-            $recipient = implode(", ", (array)$chosen);
-            $database->storeMessage($email, $textMessage, $recipient);
-
-            // confirmation and remove message
-            $f3->set('sent', true);
-            $f3->set('textMessage', "");
+            $_SESSION['codeError'] = false;
         } else {
-            echo "<div class=\"error alert alert-danger\" role=\"alert\">
-                Message must be between 1 and 250 characters</div>";
+            $_SESSION['codeError'] = true;
         }
-
-        // prevents posting again on page refresh
-        //$f3->reroute("/message");
-        //return;
+        $_SESSION['verify'] = true;
+        $f3->reroute('/profile');
+        return; // prevents another POST on refresh
     }
+
+    // only display the messages once
+    if ($_SESSION['resendCode'] != $_SESSION['oldCode']) {
+        $f3->set('sent', true);
+        unset($_SESSION['resendCode']);
+        unset($_SESSION['oldCode']);
+    }
+    if ($_SESSION['verify']) {
+        $_SESSION['verify'] = false;
+        $_SESSION['codeError'] = false;
+    }
+
     $template = new Template();
-    echo $template->render('views/instructorMessage.html');
+    echo $template->render('views/verifyAccount.html');
 });
 
 // define a profile route (used for students and instructors)
 $f3->route('GET|POST /profile', function($f3, $params) {
+
+    unset($_SESSION['resendCode']);
+    unset($_SESSION['oldCode']);
+    unset($_SESSION['codeError']);
+    unset($_SESSION['verificationCode']);
 
     // Create the transport
     $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
@@ -662,6 +645,109 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     }
 });
 
+// define a message route
+$f3->route('GET|POST /message', function($f3, $params) {
+
+    // Create the transport
+    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
+        ->setUsername(EMAIL_USERNAME)
+        ->setPassword(EMAIL_PASSWORD);
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+    $optOut = "<hr>If you would like to stop receiving updates, visit your profile page to opt-out: <a href='asuarez.greenriverdev.com/355/grmessage/'>asuarez.greenriverdev.com/355/grmessage/</a>";
+
+    // go back to home page if not logged in
+    if(!$_SESSION['loggedIn']) $f3->reroute("/");
+    // go to profile if logged in, but as a student
+    if($_SESSION['loggedIn'] && !$_SESSION['isInstructor']) {
+        $f3->reroute("/profile");
+    }
+    $email = $_SESSION['email'];
+    $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
+    $f3->set("students", $database->getStudents());
+    $instructor = $database->getInstructor($email);
+
+    // go to verification page if not account hasn't been verified
+    if(trim($instructor['verified']) != 'y') {
+        $f3->reroute('/verify');
+    }
+    if(isset($_POST['submit'])) {
+        $textMessage = $_POST['textMessage'];
+        $textMessage = trim($textMessage);
+        $f3->set('textMessage', $textMessage);
+        $f3->set('sent', false);
+
+        if(validTextMessage ($textMessage)) {
+            $chosen = $_POST['chosenPrograms']; // gets the selected program(s)
+            $students = $database->getStudents();
+
+            // send message to every student by selecting the program, then the student
+            foreach ((array)$chosen as $current) {
+                foreach ($students as $studentInfo) {
+                    if ($studentInfo['program'] == $current) {
+                        // only send text if opted in and verified
+                        if ($studentInfo['getTexts'] == "y" && $studentInfo['verifiedPhone'] == 'y') {
+                            $carrierInfo = $database->getCarrierInfo($studentInfo['carrier']);
+                            $carrierEmail = $carrierInfo['carrierEmail'];
+                            $to = $studentInfo['phone'] . "@" . $carrierEmail;
+
+                            // create the message
+                            $message = (new Swift_Message())
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($to)
+                                ->setBody($textMessage, 'text/html');
+
+                            // send the message
+                            $result = $mailer->send($message);
+                        }
+                        // only send secondary email if opted in and verified
+                        if ($studentInfo['getPersonalEmails'] == "y" && $studentInfo['verifiedPersonal'] == 'y') {
+                            // create the message
+                            $message = (new Swift_Message())
+                                ->setSubject('Green River Messaging IT')
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($studentInfo['personalEmail'])
+                                ->setBody($textMessage . $optOut, 'text/html');
+
+                            // send the message
+                            $result = $mailer->send($message);
+                        }
+                        // only send email if opted in and verified
+                        if ($studentInfo['getStudentEmails'] == "y" && $studentInfo['verifiedStudent'] == 'y') {
+                            // create the message
+                            $message = (new Swift_Message())
+                                ->setSubject('Green River Messaging IT')
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($studentInfo['studentEmail'])
+                                ->setBody($textMessage . $optOut, 'text/html');
+
+                            // send the message
+                            $result = $mailer->send($message);
+                        }
+                    }
+                }
+            }
+
+            // store message in the database, get chosen programs
+            $recipient = implode(", ", (array)$chosen);
+            $database->storeMessage($email, $textMessage, $recipient);
+
+            // confirmation and remove message
+            $f3->set('sent', true);
+            $f3->set('textMessage', "");
+        } else {
+            echo "<div class=\"error alert alert-danger\" role=\"alert\">
+                Message must be between 1 and 250 characters</div>";
+        }
+
+        // prevents posting again on page refresh
+        //$f3->reroute("/message");
+        //return;
+    }
+    $template = new Template();
+    echo $template->render('views/instructorMessage.html');
+});
+
 // define a message viewing route
 $f3->route('GET|POST /view-messages', function($f3) {
 
@@ -685,100 +771,6 @@ $f3->route('GET|POST /view-messages', function($f3) {
 
     $template = new Template();
     echo $template->render('views/viewMessages.html');
-});
-
-// define a route for verifying account
-$f3->route('GET|POST /verify', function($f3) {
-
-    $database = new Database();
-    $email = $_SESSION['email'];
-    $f3->set("email", $email);
-
-    // Create the transport
-    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
-        ->setUsername(EMAIL_USERNAME)
-        ->setPassword(EMAIL_PASSWORD);
-    // Create the Mailer using your created Transport
-    $mailer = new Swift_Mailer($transport);
-
-    // if an instructor account
-    if (validIEmail($email)){
-        $instructor = $database->getInstructor($email);
-        $code = trim($instructor['verified']);
-
-        // send new code when pressing resend
-        if (isset($_POST['resend'])){
-            $code = randomString(6);
-            $_SESSION['resendCode'] = $code; // store in session so is saves on redirect
-            $database->setInstructorCode("verified", $code, $email);
-
-            // create the message
-            $message = (new Swift_Message())
-                ->setSubject('Account Verification Code')
-                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                ->setTo($email)
-                ->setBody("Account Verification Code: " . $code, 'text/html');
-
-            // send the message
-            $result = $mailer->send($message);
-            $f3->reroute("/verify");
-            return; // prevents another POST on refresh
-            echo "code: " . $code . " - " . $_SESSION['resendCode'];
-        }
-
-        elseif (isset($_POST['verify'])){
-            // if code is correct, verify in database
-            if ($_POST['verificationCode'] == $code){
-                $value = 'y';
-                $database->setInstructorCode("verified", $value, $email);
-                $f3->reroute('/profile');
-            }
-            else {
-                $f3->set('codeError', true);
-            }
-        }
-    }
-
-    // if a student account
-    elseif (validSEmail($email)) {
-        $student = $database->getStudent($email);
-        $code = trim($student['verifiedStudent']);
-
-        // send new code when pressing resend
-        if (isset($_POST['resend'])){
-            $code = randomString(6);
-            $_SESSION['resendCode'] = $code;
-            $database->setStudentCode("verifiedStudent", $code, $email);
-
-            // create the message
-            $message = (new Swift_Message())
-                ->setSubject('Account Verification Code')
-                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                ->setTo($email)
-                ->setBody("Account Verification Code: " . $code, 'text/html');
-
-            // send the message
-            $result = $mailer->send($message);
-            $f3->reroute("/verify");
-            return; // prevents another POST on refresh
-        }
-
-        elseif (isset($_POST['verify'])){
-            // if code is correct, verify in database
-            if($_POST['verificationCode'] == $code){
-                $column = 'verifiedStudent';
-                $value = 'y';
-                $database->setStudentCode($column, $value, $email);
-                $f3->reroute('/profile');
-            }
-            else {
-                $f3->set('codeError', true);
-            }
-        }
-    }
-
-    $template = new Template();
-    echo $template->render('views/verifyAccount.html');
 });
 
 // run fat free

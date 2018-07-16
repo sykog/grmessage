@@ -36,7 +36,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-bottom mx-auto my-2">
+                <div class="col align-bottom mx-auto my-2">
                     <div class="container">
                         <div class="row mx-auto my-1">
                             <button type="submit" name="verify">Verify Account</button>
@@ -44,6 +44,9 @@
                         <div class="row mx-auto my-1">
                             <button type="submit" name="resend" id="resend">Send new verification code</button>
                         </div>
+                        <check if="{{ @sent }}">
+                            <h3 id="green" class="alert alert-success" role="alert">Code Sent!</h3>
+                        </check>
                     </div>
                 </div>
             </div>
