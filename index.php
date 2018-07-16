@@ -355,8 +355,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     unset($_SESSION['resendCode']);
     unset($_SESSION['oldCode']);
-    unset($_SESSION['codeError']);
-    unset($_SESSION['verificationCode']);
 
     // Create the transport
     $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
@@ -379,6 +377,10 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
         //set f3 variables
         $instructor = $database->getInstructor($email);
+        // if account hasn't been verified
+        if (trim($instructor['verified']) != 'y') {
+            $f3->reroute('/verify');
+        }
 
         $f3->set('email', $email);
         $f3->set('password', $instructor['password']);
@@ -417,7 +419,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     else {
         $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
         $student = $database->getStudent($email);
-
         // if account hasn't been verified
         if (trim($student['verifiedStudent']) != 'y') {
             $f3->reroute('/verify');
