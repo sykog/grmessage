@@ -224,8 +224,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if ($email == $_POST['semail']) {
             // only submit if the email doesn't exist
             if($database->studentExists($email)) {
-                echo "<div class=\"error alert alert-danger\" role=\"alert\">
-            Email already exists.</div>";
+                $errors['email'] = "Email already exists";
             } else {
                 $database->addStudent($email, $password, $phone, $first, $last, $carrier, $program);
                 $_SESSION['loggedIn'] = true;
@@ -250,8 +249,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if ($email == $_POST['iemail']) {
             // only submit if the email doesnt exist
             if($database->instructorExists($email)) {
-                echo "<div class=\"error alert alert-danger\" role=\"alert\">
-            Email already exists.</div>";
+                $errors['email'] = "Email already exists";
             } else {
                 $database->addInstructor($email, $password, $first, $last);
                 $_SESSION['loggedIn'] = true;

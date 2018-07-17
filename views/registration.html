@@ -36,7 +36,7 @@
                 <check if="{{ isset(@errors['email']) }}">
                     <p class="error alert alert-danger">{{ @errors['email'] }}</p>
                 </check>
-                <input class="form-control" type="text" id="email" name="semail"
+                <input class="form-control" type="text" id="email" name="semail" placeholder="example@mail.greenriver.edu"
                        value="{{ @email }}" required>
 
                 <label class="form-control-label" for="password">*Password<span class="red"></span>

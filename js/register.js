@@ -24,6 +24,7 @@ $(document).ready(function() {
 
         $("#submit").attr("name", "submitS");
         $("#email").attr("name", "semail");
+        $("#email").attr("placeholder", "example@mail.greenriver.edu");
         $('#regHeader').text("Student");
     });
 
@@ -35,6 +36,7 @@ $(document).ready(function() {
 
         $("#submit").attr("name", "submitI");
         $("#email").attr("name", "iemail");
+        $("#email").attr("placeholder", "example@greenriver.edu");
         $('#regHeader').text("Instructor");
     });
 
@@ -80,7 +82,7 @@ $(document).ready(function() {
         $("input#email").on('keyup blur change', function () {
             if (semailExp.test($(this).val())) {
                 // if valid check if it already exists
-                $(".red").eq(0).load('json/studentExists.php', {studentEmail: $(this).val()});
+                $(".red").eq(0).load('ajax/studentExists.php', {studentEmail: $(this).val()});
             } else {
                 $(".red").eq(0).text("Not a green river student email");
             }
@@ -92,7 +94,7 @@ $(document).ready(function() {
         $("input#email").on('keyup blur change', function () {
             if (iemailExp.test($(this).val())) {
                 // if valid check if it already exists
-                $(".red").eq(0).load('json/instructorExists.php', {email: $(this).val()});
+                $(".red").eq(0).load('ajax/instructorExists.php', {email: $(this).val()});
             } else {
                 $(".red").eq(0).text("Not a green river instructor email");
             }

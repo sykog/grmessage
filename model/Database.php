@@ -271,7 +271,7 @@ class Database
      * @param email email being searched
      * @return bool true if email is found
      */
-    function InstructorExists($email) {
+    function instructorExists($email) {
         $dbh = $this->dbh;
         // Define the query
         $sql = "SELECT * FROM instructors WHERE email= :email";

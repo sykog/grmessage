@@ -6,6 +6,34 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit22ab9d97bc40d9a50203b47c9ece09a7
 {
+    public static $files = array (
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+    );
+
+    public static $prefixLengthsPsr4 = array (
+        'E' => 
+        array (
+            'Egulias\\EmailValidator\\' => 23,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Egulias\\EmailValidator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/egulias/email-validator/EmailValidator',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'D' => 
+        array (
+            'Doctrine\\Common\\Lexer\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/doctrine/lexer/lib',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Audit' => __DIR__ . '/..' . '/bcosca/fatfree-core/audit.php',
         'Auth' => __DIR__ . '/..' . '/bcosca/fatfree-core/auth.php',
@@ -51,12 +79,14 @@ class ComposerStaticInit22ab9d97bc40d9a50203b47c9ece09a7
         'Web\\OAuth2' => __DIR__ . '/..' . '/bcosca/fatfree-core/web/oauth2.php',
         'Web\\OpenID' => __DIR__ . '/..' . '/bcosca/fatfree-core/web/openid.php',
         'Web\\Pingback' => __DIR__ . '/..' . '/bcosca/fatfree-core/web/pingback.php',
-        'registration' => __DIR__ . '/../..' . '/classes/registration.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit22ab9d97bc40d9a50203b47c9ece09a7::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit22ab9d97bc40d9a50203b47c9ece09a7::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit22ab9d97bc40d9a50203b47c9ece09a7::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit22ab9d97bc40d9a50203b47c9ece09a7::$classMap;
 
         }, null, ClassLoader::class);
