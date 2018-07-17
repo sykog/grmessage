@@ -154,6 +154,9 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if(!validSEmail($email)) {
             $errors['email'] = "Please enter a student email";
         }
+        if($database->studentExists($email)) {
+            $errors['email'] = "Email already exists";
+        }
         if(!validPassword($password)) {
             $errors['password'] = "Please enter a valid password";
         }
@@ -195,6 +198,9 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if(!validIEmail($email)){
             $errors['iemail'] = "Please enter an instructor email";
         }
+        if($database->instructorExists($email)) {
+            $errors['email'] = "Email already exists";
+        }
         if(!validPassword($password)){
             $errors['password'] = "Please enter a valid password";
         }
@@ -222,54 +228,44 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
         // if student account
         if ($email == $_POST['semail']) {
-            // only submit if the email doesn't exist
-            if($database->studentExists($email)) {
-                $errors['email'] = "Email already exists";
-            } else {
-                $database->addStudent($email, $password, $phone, $first, $last, $carrier, $program);
-                $_SESSION['loggedIn'] = true;
-                $studentCode = randomString(6);
-                $database->setStudentCode("verifiedStudent", $studentCode, $email);
+            $database->addStudent($email, $password, $phone, $first, $last, $carrier, $program);
+            $_SESSION['loggedIn'] = true;
+            $studentCode = randomString(6);
+            $database->setStudentCode("verifiedStudent", $studentCode, $email);
 
-                // create the message
-                $message = (new Swift_Message())
-                    ->setSubject('Account Verification Code')
-                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                    ->setTo($email)
-                    ->setBody("Account Verification Code: " . $studentCode, 'text/html');
+            // create the message
+            $message = (new Swift_Message())
+                ->setSubject('Account Verification Code')
+                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                ->setTo($email)
+                ->setBody("Account Verification Code: " . $studentCode, 'text/html');
 
-                // send the message
-                $result = $mailer->send($message);
+            // send the message
+            $result = $mailer->send($message);
 
-                $f3->reroute("/verify");
-            }
+            $f3->reroute("/verify");
         }
 
         // if instructor account
         if ($email == $_POST['iemail']) {
-            // only submit if the email doesnt exist
-            if($database->instructorExists($email)) {
-                $errors['email'] = "Email already exists";
-            } else {
-                $database->addInstructor($email, $password, $first, $last);
-                $_SESSION['loggedIn'] = true;
+            $database->addInstructor($email, $password, $first, $last);
+            $_SESSION['loggedIn'] = true;
 
-                // generate code
-                $instructorCode = randomString(6);
-                $database->setInstructorCode($instructorCode, $email);
+            // generate code
+            $instructorCode = randomString(6);
+            $database->setInstructorCode($instructorCode, $email);
 
-                // create the message
-                $message = (new Swift_Message())
-                    ->setSubject('Account Verification Code')
-                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                    ->setTo($email)
-                    ->setBody("Account Verification Code: " . $instructorCode, 'text/html');
+            // create the message
+            $message = (new Swift_Message())
+                ->setSubject('Account Verification Code')
+                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                ->setTo($email)
+                ->setBody("Account Verification Code: " . $instructorCode, 'text/html');
 
-                // send the message
-                $result = $mailer->send($message);
+            // send the message
+            $result = $mailer->send($message);
 
-                $f3->reroute("/verify");
-            }
+            $f3->reroute("/verify");
         }
     }
 });
