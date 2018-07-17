@@ -11,9 +11,10 @@ button#register, button#close, button#openDialog {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7e7b2', endColorstr='#eaba2a',GradientType=1 );
 }
 
-.error {
-    margin-left: auto;
-    margin-right: auto;
+p.error {
+    width: 100%;
+    clear: both;
+    text-align: center;
 }
 
 /* Forgot Password div */

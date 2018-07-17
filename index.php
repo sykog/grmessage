@@ -28,10 +28,7 @@ $f3->route('GET|POST /', function($f3, $params) {
     unset($_SESSION['codeError']);
     unset($_SESSION['verificationCode']);
 
-    if (!isset($_POST['login'])) {
-        $template = new Template();
-        echo $template->render('views/home.html');
-    }
+    if (isset($_SESSION['loginError'])) $f3->set('loginError', $_SESSION['loginError']);
 
     if (!$_SESSION['loggedIn']) {
         $database = new Database();
@@ -40,10 +37,8 @@ $f3->route('GET|POST /', function($f3, $params) {
         if (isset($_POST['login'])) {
 
             $email = $_POST['email'];
+            $_SESSION['login'] = true;
             $f3->set('username', $email);
-
-            $template = new Template();
-            echo $template->render('views/home.html');
 
             $password = sha1($_POST['password']);
             $success = true;
@@ -55,7 +50,7 @@ $f3->route('GET|POST /', function($f3, $params) {
 
                 if($student['studentEmail'] == $email && ($student['password'] == $password)) {
                     $success = true;
-                } else $success = false;
+                }
             }
 
             // if logging in as an instructor
@@ -64,11 +59,12 @@ $f3->route('GET|POST /', function($f3, $params) {
                 $_SESSION['isInstructor'] = true;
                 if($instructor['email'] == $email && ($instructor['password'] == $password)) {
                     $success = true;
-                } else $success = false;
+                }
             }
             // if the username is invalid, display login error
             else {
                 $success = false;
+                $_SESSION['loginError'] = true;
             }
 
             if($success) {
@@ -78,8 +74,8 @@ $f3->route('GET|POST /', function($f3, $params) {
                 $f3->reroute("/profile");
             }
             else {
-                echo "<div class=\"error alert alert-danger\" role=\"alert\">
-                Incorrect email or password</div>";
+                $f3->reroute("/");
+                return; // prevents POST on refresh
             }
         }
 
@@ -92,16 +88,14 @@ $f3->route('GET|POST /', function($f3, $params) {
             if (validSEmail($email2)) {
                 $student = $database->getStudent($email2);
                 $database->changeStudentPassword($email2, $newPassword);
-                mail($email2, 'Password Reset',
-                    "Here is your new password: " .$newPassword . "\n", $headers);
+                //mail($email2, 'Password Reset',"Here is your new password: " .$newPassword . "\n");
             }
 
             // if logging in as an instructor
             elseif (validIEmail($email2)) {
                 $instructor = $database->getInstructor($email2);
                 $database->changeInstructorPassword($email2, $newPassword);
-                mail($email2, 'Password Reset',
-                    "Here is your new password: " .$newPassword . "\n", $headers);
+                //mail($email2, 'Password Reset', "Here is your new password: " .$newPassword . "\n");
             }
         }
     }
@@ -113,6 +107,14 @@ $f3->route('GET|POST /', function($f3, $params) {
     if (isset($_POST["register"])) {
         $f3->reroute("/register");
     }
+
+    if ($_SESSION['login']) {
+        $_SESSION['login'] = false;
+        $_SESSION['loginError'] = false;
+    }
+
+    $template = new Template();
+    echo $template->render('views/home.html');
 });
 
 // define a route for logout
@@ -355,6 +357,8 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     unset($_SESSION['resendCode']);
     unset($_SESSION['oldCode']);
+    unset($_SESSION['login']);
+    unset($_SESSION['loginError']);
 
     // Create the transport
     $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
