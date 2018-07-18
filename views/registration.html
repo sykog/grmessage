@@ -22,7 +22,7 @@
     </header>
 
     <div class="container" id="mainContainer">
-        <h2>Register as: </h2>
+        <h2>Register as:</h2>
         <button type="button" id="student" class="clicked">Student</button>
         <button type="button" id="instructor">Instructor</button>
         <h2 id="regHeader">Student</h2>
@@ -36,31 +36,34 @@
                 <check if="{{ isset(@errors['email']) }}">
                     <p class="error alert alert-danger">{{ @errors['email'] }}</p>
                 </check>
-                <input class="form-control" type="text" id="email" name="semail" placeholder="example@mail.greenriver.edu"
-                       value="{{ @email }}" required>
-
+                <check if ="{{ @instructor }}">
+                    <true><input class="form-control" type="text" id="email" name="iemail" placeholder="example@greenriver.edu"
+                        value="{{ @fields['iemail'] }}" required></true>
+                    <false><input class="form-control" type="text" id="email" name="semail" placeholder="example@mail.greenriver.edu"
+                       value="{{ @fields['semail'] }}" required></false>
+                </check>
                 <label class="form-control-label" for="password">*Password<span class="red"></span>
                     <input type="checkbox" value="show" id="showPassword">Show</label>
                 <check if="{{ isset(@errors['password']) }}">
                     <p class="error alert alert-danger">{{ @errors['password'] }}</p>
                 </check>
                 <input class="form-control" type="password" id="password" name="password"
-                        value="{{ @password }}" required>
+                        value="{{ @fields['password'] }}" required>
 
                 <label class="form-control-label" for="confirm">*Confirm password<span class="red"></span></label>
                 <check if="{{ isset(@errors['confirm']) }}">
                     <p class="error alert alert-danger">{{ @errors['confirm'] }}</p>
                 </check>
                 <input class="form-control" type="password" id="confirm" name="confirm"
-                        value="{{ @confirm }}" required>
+                        value="{{ @fields['confirm'] }}" required>
 
                 <label class="form-control-label" for="first">*First Name<span class="red"></span></label>
                 <input class="form-control" type="text" id="first" name="first"
-                        value="{{ @first }}" required>
+                        value="{{ @fields['first'] }}" required>
 
                 <label class="form-control-label" for="last">*Last Name<span class="red"></span></label>
                 <input class="form-control" type="text" id="last" name="last"
-                        value="{{ @last }}" required>
+                        value="{{ @fields['last'] }}" required>
 
                 <div id="studentFields">
                     <label class="form-control-label" for="phone">Cell Phone Number<span class="red"></span></label>
@@ -68,14 +71,14 @@
                         <p class="error alert alert-danger">{{ @errors['phone'] }}</p>
                     </check>
                     <input class="form-control" type="text" id="phone" name="phone"
-                            value="{{ @phone }}">
+                            value="{{ @fields['phone'] }}">
 
                     <div id="selectCarrier">
                         <label class="form-check-label">Mobile Carrier</label>
                         <label class="d-block"></label>
                         <select class="form-control dropdown" id="carrier" name="carrier">
                             <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
-                                <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
+                                <option <check if="{{ @carrierOption == @fields['carrier'] }}">selected</check>>
                                 {{ @carrierOption }}</option>
                             </repeat>
                         </select>
@@ -85,7 +88,7 @@
                     <label class="d-block"></label>
                     <select class="form-control dropdown" id="program" name="program">
                         <repeat group = "{{ @programs }}" value = "{{ @programOption }}">
-                            <option <check if="{{ @programOption == @program }}">selected</check>>
+                            <option <check if="{{ @programOption == @fields['program'] }}">selected</check>>
                             {{ @programOption }}</option>
                         </repeat>
                     </select>

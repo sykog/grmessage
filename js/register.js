@@ -12,6 +12,7 @@ $(document).ready(function() {
 
     // input masks
     $("#phone").mask("(999) 999-9999");
+    if($("#email").attr("name") == "iemail") instructorClick();
 
     // carrier field starts hidden
     $("#selectCarrier").hide();
@@ -29,15 +30,8 @@ $(document).ready(function() {
     });
 
     // hides fields (phone, carrier)
-    instructor.click(function () {
-        $("#studentFields").hide();
-        instructor.addClass("clicked");
-        student.removeClass("clicked");
-
-        $("#submit").attr("name", "submitI");
-        $("#email").attr("name", "iemail");
-        $("#email").attr("placeholder", "example@greenriver.edu");
-        $('#regHeader').text("Instructor");
+    instructor.click(function() {
+        instructorClick();
     });
 
     // shows carrier is phone number is typed in
@@ -131,5 +125,16 @@ $(document).ready(function() {
                 $("#selectCarrier").hide();
             }
         });
+    }
+
+    function instructorClick() {
+        $("#studentFields").hide();
+        instructor.addClass("clicked");
+        student.removeClass("clicked");
+
+        $("#submit").attr("name", "submitI");
+        $("#email").attr("name", "iemail");
+        $("#email").attr("placeholder", "example@greenriver.edu");
+        $('#regHeader').text("Instructor");
     }
 });

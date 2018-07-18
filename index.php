@@ -133,6 +133,8 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
     $database = new Database();
     $errors = array();
+    $f3->set('instructor', false);
+
     // Create the transport
     $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
         ->setUsername(EMAIL_USERNAME)
@@ -160,7 +162,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if(!validPassword($password)) {
             $errors['password'] = "Please enter a valid password";
         }
-        if(!validPassword($confirm)) {
+        if(!validConfirm($password, $confirm)) {
             $errors['confirm'] = "Please confirm your password";
         }
         if(!validPhone($phone)) {
@@ -174,16 +176,10 @@ $f3->route('GET|POST /register', function($f3, $params) {
         }
 
         $success = sizeof($errors) == 0;
-        $f3->set('email', $email);
-        $f3->set('password', $password);
-        $f3->set('confirm', $confirm);
-        $f3->set('first', $first);
-        $f3->set('last', $last);
-        $f3->set('phone', $phone);
-        $f3->set('carrier', $carrier);
-        $f3->set('program', $carrier);
+        $f3->set('fields', $_POST);
         $f3->set('errors', $errors);
         $f3->set('success', $success);
+        $f3->set('instructor', false);
     }
     // if registering as an instructor
     if(isset($_POST['submitI'])) {
@@ -196,7 +192,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $carrier = $_POST['carrier'];
 
         if(!validIEmail($email)){
-            $errors['iemail'] = "Please enter an instructor email";
+            $errors['email'] = "Please enter an instructor email";
         }
         if($database->instructorExists($email)) {
             $errors['email'] = "Email already exists";
@@ -209,15 +205,11 @@ $f3->route('GET|POST /register', function($f3, $params) {
         }
 
         $success = sizeof($errors) == 0;
-        $f3->set('email', $email);
-        $f3->set('password', $password);
-        $f3->set('confirm', $confirm);
-        $f3->set('first', $first);
-        $f3->set('last', $last);
-        $f3->set('phone', $phone);
-        $f3->set('carrier', $carrier);
+        $f3->set('fields', $_POST);
         $f3->set('errors', $errors);
         $f3->set('success', $success);
+        $f3->set('instructor', true);
+        //echo $_POST('iemail');
     }
 
     $template = new Template();
@@ -253,7 +245,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
             // generate code
             $instructorCode = randomString(6);
-            $database->setInstructorCode($instructorCode, $email);
+            $database->setInstructorCode("verified", $instructorCode, $email);
 
             // create the message
             $message = (new Swift_Message())
