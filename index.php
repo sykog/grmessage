@@ -209,7 +209,6 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $f3->set('errors', $errors);
         $f3->set('success', $success);
         $f3->set('instructor', true);
-        //echo $_POST('iemail');
     }
 
     $template = new Template();
@@ -427,8 +426,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('getTexts', $student['getTexts']);
         $f3->set('getStudentEmails', $student['getStudentEmails']);
         $f3->set('getPersonalEmails', $student['getPersonalEmails']);
-        $f3->set('verifiedPersonal', $student['verifiedPersonal'] == 'y'
-            || empty($f3->get('personalEmail')));
+        $f3->set('verifiedPersonal', $student['verifiedPersonal'] == 'y' || empty($f3->get('personalEmail')));
         $f3->set('verifiedPhone', $student['verifiedPhone'] == 'y');
 
         //if changes were made
@@ -467,16 +465,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 }
             } else {
                 $errors['password'] = "Current password is incorrect";
-            }
-        }
-
-        // if update personal email button was clicked
-        if (isset($_POST['updateName'])) {
-            if (strlen($_POST['newFName']) > 0 && strlen($_POST['newLName']) > 0) {
-                $database->changeStudentName($email, $_POST['newFName'], $_POST['newLName']);
-                $f3->reroute("/profile");
-            } else {
-                $errors['name'] = "Please enter a valid name.";
             }
         }
 

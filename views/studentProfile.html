@@ -30,10 +30,8 @@
 
                     <div id="studentFields">
 
-                        <check if="{{ isset(@errors['name']) }}">
-                            <p class="error alert alert-danger">{{ @errors['name'] }}</p>
-                        </check>
-                        <label><strong>Full Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
+                        <p class="error alert alert-danger" id="nameError">Invalid name</p>
+                        <label><strong>Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
                         <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
                         <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
                         <button class='update' type="submit" id='updateName' name="updateName">Update Info</button>
@@ -41,7 +39,7 @@
                         <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button>
                         </label>
 
-                        <label><strong>Student Email: </strong><span> {{ @studentEmail }} </span></label><br>
+                        <label><strong>Student Email: </strong><span id="emailSpan"> {{ @studentEmail }} </span></label><br>
 
                         <check if="{{ isset(@errors['pEmail']) }}">
                             <p class="error alert alert-danger">{{ @errors['pEmail'] }}</p>

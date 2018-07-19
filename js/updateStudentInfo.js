@@ -5,6 +5,7 @@ $(document).ready(function() {
 
     $("#newPhone").mask("(999) 999-9999");
 
+    $(".error").hide();
     $(".sameLine").hide();
     $(".update").hide();
     $(".cancelInput").hide();
@@ -105,6 +106,32 @@ $(document).ready(function() {
         $(this).hide();
         $("#programSpan, #editProgram").show();
         $('#newProgram, #newProgram, #updateProgram').hide();
+    });
+
+    /********************** AJAX POSTS ************************/
+
+    $("form").submit(function(event) {
+        // stop form from submitting normally
+        event.preventDefault();
+
+        // update students name
+        $("#updateName").click(function() {
+            if ($("#newFName").val().length > 0 && $("#newLName").val().length > 0) {
+                var updateName = $.post('ajax/updateStudent.php', {
+                    email: $("#emailSpan").text(),
+                    column: "name",
+                    fname: $("#newFName").val(),
+                    lname: $("#newLName").val()});
+
+                // update the info
+                updateName.done(function() {
+                    $("#nameSpan").text($("#newFName").val() + " " + $("#newLName").val());
+                    $("#regHeader").text("Welcome, " + $("#newFName").val());
+                    $("#nameSpan, #editName").show();
+                    $("#newFName, #newLName, #updateName, #cancelName, #nameError").hide();
+                });
+            } else $("#nameError").show();
+        });
     });
 });
 
