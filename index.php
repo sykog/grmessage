@@ -468,30 +468,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             }
         }
 
-        // if update personal email button was clicked
-        if (isset($_POST['updatePersonalEmail'])) {
-            if (validPEmail($_POST['newPersonalEmail'])) {
-                $database->changePersonalEmail($email, $_POST['newPersonalEmail']);
-
-                // send a code when changing email
-                $code = randomString(6);
-                $database->setStudentCode("verifiedPersonal", $code, $email);
-
-                // create the message
-                $message = (new Swift_Message())
-                    ->setSubject('Verification Code')
-                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                    ->setTo($_POST['newPersonalEmail'])
-                    ->setBody("Personal Email Verification Code: ". $code, 'text/html');
-
-                // send the message
-                $result = $mailer->send($message);
-            } else {
-                $errors['pEmail'] = "Please enter a valid email.";
-            }
-            $f3->reroute("/profile");
-        }
-
         //if the personal email verification button was clicked
         if (isset($_POST['verifyPersonal'])) {
             if ($_POST['personalVerification'] == $student['verifiedPersonal']) {

@@ -53,6 +53,12 @@ p.error {
     width: max-content;
 }
 
+p.alert-success {
+    margin: 1% 0%;
+    padding: 1% 4%;
+    width: max-content;
+}
+
 input + p {
     margin-left: 6px;
     display: inline;

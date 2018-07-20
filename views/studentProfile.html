@@ -30,7 +30,7 @@
 
                     <div id="studentFields">
 
-                        <p class="error alert alert-danger" id="nameError">Invalid name</p>
+                        <p class="error alert alert-danger" id="nameError">Invalid Name</p><p
                         <label><strong>Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
                         <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
                         <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
@@ -39,26 +39,21 @@
                         <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button>
                         </label>
 
-                        <label><strong>Student Email: </strong><span id="emailSpan"> {{ @studentEmail }} </span></label><br>
+                        <label><strong>Student Email: </strong><span id="emailSpan"> {{ @studentEmail }} </span></label>
 
-                        <check if="{{ isset(@errors['pEmail']) }}">
-                            <p class="error alert alert-danger">{{ @errors['pEmail'] }}</p>
-                        </check>
+                        <p class="error alert alert-danger" id="pEmailError">Invalid Email</p>
                         <label><strong>Personal Email: </strong><span id="pEmailSpan">{{ @personalEmail }} </span>
                         <input class='form-control sameLine' type='text' name='newPersonalEmail' id='newPersonalEmail' value="{{ @personalEmail }}">
                         <button class='update' type="submit" id='updatePersonalEmail' name="updatePersonalEmail">Update Info</button>
                         <button type="button" class="edit" id="editPersonalEmail"></button>
                         <button type="button" class="cancelInput" id="cancelPersonalEmail" name="cancelPersonalEmail">Cancel</button></label><br>
 
-                        <check if="{{!@verifiedPersonal}}">
-                            <check if="{{ isset(@errors['personalVerificaton']) }}">
-                                <p class="error alert alert-danger">{{ @errors['personalVerificaton'] }}</p>
-                            </check>
-                            <label><strong>Personal Email Verificaton: </strong><span id="PersonalVerificationSpan"> </span>
-                                <input class='form-control sameLine verify' type='text' name='personalVerification' id='personalVerification'>
-                                <button class='update verify' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
-                                <button type="submit" name="resendPEmail" class="resend">Send New Code</button></label><br>
-                        </check>
+                        <p class="error alert alert-danger" id="pEmailVerifyError">Incorrect Code</p>
+                        <p class="alert alert-success" id="pEmailSent">Code Sent</p>
+                        <label class="verify"><strong>Personal Email Verificaton: </strong>
+                        <input class='form-control sameLine verify' type='text' name='personalVerification' id='personalVerification'>
+                        <button class='update verify' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
+                        <button type="submit" name="resendPEmail" id="resendPEmail" class="resend">Send New Code</button></label><br>
 
                         <check if="{{ isset(@errors['phone']) }}">
                             <p class="error alert alert-danger">{{ @errors['phone'] }}</p>

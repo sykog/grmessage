@@ -6,10 +6,7 @@ $(document).ready(function() {
     $("#newPhone").mask("(999) 999-9999");
 
     $(".error").hide();
-    $(".sameLine").hide();
-    $(".update").hide();
-    $(".cancelInput").hide();
-    $("#update").hide();
+    $(".sameLine, .update, .cancelInput, #update, .alert-success").hide();
     $(".verify").show();
 
     // hide checkboxes if value are empty
@@ -114,7 +111,7 @@ $(document).ready(function() {
         // stop form from submitting normally
         event.preventDefault();
 
-        // update students name
+        // update student name
         $("#updateName").click(function() {
             if ($("#newFName").val().length > 0 && $("#newLName").val().length > 0) {
                 var updateName = $.post('ajax/updateStudent.php', {
@@ -123,7 +120,7 @@ $(document).ready(function() {
                     fname: $("#newFName").val(),
                     lname: $("#newLName").val()});
 
-                // update the info
+                // update the page
                 updateName.done(function() {
                     $("#nameSpan").text($("#newFName").val() + " " + $("#newLName").val());
                     $("#regHeader").text("Welcome, " + $("#newFName").val());
@@ -131,6 +128,25 @@ $(document).ready(function() {
                     $("#newFName, #newLName, #updateName, #cancelName, #nameError").hide();
                 });
             } else $("#nameError").show();
+        });
+
+        // update personal email
+        $("#updatePersonalEmail").click(function() {
+
+            var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            if (emailReg.test($("#newPersonalEmail").val()) && $("#newPersonalEmail").val().length > 0) {
+                var updatePEmail = $.post('ajax/updateStudent.php', {
+                    email: $("#emailSpan").text(),
+                    column: "pEmail",
+                    pemail: $("#newPersonalEmail").val()});
+
+                // update the page
+                updatePEmail.done(function() {
+                    $("#pEmailSpan").text($("#newPersonalEmail").val());
+                    $(".verify, #pEmailSpan, #editPersonalEmail, #personalVerification, #verifyPersonal, #resendPEmail").show();
+                    $("#newPersonalEmail, #updatePersonalEmail, #cancelPersonalEmail, #pEmailError").hide();
+                });
+            } else $("#pEmailError").show();
         });
     });
 });
