@@ -19,8 +19,9 @@
     if ($_POST['column'] == "name") {
         $database->changeStudentName($email, $_POST['fname'], $_POST['lname']);
     }
+    // update personal email
     elseif ($_POST['column'] == "pEmail") {
-        /*$database->changePersonalEmail($email, $_POST['pemail']);
+        $database->changePersonalEmail($email, $_POST['pemail']);
 
         // send a code when changing email
         $code = randomString(6);
@@ -34,5 +35,13 @@
             ->setBody("Personal Email Verification Code: ". $code, 'text/html');
 
         // send the message
-        $result = $mailer->send($message);*/
+        $result = $mailer->send($message);
+    }
+    // verify personal email
+    elseif ($_POST['column'] == "pEmailVerify") {
+        // if it matches code in the database
+        if ($_POST['code'] == $database->getStudent($email)['verifiedPersonal']) {
+            $database->setStudentCode("verifiedPersonal", "y", $email);
+            echo "correct";
+        }
     }

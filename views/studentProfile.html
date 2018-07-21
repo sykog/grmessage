@@ -39,7 +39,7 @@
                         <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button>
                         </label>
 
-                        <label><strong>Student Email: </strong><span id="emailSpan"> {{ @studentEmail }} </span></label>
+                        <p><label><strong>Student Email: </strong><span id="emailSpan"> {{ @studentEmail }} </span></label></p>
 
                         <p class="error alert alert-danger" id="pEmailError">Invalid Email</p>
                         <label><strong>Personal Email: </strong><span id="pEmailSpan">{{ @personalEmail }} </span>
@@ -50,10 +50,12 @@
 
                         <p class="error alert alert-danger" id="pEmailVerifyError">Incorrect Code</p>
                         <p class="alert alert-success" id="pEmailSent">Code Sent</p>
-                        <label class="verify"><strong>Personal Email Verificaton: </strong>
-                        <input class='form-control sameLine verify' type='text' name='personalVerification' id='personalVerification'>
-                        <button class='update verify' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
-                        <button type="submit" name="resendPEmail" id="resendPEmail" class="resend">Send New Code</button></label><br>
+                        <div id="verifyPEmailDiv" class="verify">
+                            <label><strong>Personal Email Verificaton: </strong>
+                            <input class='form-control sameLine' type='text' name='personalVerification' id='personalVerification'>
+                            <button class='update' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
+                            <button type="submit" name="resendPEmail" id="resendPEmail" class="resend">Send New Code</button></label>
+                        </div>
 
                         <check if="{{ isset(@errors['phone']) }}">
                             <p class="error alert alert-danger">{{ @errors['phone'] }}</p>
@@ -77,15 +79,14 @@
                             <button type="button" class="cancelInput" id="cancelCarrier" name="cancelCarrier">Cancel</button></label>
                         </div>
 
-                        <check if="{{!@verifiedPhone}}">
-                            <check if="{{ isset(@errors['phoneVerificaton']) }}">
-                                <p class="error alert alert-danger">{{ @errors['phoneVerificaton'] }}</p>
-                            </check>
+                        <p class="error alert alert-danger" id="phoneVerifyError">Incorrect Code</p>
+                        <p class="alert alert-success" id="phoneSent">Code Sent</p>
+                        <div id="verifyPhoneDiv" class="verify">
                             <label><strong>Phone Verificaton: </strong><span id="PhoneVerificationSpan"> </span>
-                                <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerificatiion'>
-                                <button class='update verify' type="submit" id='verifyPhone' name="verifyPhone">Verify Phone</button>
-                                <button type="submit" name="resendPhone" class="resend">Send New Code</button></label><br>
-                        </check>
+                            <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerificatiion'>
+                            <button class='update verify' type="submit" id='verifyPhone' name="verifyPhone">Verify Phone</button>
+                            <button type="submit" name="resendPhone" class="resend">Send New Code</button></label><br>
+                        </div>
 
                         <label><strong>Program: </strong><span id="programSpan"> {{ @program }} </span>
                         <select class="form-control dropdown sameLine" id="newProgram" name="newProgram">

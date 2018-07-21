@@ -47,6 +47,10 @@ label {
 
 /* Paragraph Styles */
 
+p {
+    margin: 6px 0px;
+}
+
 p.error {
     margin: 1% 0%;
     padding: 1% 4%;

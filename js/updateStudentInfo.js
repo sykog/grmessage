@@ -5,9 +5,11 @@ $(document).ready(function() {
 
     $("#newPhone").mask("(999) 999-9999");
 
-    $(".error").hide();
-    $(".sameLine, .update, .cancelInput, #update, .alert-success").hide();
-    $(".verify").show();
+    $(".error, .sameLine, .update, .cancelInput, #update, .alert-success").hide();
+    $(".verify *").show();
+
+    // hide verification tabs if verified
+    hideVerifications();
 
     // hide checkboxes if value are empty
     if ($("#phoneSpan").text().length <= 2) {
@@ -148,7 +150,27 @@ $(document).ready(function() {
                 });
             } else $("#pEmailError").show();
         });
+
+        // verify personal email
+        $("#verifyPersonal").click(function() {
+
+            var updatePEmail = $.post('ajax/updateStudent.php', {
+                email: $("#emailSpan").text(),
+                column: "pEmailVerify",
+                code: $("#personalVerification").val()});
+
+            // update the page
+            updatePEmail.done(function(data) {
+                // hide tab if code is correct, display error if not
+                if (data == "correct") $("#verifyPEmailDiv, #pEmailVerifyError").hide();
+                else $("#pEmailVerifyError").show();
+            });
+        });
     });
+
+    function hideVerifications() {
+
+    }
 });
 
 function showUpdate() {

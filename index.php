@@ -468,18 +468,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             }
         }
 
-        //if the personal email verification button was clicked
-        if (isset($_POST['verifyPersonal'])) {
-            if ($_POST['personalVerification'] == $student['verifiedPersonal']) {
-                $column = "verifiedPersonal";
-                $value = "y";
-                $f3->set('verifiedPersonal', true);
-                $database->setStudentCode($column, $value, $email);
-            } else {
-                $errors['personalVerificaton'] = "Incorrect verification code.";
-            }
-        }
-
         // resend phone verification
         if(isset($_POST['resendPEmail'])){
             $code = randomString(6);
