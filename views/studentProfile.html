@@ -57,9 +57,7 @@
                             <button type="submit" name="resendPEmail" id="resendPEmail" class="resend">Send New Code</button></label>
                         </div>
 
-                        <check if="{{ isset(@errors['phone']) }}">
-                            <p class="error alert alert-danger">{{ @errors['phone'] }}</p>
-                        </check>
+                        <p class="error alert alert-danger" id="phoneError">Invalid Phone Number</p>
                         <label><strong>Phone Number: </strong><span id="phoneSpan"> {{ @phone }} </span>
                         <input class='form-control sameLine' type='text' name='newPhone' id='newPhone' value="{{ @phone }}">
                         <button class='update' type="submit" id='updatePhone' name="updatePhone">Update Info</button>
@@ -85,7 +83,7 @@
                             <label><strong>Phone Verificaton: </strong><span id="PhoneVerificationSpan"> </span>
                             <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerificatiion'>
                             <button class='update verify' type="submit" id='verifyPhone' name="verifyPhone">Verify Phone</button>
-                            <button type="submit" name="resendPhone" class="resend">Send New Code</button></label><br>
+                            <button type="submit" name="resendPhone" id="resendPhone" class="resend">Send New Code</button></label><br>
                         </div>
 
                         <label><strong>Program: </strong><span id="programSpan"> {{ @program }} </span>

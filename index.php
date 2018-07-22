@@ -485,38 +485,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             $result = $mailer->send($message);
         }
 
-        // if update phone number button was clicked
-        if (isset($_POST['updatePhone'])) {
-            $newPhone = $_POST['newPhone'];
-            $newPhone = shortenPhone($newPhone);
-            if (validPhone($newPhone) && strlen($newPhone) != 0) {
-                $database->changePhoneNumber($email, $newPhone);
-
-                // send a code when changing phone number
-                $phoneCode = randomString(6);
-                $column = "verifiedPhone";
-                $database->setStudentCode($column, $phoneCode, $email);
-
-                if (isset($_POST['newCarrier'])) $carrierInfo = $database->getCarrierInfo($_POST['newCarrier']);
-                else $carrierInfo = $database->getCarrierInfo($student['carrier']);
-
-                $carrierEmail = $carrierInfo['carrierEmail'];
-                $to = $newPhone . "@" . $carrierEmail;
-
-                // create the message
-                $message = (new Swift_Message())
-                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                    ->setTo($to)
-                    ->setBody("Phone Verification Code: ". $phoneCode, 'text/html');
-
-                // send the message
-                $result = $mailer->send($message);
-            } else {
-                $errors['phone'] = "Please enter a valid phone number.";
-            }
-            $f3->reroute("/profile");
-        }
-
         // if update phone carrier button was clicked
         if (isset($_POST['updateCarrier'])) {
             if (validCarrier($_POST['newCarrier'])) {

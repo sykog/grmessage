@@ -145,8 +145,9 @@ $(document).ready(function() {
                 // update the page
                 updatePEmail.done(function() {
                     $("#pEmailSpan").text($("#newPersonalEmail").val());
-                    $(".verify, #pEmailSpan, #editPersonalEmail, #personalVerification, #verifyPersonal, #resendPEmail").show();
+                    $(".verify, #pEmailSpan, #editPersonalEmail, #personalVerification, #verifyPersonal, #resendPEmail, #pEmailSent").show();
                     $("#newPersonalEmail, #updatePersonalEmail, #cancelPersonalEmail, #pEmailError").hide();
+                    $('#pEmailSent').delay(5000).fadeOut('slow');
                 });
             } else $("#pEmailError").show();
         });
@@ -162,9 +163,49 @@ $(document).ready(function() {
             // update the page
             updatePEmail.done(function(data) {
                 // hide tab if code is correct, display error if not
-                if (data == "correct") $("#verifyPEmailDiv, #pEmailVerifyError").hide();
+                if (data == "correct") $("#verifyPEmailDiv, #pEmailVerifyError, #pEmailError").hide();
                 else $("#pEmailVerifyError").show();
+                console.log(data);
             });
+        });
+
+        // resend personal email
+        $("#resendPEmail").click(function() {
+
+            var updatePEmail = $.post('ajax/updateStudent.php', {
+                email: $("#emailSpan").text(),
+                column: "pEmailResend",
+                pemail: $("#pEmailSpan").text()});
+
+            // update the page
+            updatePEmail.done(function() {
+                $("#pEmailSent").show();
+                $("#pEmailVerifyError, #pEmailError").hide();
+                $('#pEmailSent').delay(5000).fadeOut('slow');
+            });
+        });
+
+        // update personal email
+        $("#updatePhone").click(function() {
+            // remove non numeric characters
+            var newPhone = $("#newPhone").val().replace(/\D/g,'');
+
+            // if not empty, mask makes sure it's valid
+            if (newPhone.length > 0) {
+                var updatePhone = $.post('ajax/updateStudent.php', {
+                    email: $("#emailSpan").text(),
+                    column: "phone",
+                    phone: newPhone,
+                    carrier: $("#carrierSpan").text()});
+
+                // update the page
+                updatePhone.done(function() {
+                    $("#phoneSpan").text(newPhone);
+                    $(".verify, #phoneSpan, #editPhone, #phoneVerificatiion, #verifyPhone, #resendPhone, #phoneSent").show();
+                    $("#newPhone, #updatePhone, #cancelPhone, #phoneError").hide();
+                    $('#phoneSent').delay(5000).fadeOut('slow');
+                });
+            } else $("#phoneError").show();
         });
     });
 
