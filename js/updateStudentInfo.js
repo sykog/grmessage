@@ -155,30 +155,29 @@ $(document).ready(function() {
         // verify personal email
         $("#verifyPersonal").click(function() {
 
-            var updatePEmail = $.post('ajax/updateStudent.php', {
+            var verifyPhone = $.post('ajax/updateStudent.php', {
                 email: $("#emailSpan").text(),
                 column: "pEmailVerify",
                 code: $("#personalVerification").val()});
 
             // update the page
-            updatePEmail.done(function(data) {
+            verifyPhone.done(function(data) {
                 // hide tab if code is correct, display error if not
                 if (data == "correct") $("#verifyPEmailDiv, #pEmailVerifyError, #pEmailError").hide();
                 else $("#pEmailVerifyError").show();
-                console.log(data);
             });
         });
 
-        // resend personal email
+        // resend personal email code
         $("#resendPEmail").click(function() {
 
-            var updatePEmail = $.post('ajax/updateStudent.php', {
+            var resendPEmail = $.post('ajax/updateStudent.php', {
                 email: $("#emailSpan").text(),
                 column: "pEmailResend",
                 pemail: $("#pEmailSpan").text()});
 
             // update the page
-            updatePEmail.done(function() {
+            resendPEmail.done(function() {
                 $("#pEmailSent").show();
                 $("#pEmailVerifyError, #pEmailError").hide();
                 $('#pEmailSent').delay(5000).fadeOut('slow');
@@ -211,7 +210,7 @@ $(document).ready(function() {
         // update phone carrier
         $("#updateCarrier").click(function() {
             var carriers = ["Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
-                "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"];
+                    "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"];
             var carrier = $.trim($("#newCarrier").val());
 
             // -1 if false
@@ -230,6 +229,61 @@ $(document).ready(function() {
                     $('#phoneSent').delay(5000).fadeOut('slow');
                 });
             } else $("#carrierError").show();
+        });
+
+        // verify phone number
+        $("#verifyPhone").click(function() {
+
+            var verifyPhone = $.post('ajax/updateStudent.php', {
+                email: $("#emailSpan").text(),
+                column: "phoneVerify",
+                code: $("#phoneVerification").val()});
+
+            // update the page
+            verifyPhone.done(function(data) {
+                // hide tab if code is correct, display error if not
+                if (data == "correct") $("#verifyPhoneDiv, #phoneVerifyError, #phoneError").hide();
+                else $("#phoneVerifyError").show();
+            });
+        });
+
+        // resend phone code
+        $("#resendPhone").click(function() {
+
+            var resendPhone = $.post('ajax/updateStudent.php', {
+                email: $("#emailSpan").text(),
+                column: "phoneResend",
+                phone: $("#phoneSpan").text(),
+                carrier: $("#carrierSpan").text()});
+
+            // update the page
+            resendPhone.done(function() {
+                $("#phoneSent").show();
+                $("#phoneVerifyError, #phoneError").hide();
+                $('#phoneSent').delay(5000).fadeOut('slow');
+            });
+        });
+
+        // update program
+        $("#updateProgram").click(function() {
+            var programs = ["Bachelors - Software Development", "Associates - Software Development",
+                    "Bachelors - Networking", "Associates - Networking"];
+            var program = $.trim($("#newProgram").val());
+
+            // -1 if false
+            if ($.inArray(program, programs) >= 0) {
+                var updateProgram = $.post('ajax/updateStudent.php', {
+                email: $("#emailSpan").text(),
+                column: "program",
+                program: program});
+
+                // update the page
+                updateProgram.done(function() {
+                    $("#programSpan").text(program);
+                    $("#programSpan, #editProgram").show();
+                    $("#newProgram, #updateProgram, #cancelProgram, #programError").hide();
+                });
+            } else $("#programError").show();
         });
     });
 

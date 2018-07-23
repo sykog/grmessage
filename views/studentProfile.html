@@ -30,7 +30,7 @@
 
                     <div id="studentFields">
 
-                        <p class="error alert alert-danger" id="nameError">Invalid Name</p><p
+                        <p class="error alert alert-danger" id="nameError">Invalid Name</p>
                         <label><strong>Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
                         <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
                         <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
@@ -82,11 +82,12 @@
                         <p class="alert alert-success" id="phoneSent">Code Sent</p>
                         <div id="verifyPhoneDiv" class="verify">
                             <label><strong>Phone Verificaton: </strong><span id="PhoneVerificationSpan"> </span>
-                            <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerificatiion'>
+                            <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerification'>
                             <button class='update verify' type="submit" id='verifyPhone' name="verifyPhone">Verify Phone</button>
                             <button type="submit" name="resendPhone" id="resendPhone" class="resend">Send New Code</button></label><br>
                         </div>
 
+                        <p class="error alert alert-danger" id="programError">Invalid Program</p>
                         <label><strong>Program: </strong><span id="programSpan"> {{ @program }} </span>
                         <select class="form-control dropdown sameLine" id="newProgram" name="newProgram">
                             <repeat group = "{{ @programs }}" value = "{{ @programOption }}">
@@ -123,7 +124,7 @@
 
                     <check if="{{ @getPersonalEmails == 'y' }}">
                         <true><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails" checked><p>Personal Email</p><br></true>
-                    <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
+                        <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
                     </check>
 
                     <button id="update" type="submit" name="save">Save Changes</button>
