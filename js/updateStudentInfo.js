@@ -145,7 +145,7 @@ $(document).ready(function() {
                 // update the page
                 updatePEmail.done(function() {
                     $("#pEmailSpan").text($("#newPersonalEmail").val());
-                    $(".verify, #pEmailSpan, #editPersonalEmail, #personalVerification, #verifyPersonal, #resendPEmail, #pEmailSent").show();
+                    $("#pEmailSpan, #editPersonalEmail, #personalVerification, #verifyPEmailDiv, #resendPEmail, #pEmailSent").show();
                     $("#newPersonalEmail, #updatePersonalEmail, #cancelPersonalEmail, #pEmailError").hide();
                     $('#pEmailSent').delay(5000).fadeOut('slow');
                 });
@@ -200,7 +200,7 @@ $(document).ready(function() {
                 // update the page
                 updatePhone.done(function() {
                     $("#phoneSpan").text(newPhone);
-                    $("#phoneSpan, #editPhone, #phoneVerification, #verifyPhone, #resendPhone, #phoneSent").show();
+                    $("#phoneSpan, #editPhone, #phoneVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
                     $("#newPhone, #updatePhone, #cancelPhone, #phoneError").hide();
                     $('#phoneSent').delay(5000).fadeOut('slow');
                 });
@@ -224,7 +224,7 @@ $(document).ready(function() {
                 // update the page
                 updateCarrier.done(function() {
                     $("#carrierSpan").text(carrier);
-                    $("#carrierSpan, #editCarrier, #phoneVerification, #verifyPhone, #resendPhone, #phoneSent").show();
+                    $("#carrierSpan, #editCarrier, #carrierVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
                     $("#newCarrier, #updateCarrier, #cancelCarrier, #carrierError").hide();
                     $('#phoneSent').delay(5000).fadeOut('slow');
                 });
@@ -288,7 +288,14 @@ $(document).ready(function() {
     });
 
     function hideVerifications() {
+        var verificatons = $.post('ajax/checkVerification.php', {email: $("#emailSpan").text()});
 
+        // check to see which are verified, do nothing if neither are
+        verificatons.done(function(data) {
+            if (data == "both") $("#verifyPhoneDiv, #phoneVerifyError, #phoneError, #verifyPEmailDiv, #pEmailVerifyError, #pEmailError").hide();
+            else if (data == "phone") $("#verifyPhoneDiv, #phoneVerifyError, #phoneError").hide();
+            else if (data == "email") $("#verifyPEmailDiv, #pEmailVerifyError, #pEmailError").hide();
+        });
     }
 });
 

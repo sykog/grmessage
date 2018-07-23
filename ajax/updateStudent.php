@@ -29,14 +29,14 @@
         $database->setStudentCode("verifiedPersonal", $code, $email);
 
         // create the message
-        $message = (new Swift_Message())
+        /*$message = (new Swift_Message())
             ->setSubject('Verification Code')
             ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
             ->setTo($_POST['pemail'])
             ->setBody("Personal Email Verification Code: ". $code, 'text/html');
 
         // send the message
-        $result = $mailer->send($message);
+        $result = $mailer->send($message);*/
     }
 
     // verify personal email
@@ -80,10 +80,10 @@
         $to = $phone . "@" . $carrierEmail;
 
         // create the message
-        /*$message = (new Swift_Message())
+        $message = (new Swift_Message())
             ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
             ->setTo($to)
-            ->setBody("Phone Verification Code: " . $code, 'text/html');*/
+            ->setBody("Phone Verification Code: " . $code, 'text/html');
 
         // send the message
         $result = $mailer->send($message);
