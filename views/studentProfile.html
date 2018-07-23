@@ -51,7 +51,7 @@
                         <p class="error alert alert-danger" id="pEmailVerifyError">Incorrect Code</p>
                         <p class="alert alert-success" id="pEmailSent">Code Sent</p>
                         <div id="verifyPEmailDiv" class="verify">
-                            <label><strong>Personal Email Verificaton: </strong>
+                            <label><strong>Personal Email Verification: </strong>
                             <input class='form-control sameLine' type='text' name='personalVerification' id='personalVerification'>
                             <button class='update' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
                             <button type="submit" name="resendPEmail" id="resendPEmail" class="resend">Send New Code</button></label>
@@ -65,6 +65,7 @@
                         <button type="button" class="cancelInput" id="cancelPhone" name="cancelPhone">Cancel</button></label><br>
 
                         <div id="carrierDiv">
+                            <p class="error alert alert-danger" id="carrierError">Invalid Carrier</p>
                             <label><strong>Mobile Carrier: </strong><span id="carrierSpan"> {{ @carrier }} </span>
                             <select class="form-control dropdown sameLine" id="newCarrier" name="newCarrier">
                                 <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">

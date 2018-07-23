@@ -468,23 +468,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             }
         }
 
-        // resend phone verification
-        if(isset($_POST['resendPEmail'])){
-            $code = randomString(6);
-            $column = "verifiedPersonal";
-            $database->setStudentCode($column, $code, $email);
-
-            // create the message
-            $message = (new Swift_Message())
-                ->setSubject('Verification Code')
-                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                ->setTo($student['personalEmail'])
-                ->setBody("Personal Email Verification Code: ". $code, 'text/html');
-
-            // send the message
-            $result = $mailer->send($message);
-        }
-
         // if update phone carrier button was clicked
         if (isset($_POST['updateCarrier'])) {
             if (validCarrier($_POST['newCarrier'])) {

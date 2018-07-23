@@ -89,3 +89,25 @@
         // send the message
         $result = $mailer->send($message);
     }
+
+    // update carrier
+    elseif ($_POST['column'] == "carrier") {
+        $phone = trim($_POST['phone']);
+        $carrier = $database->getCarrierInfo(trim($_POST['carrier']));
+        $carrierEmail = $carrier['carrierEmail'];
+        $database->changeCarrier($email, $carrier);
+
+        // send a code when changing phone number
+        $code = randomString(6);
+        $database->setStudentCode("verifiedPhone", $code, $email);
+        $to = $phone . "@" . $carrierEmail;
+
+        // create the message
+        $message = (new Swift_Message())
+            ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+            ->setTo($to)
+            ->setBody("Phone Verification Code: " . $code, 'text/html');
+
+        // send the message
+        $result = $mailer->send($message);
+    }

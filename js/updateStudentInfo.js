@@ -185,7 +185,7 @@ $(document).ready(function() {
             });
         });
 
-        // update personal email
+        // update phone number
         $("#updatePhone").click(function() {
             // remove non numeric characters
             var newPhone = $("#newPhone").val().replace(/\D/g,'');
@@ -201,11 +201,35 @@ $(document).ready(function() {
                 // update the page
                 updatePhone.done(function() {
                     $("#phoneSpan").text(newPhone);
-                    $(".verify, #phoneSpan, #editPhone, #phoneVerificatiion, #verifyPhone, #resendPhone, #phoneSent").show();
+                    $("#phoneSpan, #editPhone, #phoneVerification, #verifyPhone, #resendPhone, #phoneSent").show();
                     $("#newPhone, #updatePhone, #cancelPhone, #phoneError").hide();
                     $('#phoneSent').delay(5000).fadeOut('slow');
                 });
             } else $("#phoneError").show();
+        });
+
+        // update phone carrier
+        $("#updateCarrier").click(function() {
+            var carriers = ["Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
+                "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"];
+            var carrier = $.trim($("#newCarrier").val());
+
+            // -1 if false
+            if ($.inArray(carrier, carriers) >= 0) {
+                var updateCarrier = $.post('ajax/updateStudent.php', {
+                email: $("#emailSpan").text(),
+                column: "carrier",
+                phone: $("#phoneSpan").text(),
+                carrier: carrier});
+
+                // update the page
+                updateCarrier.done(function() {
+                    $("#carrierSpan").text(carrier);
+                    $("#carrierSpan, #editCarrier, #phoneVerification, #verifyPhone, #resendPhone, #phoneSent").show();
+                    $("#newCarrier, #updateCarrier, #cancelCarrier, #carrierError").hide();
+                    $('#phoneSent').delay(5000).fadeOut('slow');
+                });
+            } else $("#carrierError").show();
         });
     });
 
