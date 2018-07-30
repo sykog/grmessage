@@ -21,12 +21,12 @@
             <a href="logout"><h1 id="logout">Log out</h1></a>
         </header>
 
-        <div class="container" id="mainContainer">
+        <div class="container-fluid" id="mainContainer">
             <h2 id="regHeader">Welcome, {{ @fname }}</h2>
             <hr>
 
-            <div class="col-10">
-                <form class="form" action="#" method="post">
+            <div class="row">
+                <div class="col-8">
 
                     <div id="studentFields">
 
@@ -34,7 +34,7 @@
                         <label><strong>Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
                         <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
                         <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
-                        <button class='update' type="submit" id='updateName' name="updateName">Update Info</button>
+                        <button class='update' id='updateName' name="updateName">Update Info</button>
                         <button class="edit" type="button" id="editName"></button>
                         <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button>
                         </label>
@@ -44,7 +44,7 @@
                         <p class="error alert alert-danger" id="pEmailError">Invalid Email</p>
                         <label><strong>Personal Email: </strong><span id="pEmailSpan">{{ @personalEmail }} </span>
                         <input class='form-control sameLine' type='text' name='newPersonalEmail' id='newPersonalEmail' value="{{ @personalEmail }}">
-                        <button class='update' type="submit" id='updatePersonalEmail' name="updatePersonalEmail">Update Info</button>
+                        <button class='update' id='updatePersonalEmail' name="updatePersonalEmail">Update Info</button>
                         <button type="button" class="edit" id="editPersonalEmail"></button>
                         <button type="button" class="cancelInput" id="cancelPersonalEmail" name="cancelPersonalEmail">Cancel</button></label><br>
 
@@ -53,14 +53,14 @@
                         <div id="verifyPEmailDiv" class="verify">
                             <label><strong>Personal Email Verification: </strong>
                             <input class='form-control sameLine' type='text' name='personalVerification' id='personalVerification'>
-                            <button class='update' type="submit" id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
+                            <button class='update' id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
                             <button type="submit" name="resendPEmail" id="resendPEmail" class="resend">Send New Code</button></label>
                         </div>
 
                         <p class="error alert alert-danger" id="phoneError">Invalid Phone Number</p>
                         <label><strong>Phone Number: </strong><span id="phoneSpan"> {{ @phone }} </span>
                         <input class='form-control sameLine' type='text' name='newPhone' id='newPhone' value="{{ @phone }}">
-                        <button class='update' type="submit" id='updatePhone' name="updatePhone">Update Info</button>
+                        <button class='update' id='updatePhone' name="updatePhone">Update Info</button>
                         <button type="button" class="edit" id="editPhone"></button>
                         <button type="button" class="cancelInput" id="cancelPhone" name="cancelPhone">Cancel</button></label><br>
 
@@ -73,7 +73,7 @@
                                     {{ @carrierOption }}</option>
                                 </repeat>
                             </select>
-                            <button class='update' type="submit" id='updateCarrier' name="updateCarrier">Update Info</button>
+                            <button class='update' id='updateCarrier' name="updateCarrier">Update Info</button>
                             <button type="button" class="edit" id="editCarrier"></button>
                             <button type="button" class="cancelInput" id="cancelCarrier" name="cancelCarrier">Cancel</button></label>
                         </div>
@@ -83,7 +83,7 @@
                         <div id="verifyPhoneDiv" class="verify">
                             <label><strong>Phone Verification: </strong><span id="PhoneVerificationSpan"> </span>
                             <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerification'>
-                            <button class='update verify' type="submit" id='verifyPhone' name="verifyPhone">Verify Phone</button>
+                            <button class='update verify' id='verifyPhone' name="verifyPhone">Verify Phone</button>
                             <button type="submit" name="resendPhone" id="resendPhone" class="resend">Send New Code</button></label><br>
                         </div>
 
@@ -95,20 +95,10 @@
                                 {{ @programOption }}</option>
                             </repeat>
                         </select>
-                        <button class='update' type="submit" id='updateProgram' name="updateProgram">Update Info</button>
+                        <button class='update' id='updateProgram' name="updateProgram">Update Info</button>
                         <button type="button" class="edit" id="editProgram"></button>
                         <button type="button" class="cancelInput" id="cancelProgram" name="cancelProgram">Cancel</button></label><br>
                     </div>
-
-                    <button type="button" id="changePassword" name="changePassword">Change Password</button>
-                    <check if="{{ @passChanged }}">
-                        <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
-                    </check>
-                    <check if="{{ isset(@errors['password']) }}">
-                        <p id="passChanged" class="alert alert-danger" role="alert">{{ @errors['password'] }}</p>
-                    </check><br>
-
-                    <div id="password"></div><br>
 
                     <h3>Notification Preferences</h3>
 
@@ -127,8 +117,29 @@
                         <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
                     </check>
 
-                    <button id="update" type="submit" name="save">Save Changes</button>
-                </form>
+                    <button id="update" name="save">Save Changes</button>
+                </div>
+
+                <div class="col-4">
+                    <form class="form" action="#" method="post">
+
+                        <h3>Change Password</h3>
+                        <br>
+
+                        <check if="{{ @passChanged }}">
+                            <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
+                        </check>
+                        <check if="{{ isset(@errors['password']) }}">
+                            <p id="passChanged" class="alert alert-danger" role="alert">{{ @errors['password'] }}</p>
+                        </check>
+
+                        <p><strong>Current Password: </strong> <input class="form-control" type='password' name='currentPassword'></p>
+                        <p><strong>New Password: </strong><input class="form-control" type='password' name='newPassword'></p>
+                        <p><strong>Confirm New Password: </strong><input class="form-control" type='password' name='confirmPassword'></p>
+                        <br>
+                        <button type="submit" id='updastePassword' name="updatePassword">Change Password</button>
+                    </form>
+                </div>
             </div>
         </div> <!-- /container -->
     </body>

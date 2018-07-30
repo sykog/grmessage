@@ -12,6 +12,5 @@ $(document).ready(function() {
             "<p><strong>New Password: </strong><input type='password' name='newPassword'></p>" +
             "<p><strong>Confirm New Password: </strong><input type='password' name='confirmPassword'></p>" +
             "<button type=\"submit\" name=\"changePassword\">Change Password</button>");
-
     });
 });

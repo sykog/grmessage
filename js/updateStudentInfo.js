@@ -18,28 +18,6 @@ $(document).ready(function() {
     }
     if ($("#pEmailSpan").text().length <= 2) $("#getPersonalEmails, #getPersonalEmails + p").remove();
 
-    // change password button is clicked
-    $("#changePassword").click(function() {
-
-        $("#changePassword").hide();
-        $("#password").html("<h3>Change Password</h3>" +
-            "<p><strong>Current Password: </strong> <input class=\"form-control\" type='password' name='currentPassword'></p>" +
-            "<p><strong>New Password: </strong><input class=\"form-control\" type='password' name='newPassword'></p>" +
-            "<p><strong>Confirm New Password: </strong><input class=\"form-control\" type='password' name='confirmPassword'></p>" +
-            "<button type=\"submit\" id='updatePassword' name=\"updatePassword\">Change Password</button>" +
-            "<button type=\"button\" id='cancelPassword' name=\"cancelPassword\">Cancel</button>");
-
-        // cancel password is clicked
-        $("#cancelPassword").click(function() {
-            // clear password div, show change password button
-            $("#cancelPassword").hide();
-            $("#updatePassword").hide();
-            $("#password").html("");
-            $("#changePassword").show();
-
-        });
-    });
-
     /****************** TOGGLING EDITING FIELDS ************************/
 
     // enable name editing
@@ -109,182 +87,181 @@ $(document).ready(function() {
 
     /********************** AJAX POSTS ************************/
 
-    $("form").submit(function(event) {
-        // stop form from submitting normally
-        event.preventDefault();
+    // update student name
+    $("#updateName").click(function() {
 
-        // update student name
-        $("#updateName").click(function() {
-            if ($("#newFName").val().length > 0 && $("#newLName").val().length > 0) {
-                var updateName = $.post('ajax/updateStudent.php', {
-                    email: $("#emailSpan").text(),
-                    column: "name",
-                    fname: $("#newFName").val(),
-                    lname: $("#newLName").val()});
-
-                // update the page
-                updateName.done(function() {
-                    $("#nameSpan").text($("#newFName").val() + " " + $("#newLName").val());
-                    $("#regHeader").text("Welcome, " + $("#newFName").val());
-                    $("#nameSpan, #editName").show();
-                    $("#newFName, #newLName, #updateName, #cancelName, #nameError").hide();
-                });
-            } else $("#nameError").show();
-        });
-
-        // update personal email
-        $("#updatePersonalEmail").click(function() {
-
-            var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-            if (emailReg.test($("#newPersonalEmail").val()) && $("#newPersonalEmail").val().length > 0) {
-                var updatePEmail = $.post('ajax/updateStudent.php', {
-                    email: $("#emailSpan").text(),
-                    column: "pEmail",
-                    pemail: $("#newPersonalEmail").val()});
-
-                // update the page
-                updatePEmail.done(function() {
-                    $("#pEmailSpan").text($("#newPersonalEmail").val());
-                    $("#pEmailSpan, #editPersonalEmail, #personalVerification, #verifyPEmailDiv, #resendPEmail, #pEmailSent").show();
-                    $("#newPersonalEmail, #updatePersonalEmail, #cancelPersonalEmail, #pEmailError").hide();
-                    $('#pEmailSent').delay(5000).fadeOut('slow');
-                });
-            } else $("#pEmailError").show();
-        });
-
-        // verify personal email
-        $("#verifyPersonal").click(function() {
-
-            var verifyPhone = $.post('ajax/updateStudent.php', {
+        if ($("#newFName").val().length > 0 && $("#newLName").val().length > 0) {
+            var updateName = $.post('ajax/updateStudent.php', {
                 email: $("#emailSpan").text(),
-                column: "pEmailVerify",
-                code: $("#personalVerification").val()});
+                column: "name",
+                fname: $("#newFName").val(),
+                lname: $("#newLName").val()});
 
             // update the page
-            verifyPhone.done(function(data) {
-                // hide tab if code is correct, display error if not
-                if (data == "correct") $("#verifyPEmailDiv, #pEmailVerifyError, #pEmailError").hide();
-                else $("#pEmailVerifyError").show();
+            updateName.done(function() {
+                $("#nameSpan").text($("#newFName").val() + " " + $("#newLName").val());
+                $("#regHeader").text("Welcome, " + $("#newFName").val());
+                $("#nameSpan, #editName").show();
+                $("#newFName, #newLName, #updateName, #cancelName, #nameError").hide();
             });
-        });
+        } else $("#nameError").show();
+    });
 
-        // resend personal email code
-        $("#resendPEmail").click(function() {
+    // update personal email
+    $("#updatePersonalEmail").click(function() {
 
-            var resendPEmail = $.post('ajax/updateStudent.php', {
+        var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        if (emailReg.test($("#newPersonalEmail").val()) && $("#newPersonalEmail").val().length > 0) {
+            var updatePEmail = $.post('ajax/updateStudent.php', {
                 email: $("#emailSpan").text(),
-                column: "pEmailResend",
-                pemail: $("#pEmailSpan").text()});
+                column: "pEmail",
+                pemail: $("#newPersonalEmail").val()});
 
             // update the page
-            resendPEmail.done(function() {
-                $("#pEmailSent").show();
-                $("#pEmailVerifyError, #pEmailError").hide();
+            updatePEmail.done(function() {
+                $("#pEmailSpan").text($("#newPersonalEmail").val());
+                $("#pEmailSpan, #editPersonalEmail, #personalVerification, #verifyPEmailDiv, #resendPEmail, #pEmailSent").show();
+                $("#newPersonalEmail, #updatePersonalEmail, #cancelPersonalEmail, #pEmailError").hide();
                 $('#pEmailSent').delay(5000).fadeOut('slow');
             });
+        } else $("#pEmailError").show();
+    });
+
+    // verify personal email
+    $("#verifyPersonal").click(function() {
+
+        var verifyPhone = $.post('ajax/updateStudent.php', {
+            email: $("#emailSpan").text(),
+            column: "pEmailVerify",
+            code: $("#personalVerification").val()});
+
+        // update the page
+        verifyPhone.done(function(data) {
+            // hide tab if code is correct, display error if not
+            if (data == "correct") $("#verifyPEmailDiv, #pEmailVerifyError, #pEmailError").hide();
+            else $("#pEmailVerifyError").show();
         });
+    });
 
-        // update phone number
-        $("#updatePhone").click(function() {
-            // remove non numeric characters
-            var newPhone = $("#newPhone").val().replace(/\D/g,'');
+    // resend personal email code
+    $("#resendPEmail").click(function() {
 
-            // if not empty, mask makes sure it's valid
-            if (newPhone.length > 0) {
-                var updatePhone = $.post('ajax/updateStudent.php', {
-                    email: $("#emailSpan").text(),
-                    column: "phone",
-                    phone: newPhone,
-                    carrier: $("#carrierSpan").text()});
+        var resendPEmail = $.post('ajax/updateStudent.php', {
+            email: $("#emailSpan").text(),
+            column: "pEmailResend",
+            pemail: $("#pEmailSpan").text()});
 
-                // update the page
-                updatePhone.done(function() {
-                    $("#phoneSpan").text(newPhone);
-                    $("#phoneSpan, #editPhone, #phoneVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
-                    $("#newPhone, #updatePhone, #cancelPhone, #phoneError").hide();
-                    $('#phoneSent').delay(5000).fadeOut('slow');
-                });
-            } else $("#phoneError").show();
+        // update the page
+        resendPEmail.done(function() {
+            $("#pEmailSent").show();
+            $("#pEmailVerifyError, #pEmailError").hide();
+            $('#pEmailSent').delay(5000).fadeOut('slow');
         });
+    });
 
-        // update phone carrier
-        $("#updateCarrier").click(function() {
-            var carriers = ["Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
-                    "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"];
-            var carrier = $.trim($("#newCarrier").val());
+    // update phone number
+    $("#updatePhone").click(function() {
 
-            // -1 if false
-            if ($.inArray(carrier, carriers) >= 0) {
-                var updateCarrier = $.post('ajax/updateStudent.php', {
+        // remove non numeric characters
+        var newPhone = $("#newPhone").val().replace(/\D/g,'');
+
+        // if not empty, mask makes sure it's valid
+        if (newPhone.length > 0) {
+            var updatePhone = $.post('ajax/updateStudent.php', {
                 email: $("#emailSpan").text(),
-                column: "carrier",
-                phone: $("#phoneSpan").text(),
-                carrier: carrier});
-
-                // update the page
-                updateCarrier.done(function() {
-                    $("#carrierSpan").text(carrier);
-                    $("#carrierSpan, #editCarrier, #carrierVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
-                    $("#newCarrier, #updateCarrier, #cancelCarrier, #carrierError").hide();
-                    $('#phoneSent').delay(5000).fadeOut('slow');
-                });
-            } else $("#carrierError").show();
-        });
-
-        // verify phone number
-        $("#verifyPhone").click(function() {
-
-            var verifyPhone = $.post('ajax/updateStudent.php', {
-                email: $("#emailSpan").text(),
-                column: "phoneVerify",
-                code: $("#phoneVerification").val()});
-
-            // update the page
-            verifyPhone.done(function(data) {
-                // hide tab if code is correct, display error if not
-                if (data == "correct") $("#verifyPhoneDiv, #phoneVerifyError, #phoneError").hide();
-                else $("#phoneVerifyError").show();
-            });
-        });
-
-        // resend phone code
-        $("#resendPhone").click(function() {
-
-            var resendPhone = $.post('ajax/updateStudent.php', {
-                email: $("#emailSpan").text(),
-                column: "phoneResend",
-                phone: $("#phoneSpan").text(),
+                column: "phone",
+                phone: newPhone,
                 carrier: $("#carrierSpan").text()});
 
             // update the page
-            resendPhone.done(function() {
-                $("#phoneSent").show();
-                $("#phoneVerifyError, #phoneError").hide();
+            updatePhone.done(function() {
+                $("#phoneSpan").text(newPhone);
+                $("#phoneSpan, #editPhone, #phoneVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
+                $("#newPhone, #updatePhone, #cancelPhone, #phoneError").hide();
                 $('#phoneSent').delay(5000).fadeOut('slow');
             });
+        } else $("#phoneError").show();
+    });
+
+    // update phone carrier
+    $("#updateCarrier").click(function() {
+
+        var carriers = ["Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
+                "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"];
+        var carrier = $.trim($("#newCarrier").val());
+
+        // -1 if false
+        if ($.inArray(carrier, carriers) >= 0) {
+            var updateCarrier = $.post('ajax/updateStudent.php', {
+            email: $("#emailSpan").text(),
+            column: "carrier",
+            phone: $("#phoneSpan").text(),
+            carrier: carrier});
+
+            // update the page
+            updateCarrier.done(function() {
+                $("#carrierSpan").text(carrier);
+                $("#carrierSpan, #editCarrier, #carrierVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
+                $("#newCarrier, #updateCarrier, #cancelCarrier, #carrierError").hide();
+                $('#phoneSent').delay(5000).fadeOut('slow');
+            });
+        } else $("#carrierError").show();
+    });
+
+    // verify phone number
+    $("#verifyPhone").click(function() {
+
+        var verifyPhone = $.post('ajax/updateStudent.php', {
+            email: $("#emailSpan").text(),
+            column: "phoneVerify",
+            code: $("#phoneVerification").val()});
+
+        // update the page
+        verifyPhone.done(function(data) {
+            // hide tab if code is correct, display error if not
+            if (data == "correct") $("#verifyPhoneDiv, #phoneVerifyError, #phoneError").hide();
+            else $("#phoneVerifyError").show();
         });
+    });
 
-        // update program
-        $("#updateProgram").click(function() {
-            var programs = ["Bachelors - Software Development", "Associates - Software Development",
-                    "Bachelors - Networking", "Associates - Networking"];
-            var program = $.trim($("#newProgram").val());
+    // resend phone code
+    $("#resendPhone").click(function() {
 
-            // -1 if false
-            if ($.inArray(program, programs) >= 0) {
-                var updateProgram = $.post('ajax/updateStudent.php', {
-                email: $("#emailSpan").text(),
-                column: "program",
-                program: program});
+        var resendPhone = $.post('ajax/updateStudent.php', {
+            email: $("#emailSpan").text(),
+            column: "phoneResend",
+            phone: $("#phoneSpan").text(),
+            carrier: $("#carrierSpan").text()});
 
-                // update the page
-                updateProgram.done(function() {
-                    $("#programSpan").text(program);
-                    $("#programSpan, #editProgram").show();
-                    $("#newProgram, #updateProgram, #cancelProgram, #programError").hide();
-                });
-            } else $("#programError").show();
+        // update the page
+        resendPhone.done(function() {
+            $("#phoneSent").show();
+            $("#phoneVerifyError, #phoneError").hide();
+            $('#phoneSent').delay(5000).fadeOut('slow');
         });
+    });
+
+    // update program
+    $("#updateProgram").click(function() {
+
+        var programs = ["Bachelors - Software Development", "Associates - Software Development",
+                "Bachelors - Networking", "Associates - Networking"];
+        var program = $.trim($("#newProgram").val());
+
+        // -1 if false
+        if ($.inArray(program, programs) >= 0) {
+            var updateProgram = $.post('ajax/updateStudent.php', {
+            email: $("#emailSpan").text(),
+            column: "program",
+            program: program});
+
+            // update the page
+            updateProgram.done(function() {
+                $("#programSpan").text(program);
+                $("#programSpan, #editProgram").show();
+                $("#newProgram, #updateProgram, #cancelProgram, #programError").hide();
+            });
+        } else $("#programError").show();
     });
 
     function hideVerifications() {
