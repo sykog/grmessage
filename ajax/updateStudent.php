@@ -145,3 +145,17 @@
     elseif ($_POST['column'] == "program") {
         $database->changeProgram($email, $_POST['program']);
     }
+
+    // update notification preferences
+    elseif ($_POST['column'] == "preferences") {
+        if ($_POST['studentEmail'] == "true") $getStudentEmails = 'y';
+        else $getStudentEmails = 'n';
+
+        if ($_POST['personalEmail'] == "true") $getPersonalEmails = 'y';
+        else $getPersonalEmails = 'n';
+
+        if ($_POST['text'] == "true") $getTexts = 'y';
+        else $getTexts = 'n';
+
+        $database->updatePreferences($email, $getStudentEmails, $getTexts, $getPersonalEmails);
+    }

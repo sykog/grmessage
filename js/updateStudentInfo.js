@@ -5,7 +5,7 @@ $(document).ready(function() {
 
     $("#newPhone").mask("(999) 999-9999");
 
-    $(".error, .sameLine, .update, .cancelInput, #update, .alert-success").hide();
+    $(".error, .sameLine, .update, .cancelInput, #save, .alert-success").hide();
     $(".verify *").show();
 
     // hide verification tabs if verified
@@ -17,6 +17,12 @@ $(document).ready(function() {
         $("#carrierDiv").hide();
     }
     if ($("#pEmailSpan").text().length <= 2) $("#getPersonalEmails, #getPersonalEmails + p").remove();
+
+    // Scroll down to see update button for notifications
+    $("#getPersonalEmails, #getTexts, #getStudentEmails").click( function() {
+        $("#save").show();
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+    });
 
     /****************** TOGGLING EDITING FIELDS ************************/
 
@@ -264,6 +270,38 @@ $(document).ready(function() {
         } else $("#programError").show();
     });
 
+    // update notification preferences
+    $("#save").click(function() {
+        var getStudentEmail = $("#getStudentEmails[type=checkbox]").prop('checked');
+        var getPersonalEmail = $("#getPersonalEmails[type=checkbox]").prop('checked');
+        var getTexts = $("#getTexts[type=checkbox]").prop('checked');
+
+        var updatePreferences = $.post('ajax/updateStudent.php', {
+        email: $("#emailSpan").text(),
+        column: "preferences",
+        studentEmail: getStudentEmail,
+        personalEmail: getPersonalEmail,
+        text: getTexts});
+
+        // update the page
+        updatePreferences.done(function() {
+            $("#save").hide();
+
+            if (getStudentEmail) {
+                $("#prefEmail").show();
+                $("#prefEmail").delay(5000).fadeOut('slow');
+            }
+            if (getPersonalEmail) {
+                $("#prefPEmail").show();
+                $("#prefPEmail").delay(5000).fadeOut('slow');
+            }
+            if (getTexts) {
+                $("#prefText").show();
+                $("#prefText").delay(5000).fadeOut('slow');
+            }
+        });
+    });
+
     function hideVerifications() {
         var verificatons = $.post('ajax/checkVerification.php', {email: $("#emailSpan").text()});
 
@@ -275,8 +313,3 @@ $(document).ready(function() {
         });
     }
 });
-
-function showUpdate() {
-    $("#update").show();
-    $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-};

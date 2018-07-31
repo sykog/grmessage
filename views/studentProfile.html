@@ -103,21 +103,21 @@
                     <h3>Notification Preferences</h3>
 
                     <check if="{{ @getStudentEmails == 'y' }}">
-                        <true><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails" checked><p>Student Email</p><br></true>
-                        <false><input onclick="showUpdate();" type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails"><p>Student Email</p><br></false>
-                    </check>
-
-                    <check if="{{ @getTexts == 'y' }}">
-                        <true><input onclick="showUpdate();" type="checkbox" name="getTexts" id="getTexts" value="getTexts" checked><p>Text Messages</p><br></true>
-                        <false><input onclick="showUpdate();" type="checkbox" name="getTexts" id="getTexts" value="getTexts"><p>Text Messages</p><br></false>
-                    </check>
+                        <true><input type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails" checked><p>Student Email</p><br></true>
+                        <false><input type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails"><p>Student Email</p><br></false>
+                    </check><p id="prefEmail" class="alert alert-success">You will receive updates via student email</p>
 
                     <check if="{{ @getPersonalEmails == 'y' }}">
-                        <true><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails" checked><p>Personal Email</p><br></true>
-                        <false><input onclick="showUpdate();" type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
-                    </check>
+                        <true><input type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails" checked><p>Personal Email</p><br></true>
+                        <false><input type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
+                    </check><p id="prefPEmail" class="alert alert-success">You will receive updates via personal email</p>
 
-                    <button id="update" name="save">Save Changes</button>
+                    <check if="{{ @getTexts == 'y' }}">
+                        <true><input type="checkbox" name="getTexts" id="getTexts" value="getTexts" checked><p>Text Messages</p><br></true>
+                        <false><input type="checkbox" name="getTexts" id="getTexts" value="getTexts"><p>Text Messages</p><br></false>
+                    </check><p id="prefText" class="alert alert-success">You will receive updates via text message</p>
+
+                    <button id="save" name="save">Save Changes</button>
                 </div>
 
                 <div class="col-4">
@@ -137,7 +137,7 @@
                         <p><strong>New Password: </strong><input class="form-control" type='password' name='newPassword'></p>
                         <p><strong>Confirm New Password: </strong><input class="form-control" type='password' name='confirmPassword'></p>
                         <br>
-                        <button type="submit" id='updastePassword' name="updatePassword">Change Password</button>
+                        <button type="submit" id='updatePassword' name="updatePassword">Change Password</button>
                     </form>
                 </div>
             </div>

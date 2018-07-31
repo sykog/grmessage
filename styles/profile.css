@@ -35,7 +35,7 @@ button.update, button.cancelInput, button.resend {
     vertical-align: -4%;
 }
 
-button#update {
+button#save {
     margin: 2% 0%;
 }
 
