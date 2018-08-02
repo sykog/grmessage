@@ -77,3 +77,9 @@ input + p {
     margin-left: 6px;
     display: inline;
 }
+
+p#passChanged {
+    display: inline;
+    padding: 6px 10px;
+    vertical-align: 4px;
+}

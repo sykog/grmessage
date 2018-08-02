@@ -121,17 +121,18 @@
                 </div>
 
                 <div class="col-4">
-                    <form class="form" action="#" method="post">
+                    <form class="form" action="" method="post">
 
                         <h3>Change Password</h3>
                         <br>
 
-                        <check if="{{ @passChanged }}">
+                        <check if="{{ isset(@passwordChanged) }}">
                             <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
                         </check>
-                        <check if="{{ isset(@errors['password']) }}">
-                            <p id="passChanged" class="alert alert-danger" role="alert">{{ @errors['password'] }}</p>
+                        <check if="{{ isset(@passwordError) }}">
+                            <p id="passChanged" class="alert alert-danger" role="alert">{{ @passwordError }}</p>
                         </check>
+
 
                         <p><strong>Current Password: </strong> <input class="form-control" type='password' name='currentPassword'></p>
                         <p><strong>New Password: </strong><input class="form-control" type='password' name='newPassword'></p>

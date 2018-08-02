@@ -27,6 +27,8 @@ $f3->route('GET|POST /', function($f3, $params) {
     unset($_SESSION['oldCode']);
     unset($_SESSION['codeError']);
     unset($_SESSION['verificationCode']);
+    unset($_SESSION['passwordError']);
+    unset($_SESSION['passwordChanged']);
 
     if (isset($_SESSION['loginError'])) $f3->set('loginError', $_SESSION['loginError']);
 
@@ -352,6 +354,9 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
 
+    if (isset($_SESSION['passwordError'])) $f3->set('passwordError', $_SESSION['passwordError']);
+    if (isset($_SESSION['passwordChanged'])) $f3->set('passwordChanged', $_SESSION['passwordChanged']);
+
     // go to login page if not logged in
     if(!$_SESSION['loggedIn']) {
         $f3->reroute("/");
@@ -375,7 +380,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('password', $instructor['password']);
         $f3->set('fname', $instructor['fname']);
         $f3->set('lname', $instructor['lname']);
-        $f3->set('passChanged', false);
 
         // change password if button was clicked
         if (isset($_POST['updatePassword'])) {
@@ -388,7 +392,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
                 if ($newPassword == $confirmPassword) {
                     if (strlen($newPassword) > 7) {
                         $database->changeInstructorPassword($email, $newPassword);
-                        $f3->set('passChanged', true);
+                        $_SESSION['passwordChanged'] = true;
                     } else {
                         $errors['password'] = "Password must be at least 8 characters";
                     }
@@ -416,7 +420,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $errors = array();
 
         $f3->set('studentEmail', $email);
-        $f3->set('password', $student['password']);
         $f3->set('fname', $student['fname']);
         $f3->set('lname', $student['lname']);
         $f3->set('phone', $student['phone']);
@@ -429,22 +432,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('verifiedPersonal', $student['verifiedPersonal'] == 'y' || empty($f3->get('personalEmail')));
         $f3->set('verifiedPhone', $student['verifiedPhone'] == 'y');
 
-        //if changes were made
-        if (isset($_POST['save'])) {
-
-            if (isset ($_POST['getStudentEmails'])) $getStudentEmails = 'y';
-            else $getStudentEmails = 'n';
-
-            if (isset ($_POST['getTexts'])) $getTexts = 'y';
-            else $getTexts = 'n';
-
-            if (isset ($_POST['getPersonalEmails'])) $getPersonalEmails = 'y';
-            else $getPersonalEmails = 'n';
-
-            $database->updatePreferences($email, $getStudentEmails, $getTexts, $getPersonalEmails);
-            $f3->reroute("/profile");
-        }
-
         // change password if button was clicked
         if (isset($_POST['updatePassword'])) {
 
@@ -452,23 +439,27 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             $newPassword = $_POST['newPassword'];
             $confirmPassword = $_POST['confirmPassword'];
 
-            if ($currentPassword == $f3->get('password')) {
+            if ($currentPassword == $student['password']) {
                 if ($newPassword == $confirmPassword) {
                     if (strlen($newPassword) > 7) {
                         $database->changeStudentPassword($email, $newPassword);
-                        $f3->set('passChanged', true);
+                        $_SESSION['passwordChanged'] = "changed";
                     } else {
-                        $errors['password'] = "Password must be at least 8 characters";
+                        $_SESSION['passwordError'] = "Password must be at least 8 characters";
                     }
                 } else {
-                    $errors['password'] = "Passwords do not match";
+                    $_SESSION['passwordError'] = "Passwords do not match";
                 }
             } else {
-                $errors['password'] = "Current password is incorrect";
+                $_SESSION['passwordError'] = "Current password is incorrect";
             }
+            $f3->reroute("/profile");
+            return; // prevents POST on refresh
+        } else {
+            unset($_SESSION['passwordError']);
+            unset($_SESSION['passwordChanged']);
         }
 
-        $f3->set("errors", $errors);
         $template = new Template();
         echo $template->render('views/studentProfile.html');
     }

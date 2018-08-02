@@ -6,7 +6,7 @@ $(document).ready(function() {
     $("#newPhone").mask("(999) 999-9999");
 
     $(".error, .sameLine, .update, .cancelInput, #save, .alert-success").hide();
-    $(".verify *").show();
+    $(".verify *, #passChanged").show();
 
     // hide verification tabs if verified
     hideVerifications();

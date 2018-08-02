@@ -59,12 +59,3 @@ button:hover {
 #logout {
     float: right;
 }
-
-/* Paragraph Styles */
-
-p#passChanged {
-    display: inline;
-    padding: 6px 10px;
-    vertical-align: 4px;
-    margin-left: 6px;
-}
