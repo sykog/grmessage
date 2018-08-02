@@ -41,6 +41,10 @@ a.link:hover {
     color: #00a800;
 }
 
+#logout {
+    float: right;
+}
+
 /* Button Styles */
 
 button {
@@ -62,12 +66,4 @@ button {
 
 button:hover {
     box-shadow: 0px 0px 5px black;
-}
-
-.error {
-    width: 40%;
-}
-
-#logout {
-    float: right;
 }
