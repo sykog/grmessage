@@ -52,6 +52,9 @@ $f3->route('GET|POST /', function($f3, $params) {
 
                 if($student['studentEmail'] == $email && ($student['password'] == $password)) {
                     $success = true;
+                } else {
+                    $success = false;
+                    $_SESSION['loginError'] = true;
                 }
             }
 
@@ -61,6 +64,9 @@ $f3->route('GET|POST /', function($f3, $params) {
                 $_SESSION['isInstructor'] = true;
                 if($instructor['email'] == $email && ($instructor['password'] == $password)) {
                     $success = true;
+                } else {
+                    $success = false;
+                    $_SESSION['loginError'] = true;
                 }
             }
             // if the username is invalid, display login error
