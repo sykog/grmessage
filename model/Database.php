@@ -134,6 +134,29 @@ class Database
     }//end changeStudentPassword
 
     /**
+     * change instructor's first and last name
+     * @param $email identifier
+     * @param $first first name
+     * @param $last last name
+     */
+    function changeInstructorName($email, $first, $last) {
+        $dbh = $this->dbh;
+        // define the query
+        $sql = "UPDATE instructors
+            SET lname = :lname, fname = :fname
+            WHERE email = :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+        $statement->bindParam(":fname", $first, PDO::PARAM_STR);
+        $statement->bindParam(":lname", $last, PDO::PARAM_STR);
+
+        // Execute the statement
+        $statement->execute();
+    }//end change name
+
+    /**
      * change student's first and last name
      * @param $studentEmail identifier
      * @param $first first name

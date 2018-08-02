@@ -65,13 +65,7 @@ p {
     margin: 6px 0px;
 }
 
-p.error {
-    margin: 1% 0%;
-    padding: 1% 4%;
-    width: max-content;
-}
-
-p.alert-success {
+p.error, p.alert-success, p#nameError {
     margin: 1% 0%;
     padding: 1% 4%;
     width: max-content;

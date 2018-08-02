@@ -34,8 +34,8 @@
                         <div class="col-8">
                             <div id="instructorFields">
 
-                                <check if="{{ isset(@errors['name']) }}">
-                                    <p class="error alert alert-danger">{{ @errors['name'] }}</p>
+                                <check if="{{ isset(@nameError) }}">
+                                    <p id="nameError" class="alert alert-danger" role="alert">{{ @nameError }}</p>
                                 </check>
                                 <label><strong>Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
                                     <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">

@@ -362,6 +362,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 
     if (isset($_SESSION['passwordError'])) $f3->set('passwordError', $_SESSION['passwordError']);
     if (isset($_SESSION['passwordChanged'])) $f3->set('passwordChanged', $_SESSION['passwordChanged']);
+    if (isset($_SESSION['nameError'])) $f3->set('nameError', $_SESSION['nameError']);
 
     // go to login page if not logged in
     if(!$_SESSION['loggedIn']) {
@@ -383,32 +384,50 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         }
 
         $f3->set('email', $email);
-        $f3->set('password', $instructor['password']);
         $f3->set('fname', $instructor['fname']);
         $f3->set('lname', $instructor['lname']);
 
+        // changing instructor's name
+        if (isset($_POST['updateName'])) {
+            // can't be empty
+            if (strlen($_POST['newFName']) > 0 && strlen($_POST['newLName'])) {
+                $database->changeInstructorName($email, $_POST['newFName'], $_POST['newLName']);
+            } else {
+                $_SESSION['nameError'] = "First or last name cannot be blank";
+            }
+            $f3->reroute("/profile");
+            return; // prevents POST on refresh
+        }
+
         // change password if button was clicked
-        if (isset($_POST['updatePassword'])) {
+        else if (isset($_POST['updatePassword'])) {
 
             $currentPassword = sha1($_POST['currentPassword']);
             $newPassword = $_POST['newPassword'];
             $confirmPassword = $_POST['confirmPassword'];
 
-            if ($currentPassword == $f3->get('password')) {
+            if ($currentPassword == $instructor['password']) {
                 if ($newPassword == $confirmPassword) {
                     if (strlen($newPassword) > 7) {
                         $database->changeInstructorPassword($email, $newPassword);
-                        $_SESSION['passwordChanged'] = true;
+                        $_SESSION['passwordChanged'] = "changed";
                     } else {
-                        $errors['password'] = "Password must be at least 8 characters";
+                        $_SESSION['passwordError'] = "Password must be at least 8 characters";
                     }
                 } else {
-                    $f3->set("errors['password']", "Passwords do not match");
+                    $_SESSION['passwordError'] = "Passwords do not match";
                 }
             } else {
-                $f3->set("errors['password']", "Current password is incorrect");
+                $_SESSION['passwordError'] = "Current password is incorrect";
             }
-        }//end update password
+            $f3->reroute("/profile");
+            return; // prevents POST on refresh
+        }
+        else {
+            unset($_SESSION['passwordError']);
+            unset($_SESSION['nameError']);
+            unset($_SESSION['passwordChanged']);
+        }
 
         $template = new Template();
         echo $template->render('views/instructorHome.html');
