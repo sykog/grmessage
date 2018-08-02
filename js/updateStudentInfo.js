@@ -39,7 +39,7 @@ $(document).ready(function() {
         $('#newFName, #newLName, #updateName').hide();
     });
 
-   // enable personal email editing
+    // enable personal email editing
     $("#editPersonalEmail").click(function() {
         $(this).hide();
         $("#pEmailSpan").hide();
@@ -302,6 +302,7 @@ $(document).ready(function() {
         });
     });
 
+    // check if either verification divs need to be shown
     function hideVerifications() {
         var verificatons = $.post('ajax/checkVerification.php', {email: $("#emailSpan").text()});
 
