@@ -29,6 +29,18 @@ header a h1:hover, header a h2:hover {
     color: #EEEEEE;
 }
 
+a.link {
+    font-family: 'Do Hyeon', Impact, sans-serif;
+    font-size: 2em;
+    color: green;
+    margin-right: 4%;
+}
+
+a.link:hover {
+    text-decoration: none;
+    color: #00a800;
+}
+
 /* Button Styles */
 
 button {

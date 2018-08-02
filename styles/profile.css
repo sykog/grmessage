@@ -8,6 +8,10 @@ div.col-8 {
     padding: 0% 5%;
 }
 
+div#instructorFields {
+    margin-top: 5%;
+}
+
 /* Button Styles */
 
 button#cancelPassword, button.cancelInput, button.resend {

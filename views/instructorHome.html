@@ -21,43 +21,49 @@
             <a href="logout"><h1 id="logout">Log out</h1></a>
         </header>
 
-        <div class="container" id="mainContainer">
+        <div class="container-fluid" id="mainContainer">
             <h2 id="regHeader">Welcome, {{ @fname }}</h2>
             <hr>
             <div class="col-10">
+                <a class="link" href="../grmessage/message">Send Message</a>
+
+                <a class="link" href="../grmessage/view-messages">View Messages</button></a>
                 <form class="form" action="" method="post">
 
-                    <div id="instructorFields">
+                    <div class="row">
+                        <div class="col-8">
+                            <div id="instructorFields">
 
-                        <check if="{{ isset(@errors['name']) }}">
-                            <p class="error alert alert-danger">{{ @errors['name'] }}</p>
-                        </check>
-                        <label><strong>Full Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
-                            <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
-                            <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
-                            <button class='update' type="submit" id='updateName' name="updateName">Update Info</button>
-                            <button class="edit" type="button" id="editName"></button>
-                            <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button></label>
+                                <check if="{{ isset(@errors['name']) }}">
+                                    <p class="error alert alert-danger">{{ @errors['name'] }}</p>
+                                </check>
+                                <label><strong>Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
+                                    <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
+                                    <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
+                                    <button class='update' type="submit" id='updateName' name="updateName">Update Info</button>
+                                    <button class="edit" type="button" id="editName"></button>
+                                    <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button></label>
 
-                        <label><strong>Instructor Email: </strong><span> {{ @email }} </span></label><br>
+                                <label><strong>Instructor Email: </strong><span> {{ @email }} </span></label><br>
+                            </div>
+                        </div>
 
-                        <button type="button" id="changePassword" name="changePassword">Change Password</button>
-                        <check if="{{ @passChanged }}">
-                            <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
-                        </check>
-                        <check if="{{ isset(@errors['password']) }}">
-                            <p id="passChanged" class="alert alert-danger" role="alert">{{ @errors['password'] }}</p>
-                        </check><br>
+                        <div class="col-4">
+                            <h3>Change Password</h3>
+                            <br>
+                            <check if="{{ isset(@passwordChanged) }}">
+                                <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
+                            </check>
+                            <check if="{{ isset(@passwordError) }}">
+                                <p id="passChanged" class="alert alert-danger" role="alert">{{ @passwordError }}</p>
+                            </check>
 
-                        <div id="password"></div><br>
-
-                        <a href="../grmessage/message">
-                            <button id="sendMessage" type="button" name="sendMessage">Send Message</button>
-                        </a>
-
-                        <a href="../grmessage/view-messages">
-                            <button id="viewMessages" type="button" name="viewMessages">View Messages</button>
-                        </a>
+                            <p><strong>Current Password: </strong> <input class="form-control" type='password' name='currentPassword'></p>
+                            <p><strong>New Password: </strong><input class="form-control" type='password' name='newPassword'></p>
+                            <p><strong>Confirm New Password: </strong><input class="form-control" type='password' name='confirmPassword'></p>
+                            <br>
+                            <button type="submit" id='updatePassword' name="updatePassword">Change Password</button>
+                        </div>
                     </div>
                 </form>
             </div>
