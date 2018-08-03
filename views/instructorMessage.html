@@ -23,12 +23,11 @@
 
 <div class="container" id="mainContainer">
     <h2 id="regHeader">Messaging</h2>
-    <a href="../grmessage/profile">
-        <button id="goHome" type="button" name="goHome">Return to Home</button>
-    </a>
+    <a class="link" href="../grmessage/profile">Return to Profile</a>
+    <a class="link" href="../grmessage/view-messages">View Messages</button></a>
     <hr>
 
-    <div class="col-6">
+    <div class="col-8 mx-auto">
         <form class="form" action="" method="post">
             <repeat group="{{ @programs }}" value="{{ @programOption }}">
                 <label>
@@ -38,7 +37,7 @@
                 <br>
             </repeat>
             <p id="counter"><span id="chars">250</span> characters left</p>
-            <textarea id="textMessage" name="textMessage" rows="6" cols="60" maxlength="250">{{ @textMessage }}</textarea>
+            <textarea id="textMessage" name="textMessage" rows="7" cols="60" maxlength="250">{{ @textMessage }}</textarea>
 
             <button id="sendMessage" type="submit" name="submit" >Send Message</button>
             <check if="{{ @sent }}">

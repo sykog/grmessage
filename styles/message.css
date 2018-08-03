@@ -13,14 +13,21 @@ textarea {
 h3#green {
     position: relative;
     float: right;
-    font-size: 1.5rem;
+    font-size: 1.5em;
     color: green;
     width: max-content;
 }
 
 p#counter {
     color: red;
-    font-size: 1.2rem;
+    font-size: 1.2em;
     text-align: right;
     margin-bottom: 0px;
+}
+
+/* Button Styles */
+
+button#sendMessage {
+    font-size: 1.5em;
+    padding: 8px 16px;
 }
