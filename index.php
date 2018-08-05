@@ -252,7 +252,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
             // generate code
             $instructorCode = randomString(6);
-            $database->setInstructorCode("verified", $instructorCode, $email);
+            $database->setInstructorCode($instructorCode, $email);
 
             // create the message
             $message = (new Swift_Message())
@@ -295,7 +295,7 @@ $f3->route('GET|POST /verify', function($f3) {
         $code = randomString(6);
         $_SESSION['resendCode'] = $code; // store in session so is saves on redirect
 
-        if (validIEmail($email)) $database->setInstructorCode("verified", $code, $email);
+        if (validIEmail($email)) $database->setInstructorCode($code, $email);
         else $database->setStudentCode("verifiedStudent", $code, $email);
 
         // create the message
@@ -306,7 +306,7 @@ $f3->route('GET|POST /verify', function($f3) {
             ->setBody("Account Verification Code: " . $code, 'text/html');
 
         // send the message
-        $result = $mailer->send($message);
+        //$result = $mailer->send($message);
         $f3->reroute("/verify");
         return; // prevents another POST on refresh
     }
@@ -316,10 +316,9 @@ $f3->route('GET|POST /verify', function($f3) {
         if ($_POST['verificationCode'] == $code && strlen($_POST['verificationCode']) > 0){
             // store in session so is saves on redirect
             $_SESSION['verificationCode'] == $_POST['verificationCode'];
-            $value = 'y';
 
-            if (validIEmail($email))  $database->setInstructorCode("verified", $value, $email);
-            else $database->setStudentCode("verifiedStudent", $value, $email);
+            if (validIEmail($email))  $database->setInstructorCode("y", $email);
+            else $database->setStudentCode("verifiedStudent", "y", $email);
 
             $_SESSION['codeError'] = false;
         } else {
