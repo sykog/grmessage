@@ -274,6 +274,7 @@ $f3->route('GET|POST /verify', function($f3) {
 
     $database = new Database();
     $email = $_SESSION['email'];
+    $expired = "Codes are only valid for 1 hour. Please request a new code";
     $f3->set("email", $email);
     if (isset($_SESSION['codeError'])) $f3->set('codeError', $_SESSION['codeError']);
 
@@ -306,7 +307,7 @@ $f3->route('GET|POST /verify', function($f3) {
             ->setBody("Account Verification Code: " . $code, 'text/html');
 
         // send the message
-        //$result = $mailer->send($message);
+        $result = $mailer->send($message);
         $f3->reroute("/verify");
         return; // prevents another POST on refresh
     }
@@ -314,15 +315,22 @@ $f3->route('GET|POST /verify', function($f3) {
     elseif (isset($_POST['verify'])){
         // if code is correct, verify in database
         if ($_POST['verificationCode'] == $code && strlen($_POST['verificationCode']) > 0){
-            // store in session so is saves on redirect
-            $_SESSION['verificationCode'] == $_POST['verificationCode'];
+            // student email code is less than an hour old
+            if(validSEmail($email) && $database->compareTimeStudent($email)) {
 
-            if (validIEmail($email))  $database->setInstructorCode("y", $email);
-            else $database->setStudentCode("verifiedStudent", "y", $email);
+                $database->setStudentCode("verifiedStudent", "y", $email);
+                $_SESSION['codeError'] = "false";
+            }
+            // instructor email code is less than an hour old
+            elseif(validIEmail($email) && $database->compareTimeInstructor($email)) {
 
-            $_SESSION['codeError'] = false;
-        } else {
-            $_SESSION['codeError'] = true;
+                $database->setInstructorCode("y", $email);
+                $_SESSION['codeError'] = "false";
+            } else {
+                $_SESSION['codeError'] = $expired;
+            }
+        } elseif ($_SESSION['codeError'] != $expired) {
+            $_SESSION['codeError'] = "Invalid code";
         }
         $_SESSION['verify'] = true;
         $f3->reroute('/profile');
@@ -337,7 +345,7 @@ $f3->route('GET|POST /verify', function($f3) {
     }
     if ($_SESSION['verify']) {
         $_SESSION['verify'] = false;
-        $_SESSION['codeError'] = false;
+        $_SESSION['codeError'] = "false";
     }
 
     $template = new Template();

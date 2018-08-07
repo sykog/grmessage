@@ -25,10 +25,11 @@
                 <div class="row mx-auto">
                     <div class="container">
                         <div class="row mx-auto my-1">
-                            <check if="{{@codeError}}">
-                                <p class="alert alert-danger text-dark my-3" role="alert">
-                                    Invalid verification code.
-                                </p>
+                            <check if="{{@codeError == 'false' || empty(@codeError)}}">
+                                <true></true>
+                                <false><p class="alert alert-danger text-dark my-3" role="alert">
+                                    {{@codeError}}
+                                </p></false>
                             </check>
                         </div>
                         <div class="row mx-auto my-1">

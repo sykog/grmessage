@@ -427,6 +427,52 @@ class Database
     }
 
     /**
+     * select the student if code is less than an hour old
+     * @param $email identifier
+     * @return true if at least 1 row matches the query
+     */
+    function compareTimeStudent($email) {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM students WHERE verifiedStudentTime > DATE_SUB(NOW(), INTERVAL 1 HOUR) AND
+                studentEmail = :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+
+        $statement->execute();
+
+        // Process the result
+        $count = $statement->rowCount();
+        return $count > 0;
+    }
+
+    /**
+     * select the instructor if code is less than an hour old
+     * @param $email identifier
+     * @return true if at least 1 row matches the query
+     */
+    function compareTimeInstructor($email) {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM instructors WHERE verifiedTime > DATE_SUB(NOW(), INTERVAL 1 HOUR) AND
+                email = :email";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":email", $email, PDO::PARAM_STR);
+
+        $statement->execute();
+
+        // Process the result
+        $count = $statement->rowCount();
+        return $count > 0;
+    }
+
+    /**
      * Adds a verification code for a student to the database
      * @param $column texts, student email, or personal email
      * @param $code 'y' when verified
