@@ -26,6 +26,11 @@ p#counter {
     margin-bottom: 0px;
 }
 
+p#emptyMessage, p#noRecipients {
+    display: none;
+    text-align: center;
+}
+
 /* Button Styles */
 
 button#sendMessage {

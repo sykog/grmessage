@@ -237,7 +237,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 ->setSubject('Account Verification Code')
                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                 ->setTo($email)
-                ->setBody("Account Verification Code: " . $studentCode, 'text/html');
+                ->setBody("Account Verification Code (Codes expire after 1 hour): " . $studentCode, 'text/html');
 
             // send the message
             $result = $mailer->send($message);
@@ -259,7 +259,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 ->setSubject('Account Verification Code')
                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                 ->setTo($email)
-                ->setBody("Account Verification Code: " . $instructorCode, 'text/html');
+                ->setBody("Account Verification Code (Codes expire after 1 hour): " . $instructorCode, 'text/html');
 
             // send the message
             $result = $mailer->send($message);
@@ -304,7 +304,7 @@ $f3->route('GET|POST /verify', function($f3) {
             ->setSubject('Account Verification Code')
             ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
             ->setTo($email)
-            ->setBody("Account Verification Code: " . $code, 'text/html');
+            ->setBody("Account Verification Code (Codes expire after 1 hour): " . $code, 'text/html');
 
         // send the message
         $result = $mailer->send($message);
@@ -587,14 +587,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
             // confirmation and remove message
             $f3->set('sent', true);
             $f3->set('textMessage', "");
-        } else {
-            echo "<div class=\"error alert alert-danger\" role=\"alert\">
-                Message must be between 1 and 250 characters</div>";
         }
-
-        // prevents posting again on page refresh
-        //$f3->reroute("/message");
-        //return;
     }
     $template = new Template();
     echo $template->render('views/instructorMessage.html');

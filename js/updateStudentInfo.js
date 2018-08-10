@@ -1,6 +1,6 @@
 // shows the option to change password
 
-// waits till page is loaded
+// waits til page is loaded
 $(document).ready(function() {
 
     $("#newPhone").mask("(999) 999-9999");
