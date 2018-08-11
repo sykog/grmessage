@@ -8,8 +8,9 @@ require_once $_SERVER['DOCUMENT_ROOT']."/../config.php";
 
 //Start the session
 session_start();
-include ('model/validate.php');
-include('model/randomString.php');
+include ('validate.php');
+include('randomString.php');
+include('gatorlock.php');
 
 // create instance of base class
 $f3 = Base::instance();

@@ -2,8 +2,7 @@
     // connect to database
     require_once $_SERVER['DOCUMENT_ROOT']."/../config.php";
     require_once "../model/Database.php";
-    require_once "../model/randomString.php";
-    require_once "../vendor/autoload.php";
+    require_once "../randomString.php";
 
     $database = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
 
