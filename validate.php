@@ -18,14 +18,15 @@ ini_set('display_errors', 1);
     // must end in @greenriver.edu
     function validIEmail($email)
     {
-        $regexp = '^[\w]+@greenriver.edu$^';
-        return preg_match($regexp, $email);
+        $regex = '^[\w]+@greenriver.edu$^';
+        return preg_match($regex, $email);
     }
 
-    // must be at least 6 character
+    // must contain 8 characters, a letter, number, and special character
     function validPassword($password)
     {
-        return strlen($password) > 7;
+        $regex = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*_=+])[A-Za-z\d!@#$%^&*_=+]{8,}$';
+        return preg_match($regex, $password);
     }
 
     // limit textBox characters

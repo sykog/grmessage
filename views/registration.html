@@ -43,6 +43,12 @@
                        value="{{ @fields['semail'] }}" required></false>
                 </check>
                 <label class="form-control-label" for="password">*Password<span class="red"></span>
+                    <ul class="text-muted">Password must have all 4 of the following requirements:
+                        <li>At least 8 characters</li>
+                        <li>At least 1 character (not case-sensitive)</li>
+                        <li>At least 1 number</li>
+                        <li>At least 1 special character</li>
+                    </ul>
                     <input type="checkbox" value="show" id="showPassword">Show</label>
                 <check if="{{ isset(@errors['password']) }}">
                     <p class="error alert alert-danger">{{ @errors['password'] }}</p>

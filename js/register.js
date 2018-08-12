@@ -9,6 +9,9 @@ $(document).ready(function() {
     var field = "";
     var semailExp = new RegExp('^[\\w]+@mail.greenriver.edu$');
     var iemailExp = new RegExp('^[\\w]+@greenriver.edu$');
+    var letterExp = new RegExp('[a-zA-Z]');
+    var numberExp = new RegExp('[\\d]');
+    var specCharExp = new RegExp('[!@#$%^&*_=+]');
 
     // input masks
     $("#phone").mask("(999) 999-9999");
@@ -95,13 +98,20 @@ $(document).ready(function() {
         });
     }
 
-    // must be at least 8 characters
+    // must be at least 8 characters, and have a letter number, and special character
     function validPassword() {
         $("input#password").on('keyup blur change', function () {
             if (this.value.length < 8) {
                 // eq() gets the nth element
-                $(".red").eq(1).text("Password must be at least 8 characters");
-            } else {
+                $(".red").eq(1).text("Not 8 characters");
+            } else if (!letterExp.test(this.value)) {
+                $(".red").eq(1).text("Must contain a letter");
+            } else if (!numberExp.test(this.value)) {
+                $(".red").eq(1).text("Must contain a number");
+            } else if (!specCharExp.test(this.value)) {
+                $(".red").eq(1).text("Must contain a special character");
+            }
+            else {
                 $(".red").eq(1).text("");
             }
         });
