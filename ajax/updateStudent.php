@@ -3,6 +3,7 @@
     require_once $_SERVER['DOCUMENT_ROOT']."/../config.php";
     require_once "../model/Database.php";
     require_once "../randomString.php";
+    require_once "../vendor/autoload.php";
 
     $database = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
 
@@ -28,14 +29,14 @@
         $database->setStudentCode("verifiedPersonal", $code, $email);
 
         // create the message
-        /*$message = (new Swift_Message())
+        $message = (new Swift_Message())
             ->setSubject('Verification Code')
             ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
             ->setTo($_POST['pemail'])
             ->setBody("Personal Email Verification Code: ". $code, 'text/html');
 
         // send the message
-        $result = $mailer->send($message);*/
+        $result = $mailer->send($message);
     }
 
     // verify personal email

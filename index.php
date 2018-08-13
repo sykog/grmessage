@@ -225,47 +225,60 @@ $f3->route('GET|POST /register', function($f3, $params) {
 
     if($success) {
         $_SESSION['email'] = $email;
+        $result = gatorLockRegister($email, $password, $first, $last);
 
-        // if student account
-        if ($email == $_POST['semail']) {
-            $database->addStudent($email, $password, $phone, $first, $last, $carrier, $program);
-            $_SESSION['loggedIn'] = true;
-            $studentCode = randomString(6);
-            $database->setStudentCode("verifiedStudent", $studentCode, $email);
+        // 0 = register success
+        if ($result == 0) {
+            // if student account
+            if ($email == $_POST['semail']) {
+                $database->addStudent($email, $password, $phone, $first, $last, $carrier, $program);
+                $_SESSION['loggedIn'] = true;
+                $studentCode = randomString(6);
+                $database->setStudentCode("verifiedStudent", $studentCode, $email);
 
-            // create the message
-            $message = (new Swift_Message())
-                ->setSubject('Account Verification Code')
-                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                ->setTo($email)
-                ->setBody("Account Verification Code (Codes expire after 1 hour): " . $studentCode, 'text/html');
+                // create the message
+                $message = (new Swift_Message())
+                    ->setSubject('Account Verification Code')
+                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                    ->setTo($email)
+                    ->setBody("Account Verification Code (Codes expire after 1 hour): " . $studentCode, 'text/html');
 
-            // send the message
-            $result = $mailer->send($message);
+                // send the message
+                $result = $mailer->send($message);
 
-            $f3->reroute("/verify");
+                $f3->reroute("/verify");
+            }
+
+            // if instructor account
+            if ($email == $_POST['iemail']) {
+                $database->addInstructor($email, $password, $first, $last);
+                $_SESSION['loggedIn'] = true;
+
+                // generate code
+                $instructorCode = randomString(6);
+                $database->setInstructorCode($instructorCode, $email);
+
+                // create the message
+                $message = (new Swift_Message())
+                    ->setSubject('Account Verification Code')
+                    ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                    ->setTo($email)
+                    ->setBody("Account Verification Code (Codes expire after 1 hour): " . $instructorCode, 'text/html');
+
+                // send the message
+                $result = $mailer->send($message);
+
+                $f3->reroute("/verify");
+            }
         }
+        // gatorlock email already exists
+        if ($result == 3) {
+            $errors['gatorlock'] = "You already have an account with GatorLock. Please log in on the home page
+             and a Green River Messaging account will be created";
 
-        // if instructor account
-        if ($email == $_POST['iemail']) {
-            $database->addInstructor($email, $password, $first, $last);
-            $_SESSION['loggedIn'] = true;
-
-            // generate code
-            $instructorCode = randomString(6);
-            $database->setInstructorCode($instructorCode, $email);
-
-            // create the message
-            $message = (new Swift_Message())
-                ->setSubject('Account Verification Code')
-                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-                ->setTo($email)
-                ->setBody("Account Verification Code (Codes expire after 1 hour): " . $instructorCode, 'text/html');
-
-            // send the message
-            $result = $mailer->send($message);
-
-            $f3->reroute("/verify");
+            $f3->set('fields', $_POST);
+            $f3->set('errors', $errors);
+            $f3->set('success', $success);
         }
     }
 });

@@ -11,7 +11,7 @@ $(document).ready(function() {
     var iemailExp = new RegExp('^[\\w]+@greenriver.edu$');
     var letterExp = new RegExp('[a-zA-Z]');
     var numberExp = new RegExp('[\\d]');
-    var specCharExp = new RegExp('[!@#$%^&*_=+]');
+    var specCharExp = new RegExp('[!@#$%^&*_=+-]');
 
     // input masks
     $("#phone").mask("(999) 999-9999");

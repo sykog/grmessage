@@ -7,9 +7,11 @@
 
     $email = trim($_POST['email']);
     $verifiedPhone = $database->getStudent($email)['verifiedPhone'];
+    $phone = $database->getStudent($email)['phone'];
     $verifiedEmail = $database->getStudent($email)['verifiedPersonal'];
+    $pemail = $database->getStudent($email)['personalEmail'];
 
-    if ($verifiedEmail == y && $verifiedPhone == "y") echo "both";
-    else if ($verifiedPhone == "y") echo "phone";
-    else if ($verifiedEmail == y) echo "email";
+    if (($verifiedEmail == y && $verifiedPhone == "y") || ($phone == "" && $pemail == "")) echo "both";
+    else if ($verifiedPhone == "y" || $phone == "") echo "phone";
+    else if ($verifiedEmail == y || $pemail == "") echo "email";
     else echo $verifiedPhone . ":" . $verifiedEmail;

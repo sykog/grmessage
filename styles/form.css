@@ -48,3 +48,10 @@ p.error {
     height: 38px;
     line-height: 12px;
 }
+
+/* List Styles */
+
+ul p {
+    margin: 1% 0% 1% -10%;
+    padding-left: -20px;
+}

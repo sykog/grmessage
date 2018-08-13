@@ -11,21 +11,21 @@ ini_set('display_errors', 1);
     // must end in @mail.greenriver.edu
     function validSEmail($email)
     {
-        $regexp = '^[\w]+@mail.greenriver.edu$^';
+        $regexp = '~^[\w]+@mail.greenriver.edu$~';
         return preg_match($regexp, $email);
     }
 
     // must end in @greenriver.edu
     function validIEmail($email)
     {
-        $regex = '^[\w]+@greenriver.edu$^';
+        $regex = '~^[\w]+@greenriver.edu$~';
         return preg_match($regex, $email);
     }
 
     // must contain 8 characters, a letter, number, and special character
     function validPassword($password)
     {
-        $regex = '^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*_=+])[A-Za-z\d!@#$%^&*_=+]{8,}$';
+        $regex = '~^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*_=+-])[A-Za-z\d!@#$%^&*_=+-]{8,}$~';
         return preg_match($regex, $password);
     }
 

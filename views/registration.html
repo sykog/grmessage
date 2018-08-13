@@ -28,6 +28,10 @@
         <h2 id="regHeader">Student</h2>
         <hr>
 
+        <check if="{{ isset(@errors['gatorlock']) }}">
+            <p class="alert alert-danger">You already have an account with GatorLock. Please log in on the home page
+                 and a Green River Messaging account will be created.</p>
+        </check>
         <div class="col-6">
             <form class="form" action="" method="post">
                 <p><i>* Required fields</i></p>
@@ -43,7 +47,7 @@
                        value="{{ @fields['semail'] }}" required></false>
                 </check>
                 <label class="form-control-label" for="password">*Password<span class="red"></span>
-                    <ul class="text-muted">Password must have all 4 of the following requirements:
+                    <ul class="text-muted"><p>Password must have all 4 of the following requirements:</p>
                         <li>At least 8 characters</li>
                         <li>At least 1 character (not case-sensitive)</li>
                         <li>At least 1 number</li>
