@@ -20,6 +20,18 @@ $(document).ready(function() {
     // carrier field starts hidden
     $("#selectCarrier").hide();
 
+    // changes details if the gatorlock checkbox is clicked {
+    $("#gatorLock").click(function() {
+        if ($("#gatorLock[type=checkbox]").prop('checked')) {
+            $("#showPassword, .gatorLockShow").hide();
+            $("#showPassword[type=checkbox]").prop('checked', false);
+            $("#password").attr("type", "password");
+            $("#confirm").attr("type", "password");
+        } else {
+            $("#showPassword, .gatorLockShow").show();
+        }
+    });
+
     // shows student fields (phone, carrier)
     student.click(function () {
         $("#studentFields").show();

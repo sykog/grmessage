@@ -49,9 +49,18 @@ p.error {
     line-height: 12px;
 }
 
+div#gatorLockDiv {
+    border-bottom: 2px solid green;
+    width: max-content;
+}
+
 /* List Styles */
 
+ul {
+    position: absolute;
+    right: -80%;
+}
+
 ul p {
-    margin: 1% 0% 1% -10%;
-    padding-left: -20px;
+    margin: 0% 0% 1% -10%;
 }

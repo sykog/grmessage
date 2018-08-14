@@ -273,8 +273,8 @@ $f3->route('GET|POST /register', function($f3, $params) {
         }
         // gatorlock email already exists
         if ($result == 3) {
-            $errors['gatorlock'] = "You already have an account with GatorLock. Please log in on the home page
-             and a Green River Messaging account will be created";
+            $errors['gatorlock'] = "You already have an account with GatorLock. 
+                    Please check the box at the top of the screen and register with those credentials";
 
             $f3->set('fields', $_POST);
             $f3->set('errors', $errors);

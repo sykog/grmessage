@@ -6,7 +6,7 @@ $(document).ready(function(){
     // hide box initially
     $("#forgotPassword").hide();
 
-    $("#openDialog").click(function() {
+    $("button#openDialog").click(function() {
         $("#forgotPassword").show();
     });
 

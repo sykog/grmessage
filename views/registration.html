@@ -29,12 +29,15 @@
         <hr>
 
         <check if="{{ isset(@errors['gatorlock']) }}">
-            <p class="alert alert-danger">You already have an account with GatorLock. Please log in on the home page
-                 and a Green River Messaging account will be created.</p>
+            <p class="alert alert-danger">{{@errors['gatorlock']}}</p>
         </check>
         <div class="col-6">
             <form class="form" action="" method="post">
                 <p><i>* Required fields</i></p>
+
+                <div id="gatorLockDiv">
+                    <input type="checkbox" value="gatorLock" id="gatorLock" name="gatorLock">I already have a GatorLock account</label>
+                </div>
 
                 <label class="form-control-label" for="email">*Green River Email<span class="red"></span></label>
                 <check if="{{ isset(@errors['email']) }}">
@@ -53,19 +56,19 @@
                         <li>At least 1 number</li>
                         <li>At least 1 special character</li>
                     </ul>
-                    <input type="checkbox" value="show" id="showPassword">Show</label>
+                    <input type="checkbox" value="show" id="showPassword"><span class="gatorLockShow">Show</span></label>
                 <check if="{{ isset(@errors['password']) }}">
                     <p class="error alert alert-danger">{{ @errors['password'] }}</p>
                 </check>
                 <input class="form-control" type="password" id="password" name="password"
                         value="{{ @fields['password'] }}" required>
 
-                <label class="form-control-label" for="confirm">*Confirm password<span class="red"></span></label>
+                <label class="gatorLockShow form-control-label" for="confirm">*Confirm password<span class="red gatorLockShow"></span></label>
                 <check if="{{ isset(@errors['confirm']) }}">
-                    <p class="error alert alert-danger">{{ @errors['confirm'] }}</p>
+                    <p class="gatorLockShow error alert alert-danger">{{ @errors['confirm'] }}</p>
                 </check>
-                <input class="form-control" type="password" id="confirm" name="confirm"
-                        value="{{ @fields['confirm'] }}" required>
+                <input class="gatorLockShow form-control" type="password" id="confirm" name="confirm"
+                        value="{{ @fields['confirm'] }}">
 
                 <label class="form-control-label" for="first">*First Name<span class="red"></span></label>
                 <input class="form-control" type="text" id="first" name="first"
