@@ -36,7 +36,8 @@
                 <p><i>* Required fields</i></p>
 
                 <div id="gatorLockDiv">
-                    <input type="checkbox" value="gatorLock" id="gatorLock" name="gatorLock">I already have a GatorLock account</label>
+                    <input type="checkbox" value="gatorLock" id="gatorLock" name="gatorLock"
+                    <check if="{{ isset(@fields['gatorLock']) }}">checked</check>>I already have a GatorLock account</label>
                 </div>
 
                 <label class="form-control-label" for="email">*Green River Email<span class="red"></span></label>
@@ -49,14 +50,14 @@
                     <false><input class="form-control" type="text" id="email" name="semail" placeholder="example@mail.greenriver.edu"
                        value="{{ @fields['semail'] }}" required></false>
                 </check>
-                <label class="form-control-label" for="password">*Password<span class="red"></span>
-                    <ul class="text-muted"><p>Password must have all 4 of the following requirements:</p>
+                <label class="form-control-label" for="password">*Password
+                    <ul class="gatorLockShow text-muted"><p>Password must have all 4 of the following requirements:</p>
                         <li>At least 8 characters</li>
                         <li>At least 1 character (not case-sensitive)</li>
                         <li>At least 1 number</li>
                         <li>At least 1 special character</li>
                     </ul>
-                    <input type="checkbox" value="show" id="showPassword"><span class="gatorLockShow">Show</span></label>
+                    <input type="checkbox" value="show" id="showPassword"><span class="gatorLockShow">Show</span><span class="red gatorLockShow"></span></label>
                 <check if="{{ isset(@errors['password']) }}">
                     <p class="error alert alert-danger">{{ @errors['password'] }}</p>
                 </check>

@@ -56,11 +56,6 @@ div#gatorLockDiv {
 
 /* List Styles */
 
-ul {
-    position: absolute;
-    right: -80%;
-}
-
 ul p {
     margin: 0% 0% 1% -10%;
 }

@@ -88,7 +88,7 @@ $f3->route('GET|POST /', function($f3, $params) {
             }
         }
 
-        if (isset($_POST['resend'])) {
+        /*if (isset($_POST['resend'])) {
 
             $email2 = $_POST['email2'];
             $newPassword = randomString(8);
@@ -97,16 +97,16 @@ $f3->route('GET|POST /', function($f3, $params) {
             if (validSEmail($email2)) {
                 $student = $database->getStudent($email2);
                 $database->changeStudentPassword($email2, $newPassword);
-                //mail($email2, 'Password Reset',"Here is your new password: " .$newPassword . "\n");
+                mail($email2, 'Password Reset',"Here is your new password: " .$newPassword . "\n");
             }
 
             // if logging in as an instructor
             elseif (validIEmail($email2)) {
                 $instructor = $database->getInstructor($email2);
                 $database->changeInstructorPassword($email2, $newPassword);
-                //mail($email2, 'Password Reset', "Here is your new password: " .$newPassword . "\n");
+                mail($email2, 'Password Reset', "Here is your new password: " .$newPassword . "\n");
             }
-        }
+        }*/
     }
     else {
         $f3->reroute("/profile");
@@ -154,6 +154,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
     // if registering as a student
     if(isset($_POST['submitS'])) {
         $email = $_POST['semail'];
+        $gatorLock = $_POST['gatorLock'];
         $password = $_POST['password'];
         $confirm = $_POST['confirm'];
         $first = $_POST['first'];
@@ -162,37 +163,28 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $carrier = $_POST['carrier'];
         $program = $_POST['program'];
 
-        if(!validSEmail($email)) {
-            $errors['email'] = "Please enter a student email";
+        //if(!validSEmail($email)) $errors['email'] = "Please enter a student email";
+        if($database->studentExists($email)) $errors['email'] = "Email already exists";
+        // check for a successful login if user already has a gatorlock account
+        if (isset($gatorLock)) {
+            $loginCode = gatorlockLogin($email, $password);
+            // if not a successful login
+            if ($loginCode != 7) $errors['password'] = "Incorrect email or password ".$loginCode;
+        } else {
+            if (!validPassword($password)) $errors['password'] = "Please enter a valid password";
+            if(!validConfirm($password, $confirm)) $errors['confirm'] = "Please confirm your password";
         }
-        if($database->studentExists($email)) {
-            $errors['email'] = "Email already exists";
-        }
-        if(!validPassword($password)) {
-            $errors['password'] = "Please enter a valid password";
-        }
-        if(!validConfirm($password, $confirm)) {
-            $errors['confirm'] = "Please confirm your password";
-        }
-        if(!validPhone($phone)) {
-            $errors['phone'] = "Invalid phone number" . strlen($phone);
-        }
-        if(!validCarrier($carrier)) {
-            $errors['carrier'] = "Invalid carrier" . strlen($phone);
-        }
-        if(!validProgram($program)) {
-            $errors['program'] = "Invalid program" . strlen($phone);
-        }
+        if(!validPhone($phone)) $errors['phone'] = "Invalid phone number" . strlen($phone);
+        if(!validCarrier($carrier)) $errors['carrier'] = "Invalid carrier" . strlen($phone);
+        if(!validProgram($program)) $errors['program'] = "Invalid program" . strlen($phone);
 
         $success = sizeof($errors) == 0;
-        $f3->set('fields', $_POST);
-        $f3->set('errors', $errors);
-        $f3->set('success', $success);
         $f3->set('instructor', false);
     }
     // if registering as an instructor
     if(isset($_POST['submitI'])) {
         $email = $_POST['iemail'];
+        $gatorLock = $_POST['gatorLock'];
         $password = $_POST['password'];
         $confirm = $_POST['confirm'];
         $first = $_POST['first'];
@@ -200,35 +192,28 @@ $f3->route('GET|POST /register', function($f3, $params) {
         $phone = $_POST['phone'];
         $carrier = $_POST['carrier'];
 
-        if(!validIEmail($email)){
-            $errors['email'] = "Please enter an instructor email";
-        }
-        if($database->instructorExists($email)) {
-            $errors['email'] = "Email already exists";
-        }
-        if(!validPassword($password)){
-            $errors['password'] = "Please enter a valid password";
-        }
-        if(!validConfirm($password, $confirm)){
-            $errors['confirm'] = "Please confirm your password";
+        if(!validIEmail($email)) $errors['email'] = "Please enter an instructor email";
+        if($database->instructorExists($email)) $errors['email'] = "Email already exists";
+        // check for a successful login if user already has a gatorlock account
+        if (isset($gatorLock)) {
+            $loginCode = gatorlockLogin($email, $password);
+            // if not a successful login
+            if ($loginCode != 7) $errors['password'] = "Incorrect email or password";
+        } else {
+            if (!validPassword($password)) $errors['password'] = "Please enter a valid password";
+            if(!validConfirm($password, $confirm)) $errors['confirm'] = "Please confirm your password";
         }
 
         $success = sizeof($errors) == 0;
-        $f3->set('fields', $_POST);
-        $f3->set('errors', $errors);
-        $f3->set('success', $success);
         $f3->set('instructor', true);
     }
-
-    $template = new Template();
-    echo $template->render('views/registration.html');
 
     if($success) {
         $_SESSION['email'] = $email;
         $result = gatorLockRegister($email, $password, $first, $last);
 
         // 0 = register success
-        if ($result == 0) {
+        if ($result == 0 || ($result == 3 && isset($gatorLock))) {
             // if student account
             if ($email == $_POST['semail']) {
                 $database->addStudent($email, $password, $phone, $first, $last, $carrier, $program);
@@ -272,15 +257,18 @@ $f3->route('GET|POST /register', function($f3, $params) {
             }
         }
         // gatorlock email already exists
-        if ($result == 3) {
+        else if ($result == 3) {
             $errors['gatorlock'] = "You already have an account with GatorLock. 
                     Please check the box at the top of the screen and register with those credentials";
-
-            $f3->set('fields', $_POST);
-            $f3->set('errors', $errors);
-            $f3->set('success', $success);
         }
     }
+
+    $f3->set('fields', $_POST);
+    $f3->set('errors', $errors);
+    $f3->set('success', $success);
+
+    $template = new Template();
+    echo $template->render('views/registration.html');
 });
 
 // define a route for verifying account

@@ -16,6 +16,12 @@ $(document).ready(function() {
     // input masks
     $("#phone").mask("(999) 999-9999");
     if($("#email").attr("name") == "iemail") instructorClick();
+    if ($("#gatorLock[type=checkbox]").prop('checked')) {
+        $("#showPassword, .gatorLockShow").hide();
+        $("#showPassword[type=checkbox]").prop('checked', false);
+        $("#password").attr("type", "password");
+        $("#confirm").attr("type", "password");
+    }
 
     // carrier field starts hidden
     $("#selectCarrier").hide();
