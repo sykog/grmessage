@@ -3,7 +3,7 @@
 h3#green {
     position: relative;
     font-size: 1.2rem;
-    color: green;
+    color: #008930;
     width: max-content;
     margin: auto;
 }
@@ -36,9 +36,9 @@ button {
 }
 
 button#resend {
-    background: #eacb6e;
-    background: -moz-linear-gradient(0deg, #f7e7b2 0%, #eacb6e 49%, #e5b72d 51%, #eaba2a 100%);
-    background: -webkit-linear-gradient(0deg, #f7e7b2 0%,#eacb6e 49%,#e5b72d 51%,#eaba2a 100%);
-    background: linear-gradient(180deg, #f7e7b2 0%,#eacb6e 49%,#e5b72d 51%,#eaba2a 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7e7b2', endColorstr='#eaba2a',GradientType=1 );
+    background: #f2870d;
+    background: -moz-linear-gradient(0deg, #f6ab55 0%, #f2870d 49%, #c26c0a 51%, #f49325 100%);
+    background: -webkit-linear-gradient(0deg, #f6ab55 0%,#f2870d 49%,#c26c0a 51%,#f49325 100%);
+    background: linear-gradient(180deg, #f6ab55 0%,#f2870d 49%,#c26c0a 51%,#f49325 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6ab55', endColorstr='#f49325',GradientType=1 );
 }

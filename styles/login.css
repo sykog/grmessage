@@ -6,11 +6,11 @@ button {
 }
 
 button#register, button#close, #openDialog {
-    background: #eacb6e;
-    background: -moz-linear-gradient(0deg, #f7e7b2 0%, #eacb6e 49%, #e5b72d 51%, #eaba2a 100%);
-    background: -webkit-linear-gradient(0deg, #f7e7b2 0%,#eacb6e 49%,#e5b72d 51%,#eaba2a 100%);
-    background: linear-gradient(180deg, #f7e7b2 0%,#eacb6e 49%,#e5b72d 51%,#eaba2a 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7e7b2', endColorstr='#eaba2a',GradientType=1 );
+    background: #f2870d;
+    background: -moz-linear-gradient(0deg, #f6ab55 0%, #f2870d 49%, #c26c0a 51%, #f49325 100%);
+    background: -webkit-linear-gradient(0deg, #f6ab55 0%,#f2870d 49%,#c26c0a 51%,#f49325 100%);
+    background: linear-gradient(180deg, #f6ab55 0%,#f2870d 49%,#c26c0a 51%,#f49325 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6ab55', endColorstr='#f49325',GradientType=1 );
 }
 
 a#openDialog {
@@ -51,7 +51,7 @@ div#forgotPassword {
     padding-bottom: 10px;
     height: max-content;
     background-color: white;
-    border: 3px solid green;
+    border: 3px solid #008930;
     -webkit-border-radius: 20;
     -moz-border-radius: 20;
     border-radius: 20px;
