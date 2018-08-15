@@ -11,12 +11,10 @@ $(document).ready(function() {
     // hide verification tabs if verified
     hideVerifications();
 
-    // hide checkboxes if value are empty
+    // hide carrier if value is empty
     if ($("#phoneSpan").text().length <= 2) {
-        $("#getTexts, #getTexts + p, p + br").remove();
         $("#carrierDiv").hide();
     }
-    if ($("#pEmailSpan").text().length <= 2) $("#getPersonalEmails, #getPersonalEmails + p").remove();
 
     // Scroll down to see update button for notifications
     $("#getPersonalEmails, #getTexts, #getStudentEmails").click( function() {
