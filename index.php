@@ -43,7 +43,7 @@ $f3->route('GET|POST /', function($f3, $params) {
             $_SESSION['login'] = true;
             $f3->set('username', $email);
 
-            $password = sha1($_POST['password']);
+            $password = $_POST['password'];
             $success = true;
 
             // if logging in as a student
@@ -51,11 +51,23 @@ $f3->route('GET|POST /', function($f3, $params) {
                 $student = $database->getStudent($email);
                 $_SESSION['isInstructor'] = false;
 
-                if($student['studentEmail'] == $email && ($student['password'] == $password)) {
-                    $success = true;
+                // if email is in the database, try to log in
+                if($student['studentEmail'] == $email) {
+                    $result = gatorlockLogin($email, $password);
+                    $success = false;
+                    // successful login returns 7
+                    if ($result == 7) {
+                        $success = true;
+                    } elseif ($result == 8 || $result == 16 || $result == 0) {
+                        $_SESSION['loginError'] = "Account is locked out";
+                    } elseif ($result == 15) {
+                        $_SESSION['loginError'] = "GatorLock account is not verified";
+                    } else {
+                        $_SESSION['loginError'] = "Incorrect email or password";
+                    }
                 } else {
                     $success = false;
-                    $_SESSION['loginError'] = true;
+                    $_SESSION['loginError'] = "Incorrect email or password";
                 }
             }
 
@@ -63,26 +75,37 @@ $f3->route('GET|POST /', function($f3, $params) {
             elseif (validIEmail($email)) {
                 $instructor = $database->getInstructor($email);
                 $_SESSION['isInstructor'] = true;
-                if($instructor['email'] == $email && ($instructor['password'] == $password)) {
-                    $success = true;
+
+                // if email is in the database, try to log in
+                if($instructor['email'] == $email) {
+                    $result = gatorlockLogin($email, $password);
+                    $success = false;
+                    // successful login returns 7
+                    if ($result == 7) {
+                        $success = true;
+                    } elseif ($result == 8 || $result == 16) {
+                        $_SESSION['loginError'] = "Account is locked out after 5th failed login";
+                    } elseif ($result == 15) {
+                        $_SESSION['loginError'] = "GatorLock account is not verified";
+                    } else {
+                        $_SESSION['loginError'] = "Incorrect email or password";
+                    }
                 } else {
                     $success = false;
-                    $_SESSION['loginError'] = true;
+                    $_SESSION['loginError'] = "Incorrect email or password";
                 }
             }
             // if the username is invalid, display login error
             else {
                 $success = false;
-                $_SESSION['loginError'] = true;
+                $_SESSION['loginError'] = "Incorrect email or password";
             }
 
             if($success) {
                 $_SESSION['loggedIn'] = true;
                 $_SESSION['email'] = $email;
-
                 $f3->reroute("/profile");
-            }
-            else {
+            } else {
                 $f3->reroute("/");
                 return; // prevents POST on refresh
             }
@@ -169,7 +192,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
         if (isset($gatorLock)) {
             $loginCode = gatorlockLogin($email, $password);
             // if not a successful login
-            if ($loginCode != 7) $errors['password'] = "Incorrect email or password ".$loginCode;
+            if ($loginCode != 7) $errors['password'] = "Incorrect email or password";
         } else {
             if (!validPassword($password)) $errors['password'] = "Please enter a valid password";
             if(!validConfirm($password, $confirm)) $errors['confirm'] = "Please confirm your password";

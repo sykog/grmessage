@@ -34,8 +34,8 @@
             <div class="col-4 mx-auto">
                 <form method="post" class="form mx-auto">
                     <div class="row mx-auto">
-                        <check if="{{ @loginError }}">
-                            <p class="error alert alert-danger" role="alert">Incorrect email or password</p>
+                        <check if="{{ @loginError != '' }}">
+                            <p class="error alert alert-danger" role="alert">{{@loginError}}</p>
                         </check>
                         <label class="form-control-label mx-auto" for="email">Green River Email </label>
                         <input class="form-control" type="text" id="email" name="email" value="{{ @username }}">
