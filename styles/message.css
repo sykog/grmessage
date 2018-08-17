@@ -1,12 +1,24 @@
 /* Form Styles */
+
 div.col-6 {
     margin: auto
 }
 
-/* Text area styles */
+/* Input tyles */
 
 textarea {
     width: 100%;
+}
+
+label.form-control-label {
+    display: inline;
+    font-family: 'Do Hyeon', Impact, sans-serif;
+    font-size: 1.5em;
+    color: #006225;
+}
+
+input {
+    margin-bottom: 1%;
 }
 
 /* Font Styles */
@@ -20,10 +32,11 @@ h3#green {
 }
 
 p#counter {
+    display: inline;
     color: red;
     font-size: 1.2em;
     text-align: right;
-    margin-bottom: 0px;
+    float: right;
 }
 
 p#emptyMessage, p#noRecipients {

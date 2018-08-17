@@ -41,7 +41,12 @@
                 </label>
                 <br>
             </repeat>
+            <label class="form-control-label" for="subject">Subject</label>
+            <input class="form-control" type="text" id="subject" name="subject" value="{{ @subject }}"
+                   placeholder="Subject will only be used for emails, not texts">
             <p id="counter"><span id="chars">250</span> characters left</p>
+
+            <label class="form-control-label" for="textMessage">Body</label>
             <textarea id="textMessage" name="textMessage" rows="7" cols="60" maxlength="250">{{ @textMessage }}</textarea>
 
             <button id="sendMessage" type="submit" name="submit" >Send Message</button>

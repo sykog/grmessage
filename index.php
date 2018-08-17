@@ -486,8 +486,6 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('getTexts', $student['getTexts']);
         $f3->set('getStudentEmails', $student['getStudentEmails']);
         $f3->set('getPersonalEmails', $student['getPersonalEmails']);
-        $f3->set('verifiedPersonal', $student['verifiedPersonal'] == 'y' || empty($f3->get('personalEmail')));
-        $f3->set('verifiedPhone', $student['verifiedPhone'] == 'y');
 
         // change password if button was clicked
         if (isset($_POST['updatePassword'])) {
