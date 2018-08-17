@@ -547,8 +547,10 @@ $f3->route('GET|POST /message', function($f3, $params) {
         $f3->reroute('/verify');
     }
     if(isset($_POST['submit'])) {
-        $textMessage = $_POST['textMessage'];
-        $textMessage = trim($textMessage);
+        if (!empty($_POST['subject'])) $subject = $_POST['subject'];
+        else $subject = "Green River Messaging";
+        $textMessage = trim($_POST['textMessage']);
+        $f3->set('subject', $subject);
         $f3->set('textMessage', $textMessage);
         $f3->set('sent', false);
 
@@ -579,7 +581,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                         if ($studentInfo['getPersonalEmails'] == "y" && $studentInfo['verifiedPersonal'] == 'y') {
                             // create the message
                             $message = (new Swift_Message())
-                                ->setSubject('Green River Messaging IT')
+                                ->setSubject($subject)
                                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                                 ->setTo($studentInfo['personalEmail'])
                                 ->setBody($textMessage . $optOut, 'text/html');
@@ -591,7 +593,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                         if ($studentInfo['getStudentEmails'] == "y" && $studentInfo['verifiedStudent'] == 'y') {
                             // create the message
                             $message = (new Swift_Message())
-                                ->setSubject('Green River Messaging IT')
+                                ->setSubject($subject)
                                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                                 ->setTo($studentInfo['studentEmail'])
                                 ->setBody($textMessage . $optOut, 'text/html');
@@ -609,6 +611,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
 
             // confirmation and remove message
             $f3->set('sent', true);
+            $f3->set('subject', "");
             $f3->set('textMessage', "");
         }
     }

@@ -6,24 +6,38 @@ $(document).ready(function() {
     // variables
     var maxLength = 250;
     var sendButton = $("#sendMessage");
+    var containsMessage = false;
+    var hasRecipient = false;
 
     sendButton.hide();
 
     // show number of characters left
-    $("#textMessage").keydown(function() {
+    $("#textMessage").keyup(function() {
         var length = $(this).val().length;
         length = maxLength - length;
         $("#chars").text(length);
 
-        if (length == maxLength) sendButton.hide()
-        else sendButton.show();
+        // check if the textarea isn't empty
+        if (length === maxLength) {
+            containsMessage = false;
+            sendButton.hide();
+        } else {
+            containsMessage = true;
+            if(hasRecipient) sendButton.show();
+        }
     });
 
-    // hide send button if no programs are selected
+    // check if a recipient is selected
     $("input").click(function() {
         var checked = $("input:checked");
 
-        if (checked.length === 0) sendButton.hide();
-        else sendButton.show();
+        if (checked.length === 0) hasRecipient = false;
+        else hasRecipient = true;
     });
+
+    // show send button it there is both a message and a recipient
+    $("form").change(function() {
+        if (containsMessage && hasRecipient) sendButton.show();
+        else sendButton.hide();
+    })
 });
