@@ -3,3 +3,20 @@
 body {
     margin-bottom: 2%;
 }
+
+/* Table Styles */
+
+tbody tr:nth-child(even):hover td, tbody tr:nth-child(odd):hover td {
+    background-color: #00803120 !important;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #006225;
+    border-color: #006225;
+}
+
+a.page-link, a.page-link:hover {
+    color: #006225;
+}
