@@ -9,14 +9,14 @@
 
         <!--Style sheets-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-        <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/main.css">
-        <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/viewMessages.css">
+        <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/main.css">
+        <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/viewMessages.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
 
         <!-- Javascript-->
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js" type="text/javascript"></script>
-        <script src="/355/grmessage/js/updateStudentInfo.js"></script>
+        <script src="{{@BASE}}/js/updateStudentInfo.js"></script>
     </head>
     <body>
         <header class="header clearfix" id="mainHeader">
@@ -29,8 +29,8 @@
         <div class="container" id="mainContainer">
 
             <h2 id="regHeader">Messages</h2>
-            <a class="link" href="../grmessage/profile">Profile</a>
-            <a class="link" href="../grmessage/message">Send Message</button></a>
+            <a class="link" href="profile">Profile</a>
+            <a class="link" href="message">Send Message</button></a>
             <hr>
 
             <!--DataTable-->

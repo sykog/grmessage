@@ -8,12 +8,12 @@
 
     <!--Style sheets-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-    <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/main.css">
-    <link type="text/css" rel="stylesheet" href="/355/grmessage/styles/message.css">
+    <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/main.css">
+    <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/message.css">
 
     <!-- Javascript-->
     <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="/355/grmessage/js/sendMessage.js"></script>
+    <script src="{{@BASE}}/js/sendMessage.js"></script>
 </head>
 <body>
 <header class="header clearfix" id="mainHeader">
@@ -25,8 +25,8 @@
 
 <div class="container" id="mainContainer">
     <h2 id="regHeader">Messaging</h2>
-    <a class="link" href="{{@BASE}}/profile">Profile</a>
-    <a class="link" href="../grmessage/view-messages">View Messages</button></a>
+    <a class="link" href="profile">Profile</a>
+    <a class="link" href="view-messages">View Messages</button></a>
     <hr>
 
     <div class="col-8 mx-auto">
