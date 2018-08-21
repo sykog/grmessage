@@ -529,7 +529,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
         ->setPassword(EMAIL_PASSWORD);
     // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
-    $optOut = "<hr>If you would like to stop receiving updates, visit your profile page to opt-out: <a href='asuarez.greenriverdev.com/355/grmessage/'>asuarez.greenriverdev.com/355/grmessage/</a>";
+    $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, uncheck the notifications on your <a href="http://messaging.greenrivertech.net/">profile page</a>.</p>';
 
     // go back to home page if not logged in
     if(!$_SESSION['loggedIn']) $f3->reroute("/");
@@ -561,6 +561,16 @@ $f3->route('GET|POST /message', function($f3, $params) {
         if (!empty($_POST['subject'])) $subject = $_POST['subject'];
         else $subject = "Green River Messaging";
         $textMessage = trim($_POST['textMessage']);
+        $emailMessage = nl2br($textMessage);
+        // format email with html
+        $body = '<html lang="en">' .
+            '<body>' .
+            '<h3 style="color:#006225">Green River Messaging</h3>' .
+            '<p>' . $emailMessage . '</p>' .
+            $optOut .
+            '</body>' .
+            '</html>';
+
         $f3->set('subject', $subject);
         $f3->set('textMessage', $textMessage);
         $f3->set('sent', false);
@@ -595,7 +605,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                                 ->setSubject($subject)
                                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                                 ->setTo($studentInfo['personalEmail'])
-                                ->setBody($textMessage . $optOut, 'text/html');
+                                ->setBody($body, 'text/html');
 
                             // send the message
                             $result = $mailer->send($message);
@@ -607,7 +617,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                                 ->setSubject($subject)
                                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                                 ->setTo($studentInfo['studentEmail'])
-                                ->setBody($textMessage . $optOut, 'text/html');
+                                ->setBody($body, 'text/html');
 
                             // send the message
                             $result = $mailer->send($message);
