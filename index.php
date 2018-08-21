@@ -537,8 +537,19 @@ $f3->route('GET|POST /message', function($f3, $params) {
     if($_SESSION['loggedIn'] && !$_SESSION['isInstructor']) {
         $f3->reroute("/profile");
     }
+
     $email = $_SESSION['email'];
     $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
+
+    $programs = $f3->get("programs");
+    $studentCount = array();
+    // get the number of current subscribers for each program
+    foreach($programs as $program) {
+        $subscribers = $database->studentCount($program);
+        $studentCount[$program] = $subscribers;
+    }
+
+    $f3->set("studentCount", $studentCount);
     $f3->set("students", $database->getStudents());
     $instructor = $database->getInstructor($email);
 

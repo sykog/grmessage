@@ -25,7 +25,7 @@
 
 <div class="container" id="mainContainer">
     <h2 id="regHeader">Messaging</h2>
-    <a class="link" href="../grmessage/profile">Return to Profile</a>
+    <a class="link" href="{{@BASE}}/profile">Profile</a>
     <a class="link" href="../grmessage/view-messages">View Messages</button></a>
     <hr>
 
@@ -34,10 +34,10 @@
         <p id="noRecipients" class="alert alert-danger" role="alert">Must select a program before sending a message</p>
 
         <form class="form" action="" method="post">
-            <repeat group="{{ @programs }}" value="{{ @programOption }}">
+            <repeat group="{{ @studentCount }}" key="{{ @program }}" value="{{ @subscribers }}">
                 <label>
-                    <input type="checkbox" name="chosenPrograms[]" value="{{@programOption}}">
-                    {{ @programOption }}
+                    <input type="checkbox" name="chosenPrograms[]" value="{{@program}}">
+                    {{ @program }} <i>({{ @subscribers }} students)</i>
                 </label>
                 <br>
             </repeat>

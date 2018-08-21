@@ -318,7 +318,7 @@ class Database
 
     /**
      * Returns true if email is in database
-     * @param email email being searched
+     * @param $email email being searched
      * @return bool true if email is found
      */
     function studentExists($email) {
@@ -340,7 +340,7 @@ class Database
 
     /**
      * Returns true if email is in database
-     * @param email email being searched
+     * @param $email email being searched
      * @return bool true if email is found
      */
     function instructorExists($email) {
@@ -407,7 +407,6 @@ class Database
 
     /**
      * retrieve every student from the database
-     * @param $email
      * @return each students in the array
      */
     function getStudents() {
@@ -424,6 +423,28 @@ class Database
         // Process the result
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $results;
+    }
+
+    /**
+     * get number of students who are subscribed by program
+     * @param $program program to search for
+     * @return row count of students who have a y for a column
+     */
+    function studentCount($program) {
+        $dbh = $this->dbh;
+        // Define the query
+        $sql = "SELECT * FROM students WHERE program = :program AND
+                (getTexts = 'y' OR getStudentEmails = 'y' OR getPersonalEmails = 'y')";
+
+        // Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        $statement->bindParam(":program", $program, PDO::PARAM_STR);
+
+        $statement->execute();
+
+        // Process the result
+        return $statement->rowCount();
     }
 
     /**
