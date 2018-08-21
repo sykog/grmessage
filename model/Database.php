@@ -18,13 +18,13 @@ class Database
         catch (PDOException $e) {
             echo $e->getMessage();
         }
-    }//end constructor
+    } // end constructor
 
     /**
      * Adds a student to the database
-     * @param $email students email
-     * @param $password students password
-     * @param $phone students phone number
+     * @param $email student's email
+     * @param $password student's password
+     * @param $phone student's phone number
      * @param $fname first name
      * @param $lname last name
      * @param $carrier cell phone carrier
@@ -53,14 +53,14 @@ class Database
         // execute
         $statement->execute();
         $id = $dbh->lastInsertId();
-    }//end addStudent
+    } // end addStudent
 
     /**
      * Adds an instructor to the database
-     * @param $email
-     * @param $password
-     * @param $fname
-     * @param $lname
+     * @param $email instructor's email
+     * @param $password instructor's password
+     * @param $fname first name
+     * @param $lname last name
      */
     function addInstructor($email, $password, $fname, $lname) {
         // encrypt password
@@ -81,57 +81,55 @@ class Database
         // execute
         $statement->execute();
         $id = $dbh->lastInsertId();
-    }//end addInstructor
+    } // end addInstructor
 
     /**
      * change password for students
-     * @param $studentEmail
-     * @param $newPassword
+     * @param $studentEmail identifier
+     * @param $newPassword new password
      */
     function changeStudentPassword($studentEmail, $newPassword) {
-
         // encrypt password
         $newPassword = sha1($newPassword);
-
         $dbh = $this->dbh;
+
         // define the query
         $sql = "UPDATE students
             SET password = :password
             WHERE studentEmail = :studentEmail";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
         $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute
         $statement->execute();
-    }//end changeStudentPassword
+    } // end changeStudentPassword
 
     /**
      * change password for instructors
-     * @param $instructorEmail
-     * @param $newPassword
+     * @param $instructorEmail identifier
+     * @param $newPassword new password
      */
     function changeInstructorPassword($instructorEmail, $newPassword) {
-
         // encrypt password
         $newPassword = sha1($newPassword);
-
         $dbh = $this->dbh;
+
         // define the query
         $sql = "UPDATE instructors
             SET password = :password
             WHERE email = :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":email", $instructorEmail, PDO::PARAM_STR);
         $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute
         $statement->execute();
-    }//end changeStudentPassword
+    } // end changeStudentPassword
 
     /**
      * change student's first and last name
@@ -141,20 +139,21 @@ class Database
      */
     function changeStudentName($studentEmail, $first, $last) {
         $dbh = $this->dbh;
+
         // define the query
         $sql = "UPDATE students
             SET lname = :lname, fname = :fname
             WHERE studentEmail = :studentEmail";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
         $statement->bindParam(":fname", $first, PDO::PARAM_STR);
         $statement->bindParam(":lname", $last, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute
         $statement->execute();
-    }//end change name
+    } // end change name
 
     /**
      * change instructor's first and last name
@@ -164,20 +163,21 @@ class Database
      */
     function changeInstructorName($email, $first, $last) {
         $dbh = $this->dbh;
+
         // define the query
         $sql = "UPDATE instructors
             SET lname = :lname, fname = :fname
             WHERE email = :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
         $statement->bindParam(":fname", $first, PDO::PARAM_STR);
         $statement->bindParam(":lname", $last, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute
         $statement->execute();
-    }//end change name
+    } // end change name
 
     /**
      * change student's personal email
@@ -185,21 +185,21 @@ class Database
      * @param $personalEmail secondary email
      */
     function changePersonalEmail($studentEmail, $personalEmail) {
-
         $dbh = $this->dbh;
+
         // define the query
         $sql = "UPDATE students
             SET personalEmail = :personalEmail
             WHERE studentEmail = :studentEmail";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
         $statement->bindParam(":personalEmail", $personalEmail, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute
         $statement->execute();
-    }//end changePersonalEmail
+    } // end changePersonalEmail
 
     /**
      * change student's cell phone number
@@ -207,21 +207,21 @@ class Database
      * @param $phone cell phone number
      */
     function changePhoneNumber($studentEmail, $phone) {
-
         $dbh = $this->dbh;
+
         // define the query
         $sql = "UPDATE students
             SET phone = :phone
             WHERE studentEmail = :studentEmail";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
         $statement->bindParam(":phone", $phone, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute
         $statement->execute();
-    }//end changePhoneNumber
+    } // end changePhoneNumber
 
     /**
      * change student's cell phone carrier
@@ -229,25 +229,25 @@ class Database
      * @param $carrier cell phone carrier
      */
     function changeCarrier($studentEmail, $carrier) {
-
         $dbh = $this->dbh;
+
         // define the query
         $sql = "UPDATE students
             SET carrier = :carrier
             WHERE studentEmail = :studentEmail";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
         $statement->bindParam(":carrier", $carrier, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute
         $statement->execute();
-    }//end changeCarrier
+    } // end changeCarrier
 
     /**
      * retrieve the phone carrier from the database
-     * @param $carrier
+     * @param $carrier cell phone carrier
      * @return carrier and each of the columns
      */
     function getCarrierInfo($carrier) {
@@ -255,18 +255,15 @@ class Database
         // Define the query
         $sql = "SELECT * FROM carriers WHERE carrier = :carrier";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
-
         $statement->bindParam(":carrier", $carrier, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute and process the result
         $statement->execute();
-
-        // Process the result
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
-    }
+    } // end getCarrierInfo
 
     /**
      * change program student is in
@@ -274,37 +271,38 @@ class Database
      * @param $program bachelors, associates
      */
     function changeProgram($studentEmail, $program) {
-
         $dbh = $this->dbh;
+
         // define the query
         $sql = "UPDATE students
             SET program = :program
             WHERE studentEmail = :studentEmail";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":studentEmail", $studentEmail, PDO::PARAM_STR);
         $statement->bindParam(":program", $program, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute
         $statement->execute();
-    }//end changeCarrier
+    } // end changeProgram
 
     /**
      * sets each of the preferences for recieving messages
-     * @param $email
+     * @param $email identifier
      * @param $getStudentEmails y for yes, n for no
      * @param $getTexts y for yes, n for no
      * @param $getPersonalEmails y for yes, n for no
      */
     function updatePreferences ($email, $getStudentEmails, $getTexts, $getPersonalEmails) {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "UPDATE students
                 SET getTexts = :getTexts, getStudentEmails = :getStudentEmails, getPersonalEmails = :getPersonalEmails
                 WHERE studentEmail = :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
 
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
@@ -312,98 +310,93 @@ class Database
         $statement->bindParam(":getStudentEmails", $getStudentEmails, PDO::PARAM_STR);
         $statement->bindParam(":getPersonalEmails", $getPersonalEmails, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute
         $statement->execute();
-    }
+    } // end updatePreferences
 
     /**
      * Returns true if email is in database
-     * @param $email email being searched
+     * @param $email identifier
      * @return bool true if email is found
      */
     function studentExists($email) {
         $dbh = $this->dbh;
 
-        // Define the query
+        // define the query
         $sql = "SELECT * FROM students WHERE studentEmail= :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute and process the result
         $statement->execute();
-        // Process the result
         $row = $statement->fetch(PDO::FETCH_ASSOC);
         return $row['studentEmail'] == $email;
-    }//end memberExists()
+    } // end studentExists
 
     /**
      * Returns true if email is in database
-     * @param $email email being searched
+     * @param $email identifier
      * @return bool true if email is found
      */
     function instructorExists($email) {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "SELECT * FROM instructors WHERE email= :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute and process the results
         $statement->execute();
-        // Process the result
         $row = $statement->fetch(PDO::FETCH_ASSOC);
         return $row['email'] == $email;
-    }//end memberExists()
+    } // end instructorExists
 
     /**
      * retrieve student from the database
-     * @param $email
+     * @param $email identifier
      * @return student and all of the columns
      */
     function getStudent($email) {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "SELECT * FROM students WHERE studentEmail= :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
-
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute and process the result
         $statement->execute();
-
-        // Process the result
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
-    }
+    } // end getStudent
 
     /**
      * retrieve instructor from the database
-     * @param $email
+     * @param $email identifier
      * @return instructor and all of the columns
      */
     function getInstructor($email) {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "SELECT * FROM instructors WHERE email= :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
-
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
 
-        // Execute the statement
+        // execute and process the result
         $statement->execute();
-
-        // Process the result
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
-    }
+    } // end getInstructor
 
     /**
      * retrieve every student from the database
@@ -411,19 +404,18 @@ class Database
      */
     function getStudents() {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "SELECT * FROM students";
 
         // Prepare the statement
         $statement = $dbh->prepare($sql);
 
-        // Execute the statement
+        // execute and process the result
         $statement->execute();
-
-        // Process the result
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
-    }
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    } // end getStudent
 
     /**
      * get number of students who are subscribed by program
@@ -432,20 +424,19 @@ class Database
      */
     function studentCount($program) {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "SELECT * FROM students WHERE program = :program AND
                 (getTexts = 'y' OR getStudentEmails = 'y' OR getPersonalEmails = 'y')";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
-
         $statement->bindParam(":program", $program, PDO::PARAM_STR);
 
+        // execute and process the results
         $statement->execute();
-
-        // Process the result
         return $statement->rowCount();
-    }
+    } // end studentCount
 
     /**
      * select the student if code is less than an hour old
@@ -454,21 +445,20 @@ class Database
      */
     function compareTimeStudent($email) {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "SELECT * FROM students WHERE verifiedStudentTime > DATE_SUB(NOW(), INTERVAL 1 HOUR) AND
                 studentEmail = :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
-
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
 
+        // execute and process the results
         $statement->execute();
-
-        // Process the result
         $count = $statement->rowCount();
         return $count > 0;
-    }
+    } // end compareTimeStudent
 
     /**
      * select the instructor if code is less than an hour old
@@ -477,21 +467,20 @@ class Database
      */
     function compareTimeInstructor($email) {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "SELECT * FROM instructors WHERE verifiedTime > DATE_SUB(NOW(), INTERVAL 1 HOUR) AND
                 email = :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
-
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
 
+        // execute and process the results
         $statement->execute();
-
-        // Process the result
         $count = $statement->rowCount();
         return $count > 0;
-    }
+    } // end compareTimeInstructor
 
     /**
      * Adds a verification code for a student to the database
@@ -502,19 +491,20 @@ class Database
     function setStudentCode($column, $code, $email) {
         $timestamp = $column . "Time";
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "UPDATE students
                 SET $column = :verifiedStudent, $timestamp = CURRENT_TIMESTAMP
                 WHERE studentEmail = :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
-
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
         $statement->bindParam(":verifiedStudent", $code, PDO::PARAM_STR);
 
+        // execute
         $statement->execute();
-    }
+    } // end setStudentCode
 
     /**
      * Adds a verification code for an instructor to the database
@@ -523,40 +513,42 @@ class Database
      */
     function setInstructorCode($code, $email) {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "UPDATE instructors
                 SET verified = :verified, verifiedTime = CURRENT_TIMESTAMP
                 WHERE email = :email";
 
-        // Prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
-
         $statement->bindParam(":email", $email, PDO::PARAM_STR);
         $statement->bindParam(":verified", $code, PDO::PARAM_STR);
 
+        // execute
         $statement->execute();
-    }
+    } // end setInstructorCode
 
     /**
      * Stores a sent message to the database
-     * @param $instuctorEmail
-     * @param $content
+     * @param $instuctorEmail who sent the message
+     * @param $content body of the message
      */
     function storeMessage($instuctorEmail, $content, $recipient) {
         $dbh = $this->dbh;
-        // Define the query
+
+        // define the query
         $sql = "INSERT INTO messages (instructorEmail, content, datetime, recipient)
                 VALUES (:instructorEmail, :content, NOW(), :recipient);";
 
-        //prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
-
         $statement->bindParam(":instructorEmail", $instuctorEmail, PDO::PARAM_STR);
         $statement->bindParam(":content", $content, PDO::PARAM_STR);
         $statement->bindParam(":recipient", $recipient, PDO::PARAM_STR);
 
+        // execute
         $statement->execute();
-    }
+    } // end storeMessage
 
     /**
      * retrieve each message from the database
@@ -564,19 +556,18 @@ class Database
      */
     function getMessages() {
         $dbh = $this->dbh;
-        // Define the query
+        // define the query
         $sql = "SELECT * FROM messages
                 ORDER BY datetime DESC
                 LIMIT 50 ";
 
-        //prepare the statement
+        // prepare the statement
         $statement = $dbh->prepare($sql);
 
+        // execute and process the results
         $statement->execute();
-
-        // Process the result
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $results;
-    }
+    } // end getMessages
 
 }//end Database class
