@@ -39,5 +39,12 @@ $(document).ready(function() {
     $("form").change(function() {
         if (containsMessage && hasRecipient) sendButton.show();
         else sendButton.hide();
-    })
+    });
+
+    // confirm if user wants to refresh if there is a message
+    $(window).on('beforeunload', function() {
+        if ($("#textMessage").val().length > 0) {
+            return "Are you sure you want to leave? Your message has not been sent";
+        }
+    });
 });
