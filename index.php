@@ -384,6 +384,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     unset($_SESSION['oldCode']);
     unset($_SESSION['login']);
     unset($_SESSION['loginError']);
+    unset($_SESSION['sent']);
 
     // Create the transport
     $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
@@ -534,10 +535,9 @@ $f3->route('GET|POST /message', function($f3, $params) {
     // go back to home page if not logged in
     if(!$_SESSION['loggedIn']) $f3->reroute("/");
     // go to profile if logged in, but as a student
-    if($_SESSION['loggedIn'] && !$_SESSION['isInstructor']) {
-        $f3->reroute("/profile");
-    }
+    if($_SESSION['loggedIn'] && !$_SESSION['isInstructor']) $f3->reroute("/profile");
 
+    if (isset($_SESSION['sent'])) $f3->set('sent', $_SESSION['sent']);
     $email = $_SESSION['email'];
     $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
 
@@ -550,7 +550,6 @@ $f3->route('GET|POST /message', function($f3, $params) {
     }
 
     $f3->set("studentCount", $studentCount);
-    $f3->set("students", $database->getStudents());
     $instructor = $database->getInstructor($email);
 
     // go to verification page if not account hasn't been verified
@@ -561,6 +560,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
         if (!empty($_POST['subject'])) $subject = $_POST['subject'];
         else $subject = "Green River Messaging";
         $textMessage = trim($_POST['textMessage']);
+        // keeps line breaks
         $emailMessage = nl2br($textMessage);
         // format email with html
         $body = '<html lang="en">' .
@@ -573,7 +573,6 @@ $f3->route('GET|POST /message', function($f3, $params) {
 
         $f3->set('subject', $subject);
         $f3->set('textMessage', $textMessage);
-        $f3->set('sent', false);
 
         if(validTextMessage ($textMessage)) {
             $chosen = $_POST['chosenPrograms']; // gets the selected program(s)
@@ -630,12 +629,13 @@ $f3->route('GET|POST /message', function($f3, $params) {
             $recipient = implode(", ", (array)$chosen);
             $database->storeMessage($email, $textMessage, $recipient);
 
-            // confirmation and remove message
-            $f3->set('sent', true);
-            $f3->set('subject', "");
-            $f3->set('textMessage', "");
+            // confirm message was sent
+            $_SESSION['sent'] = "true";
+            $f3->reroute('/message');
+            return; // prevents another POST on refresh
         }
     }
+    unset($_SESSION['sent']);
     $template = new Template();
     echo $template->render('views/instructorMessage.html');
 });

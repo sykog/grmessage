@@ -50,7 +50,7 @@
             <textarea id="textMessage" name="textMessage" rows="7" cols="60" maxlength="250">{{ @textMessage }}</textarea>
 
             <button id="sendMessage" type="submit" name="submit" >Send Message</button>
-            <check if="{{ @sent }}">
+            <check if="{{ @sent=='true' }}">
                 <h3 id="green" class="alert alert-success" role="alert">Message Sent!</h3>
             </check>
         </form>
