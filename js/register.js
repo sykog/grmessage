@@ -13,9 +13,13 @@ $(document).ready(function() {
     var numberExp = new RegExp('[\\d]');
     var specCharExp = new RegExp('[!@#$%^&*_=+-]');
 
-    // input masks
+    // only allows valid phone numbers
     $("#phone").mask("(999) 999-9999");
+
+    // hide student fields and match instructor email
     if($("#email").attr("name") == "iemail") instructorClick();
+
+    // change form to match a user that already has a gatorlock account
     if ($("#gatorLock[type=checkbox]").prop('checked')) {
         $("#showPassword, .gatorLockShow").hide();
         $("#showPassword[type=checkbox]").prop('checked', false);
@@ -26,7 +30,7 @@ $(document).ready(function() {
     // carrier field starts hidden
     $("#selectCarrier").hide();
 
-    // changes details if the gatorlock checkbox is clicked {
+    // change form to match a user that already has a gatorlock account
     $("#gatorLock").click(function() {
         if ($("#gatorLock[type=checkbox]").prop('checked')) {
             $("#showPassword, .gatorLockShow").hide();
@@ -50,7 +54,7 @@ $(document).ready(function() {
         $('#regHeader').text("Student");
     });
 
-    // hides fields (phone, carrier)
+    // hide student fields and match instructor email
     instructor.click(function() {
         instructorClick();
     });
@@ -155,6 +159,7 @@ $(document).ready(function() {
         });
     }
 
+    // change form to match fields to an instructor registration
     function instructorClick() {
         $("#studentFields").hide();
         instructor.addClass("clicked");

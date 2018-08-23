@@ -1,4 +1,4 @@
-// Counter for charactrer limit and validation for sending a message
+// counter for charactrer limit and validation for sending a message
 
 // waits til page is loaded
 $(document).ready(function() {

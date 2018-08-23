@@ -3,8 +3,10 @@
 // waits til page is loaded
 $(document).ready(function() {
 
+    // only allows valid phone numbers
     $("#newPhone").mask("(999) 999-9999");
 
+    // hide editing inputs and show verification tabs
     $(".error, .sameLine, .update, .cancelInput, #save, .alert-success").hide();
     $(".verify *, #passChanged").show();
 
@@ -16,7 +18,7 @@ $(document).ready(function() {
         $("#carrierDiv").hide();
     }
 
-    // Scroll down to see update button for notifications
+    // scroll down to see update button for notifications
     $("#getPersonalEmails, #getTexts, #getStudentEmails").click( function() {
         $("#save").show();
         $("html, body").animate({ scrollTop: $(document).height() }, 1000);
@@ -94,6 +96,7 @@ $(document).ready(function() {
     // update student name
     $("#updateName").click(function() {
 
+        // validate name with ajax
         if ($("#newFName").val().length > 0 && $("#newLName").val().length > 0) {
             var updateName = $.post('ajax/updateStudent.php', {
                 email: $("#emailSpan").text(),
@@ -114,6 +117,7 @@ $(document).ready(function() {
     // update personal email
     $("#updatePersonalEmail").click(function() {
 
+        // validate email with ajax
         var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
         if (emailReg.test($("#newPersonalEmail").val()) && $("#newPersonalEmail").val().length > 0) {
             var updatePEmail = $.post('ajax/updateStudent.php', {
@@ -134,6 +138,7 @@ $(document).ready(function() {
     // verify personal email
     $("#verifyPersonal").click(function() {
 
+        // match code with database code using ajax
         var verifyPhone = $.post('ajax/updateStudent.php', {
             email: $("#emailSpan").text(),
             column: "pEmailVerify",
@@ -150,6 +155,7 @@ $(document).ready(function() {
     // resend personal email code
     $("#resendPEmail").click(function() {
 
+        // send new code with ajax
         var resendPEmail = $.post('ajax/updateStudent.php', {
             email: $("#emailSpan").text(),
             column: "pEmailResend",
@@ -169,7 +175,7 @@ $(document).ready(function() {
         // remove non numeric characters
         var newPhone = $("#newPhone").val().replace(/\D/g,'');
 
-        // if not empty, mask makes sure it's valid
+        // validate phone with ajax if it passes mask validation
         if (newPhone.length > 0) {
             var updatePhone = $.post('ajax/updateStudent.php', {
                 email: $("#emailSpan").text(),
@@ -194,7 +200,7 @@ $(document).ready(function() {
                 "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"];
         var carrier = $.trim($("#newCarrier").val());
 
-        // -1 if false
+        // validate carrier with ajax (-1 if false)
         if ($.inArray(carrier, carriers) >= 0) {
             var updateCarrier = $.post('ajax/updateStudent.php', {
             email: $("#emailSpan").text(),
@@ -215,6 +221,7 @@ $(document).ready(function() {
     // verify phone number
     $("#verifyPhone").click(function() {
 
+        // match code with database code using ajax
         var verifyPhone = $.post('ajax/updateStudent.php', {
             email: $("#emailSpan").text(),
             column: "phoneVerify",
@@ -231,6 +238,7 @@ $(document).ready(function() {
     // resend phone code
     $("#resendPhone").click(function() {
 
+        // resend code with ajax
         var resendPhone = $.post('ajax/updateStudent.php', {
             email: $("#emailSpan").text(),
             column: "phoneResend",
@@ -252,7 +260,7 @@ $(document).ready(function() {
                 "Bachelors - Networking", "Associates - Networking"];
         var program = $.trim($("#newProgram").val());
 
-        // -1 if false
+        // validate program with ajax (-1 if false)
         if ($.inArray(program, programs) >= 0) {
             var updateProgram = $.post('ajax/updateStudent.php', {
             email: $("#emailSpan").text(),
@@ -274,6 +282,7 @@ $(document).ready(function() {
         var getPersonalEmail = $("#getPersonalEmails[type=checkbox]").prop('checked');
         var getTexts = $("#getTexts[type=checkbox]").prop('checked');
 
+        // check all three checkboxes using ajax
         var updatePreferences = $.post('ajax/updateStudent.php', {
         email: $("#emailSpan").text(),
         column: "preferences",
