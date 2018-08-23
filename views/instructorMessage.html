@@ -16,45 +16,45 @@
     <script src="{{@BASE}}/js/sendMessage.js"></script>
 </head>
 <body>
-<header class="header clearfix" id="mainHeader">
-    <a href="message"><h1>Green River Messaging</h1></a>
-    <a href="http://greenrivertech.net/index.php">GR TECH</a>
-    <a href="http://gatorlock.greenriverdev.com/">GatorLock</a>
-    <a href="logout"><h1 id="logout">Log out</h1></a>
-</header>
+    <header class="header clearfix" id="mainHeader">
+        <a href="message"><h1>Green River Messaging</h1></a>
+        <a href="http://greenrivertech.net/index.php">GR TECH</a>
+        <a href="http://gatorlock.greenriverdev.com/">GatorLock</a>
+        <a href="logout"><h1 id="logout">Log out</h1></a>
+    </header>
 
-<div class="container" id="mainContainer">
-    <h2 id="regHeader">Messaging</h2>
-    <a class="link" href="profile">Profile</a>
-    <a class="link" href="view-messages">View Messages</button></a>
-    <hr>
+    <div class="container" id="mainContainer">
+        <h2 id="regHeader">Messaging</h2>
+        <a class="link" href="profile">Profile</a>
+        <a class="link" href="view-messages">View Messages</button></a>
+        <hr>
 
-    <div class="col-8 mx-auto">
-        <p id="emptyMessage" class="alert alert-danger" role="alert">Message must be between 1 and 250 characters</p>
-        <p id="noRecipients" class="alert alert-danger" role="alert">Must select a program before sending a message</p>
+        <div class="col-8 mx-auto">
+            <p id="emptyMessage" class="alert alert-danger" role="alert">Message must be between 1 and 250 characters</p>
+            <p id="noRecipients" class="alert alert-danger" role="alert">Must select a program before sending a message</p>
 
-        <form class="form" action="" method="post">
-            <repeat group="{{ @studentCount }}" key="{{ @program }}" value="{{ @subscribers }}">
-                <label>
-                    <input type="checkbox" name="chosenPrograms[]" value="{{@program}}">
-                    {{ @program }} <i>({{ @subscribers }} students)</i>
-                </label>
-                <br>
-            </repeat>
-            <label class="form-control-label" for="subject">Subject</label>
-            <input class="form-control" type="text" id="subject" name="subject" value="{{ @subject }}"
-                   placeholder="Subject will only be used for emails, not texts">
-            <p id="counter"><span id="chars">250</span> characters left</p>
+            <form class="form" action="" method="post">
+                <repeat group="{{ @studentCount }}" key="{{ @program }}" value="{{ @subscribers }}">
+                    <label>
+                        <input type="checkbox" name="chosenPrograms[]" value="{{@program}}">
+                        {{ @program }} <i>({{ @subscribers }} students)</i>
+                    </label>
+                    <br>
+                </repeat>
+                <label class="form-control-label" for="subject">Subject</label>
+                <input class="form-control" type="text" id="subject" name="subject" value="{{ @subject }}"
+                       placeholder="Subject will only be used for emails, not texts">
+                <p id="counter"><span id="chars">250</span> characters left</p>
 
-            <label class="form-control-label" for="textMessage">Body</label>
-            <textarea id="textMessage" name="textMessage" rows="7" cols="60" maxlength="250">{{ @textMessage }}</textarea>
+                <label class="form-control-label" for="textMessage">Body</label>
+                <textarea id="textMessage" name="textMessage" rows="7" cols="60" maxlength="250">{{ @textMessage }}</textarea>
 
-            <button id="sendMessage" type="submit" name="submit" >Send Message</button>
-            <check if="{{ @sent=='true' }}">
-                <h3 id="green" class="alert alert-success" role="alert">Message Sent!</h3>
-            </check>
-        </form>
-    </div>
-</div> <!-- container -->
+                <button id="sendMessage" type="submit" name="submit" >Send Message</button>
+                <check if="{{ @sent=='true' }}">
+                    <h3 id="green" class="alert alert-success" role="alert">Message Sent!</h3>
+                </check>
+            </form>
+        </div>
+    </div> <!-- container -->
 </body>
 </html>

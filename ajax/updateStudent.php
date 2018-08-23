@@ -7,7 +7,7 @@
 
     $database = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
 
-    // Create the transport
+    // create the transport
     $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
         ->setUsername(EMAIL_USERNAME)
         ->setPassword(EMAIL_PASSWORD);
@@ -74,7 +74,7 @@
         $carrierEmail = $carrier['carrierEmail'];
         $database->changePhoneNumber($email, $phone);
 
-        // send a code when changing phone number
+        // send a random code when changing phone number
         $code = randomString(6);
         $database->setStudentCode("verifiedPhone", $code, $email);
         $to = $phone . "@" . $carrierEmail;
@@ -96,7 +96,7 @@
         $carrierEmail = $carrier['carrierEmail'];
         $database->changeCarrier($email, $carrier['carrier']);
 
-        // send a code when changing phone number
+        // send a random code when changing phone number
         $code = randomString(6);
         $database->setStudentCode("verifiedPhone", $code, $email);
         $to = $phone . "@" . $carrierEmail;
@@ -114,6 +114,7 @@
     // verify phone number
     elseif ($_POST['column'] == "phoneVerify") {
         $verified = $database->getStudent($email)['verifiedPhone'];
+
         // if it matches code in the database
         if ($_POST['code'] == $verified || $verified == "y") {
             $database->setStudentCode("verifiedPhone", "y", $email);
@@ -127,6 +128,7 @@
         $carrier = $database->getCarrierInfo(trim($_POST['carrier']));
         $carrierEmail = $carrier['carrierEmail'];
 
+        // create a code and add to the database
         $code = randomString(6);
         $database->setStudentCode("verifiedPhone", $code, $email);
         $to = $phone . "@" . $carrierEmail;

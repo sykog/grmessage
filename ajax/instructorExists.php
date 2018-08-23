@@ -21,7 +21,7 @@
     //execute the query
     $statement->execute();
 
-    // if a row already exists
+    // there are no users with that email if the row count is 0
     if ($statement->rowCount() > 0) {
         echo "Email already exists";
     } else {

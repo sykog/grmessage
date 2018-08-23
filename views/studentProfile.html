@@ -1,148 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Profile</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="https://www.greenriver.edu/favicon.ico">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://www.greenriver.edu/favicon.ico">
 
-        <!--Style sheets-->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-        <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/main.css">
-        <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/profile.css">
+    <!--Style sheets-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/main.css">
+    <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/profile.css">
 
-        <!-- Javascript-->
-        <script src="http://code.jquery.com/jquery.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
-        <script src="{{@BASE}}/js/updateStudentInfo.js"></script>
-    </head>
-    <body>
-        <header class="header clearfix" id="mainHeader">
-            <a href="profile"><h1>Green River Messaging</h1></a>
-            <a href="http://greenrivertech.net/index.php">GR TECH</a>
-            <a href="http://gatorlock.greenriverdev.com/">GatorLock</a>
-            <a href="logout"><h1 id="logout">Log out</h1></a>
-        </header>
+    <!-- Javascript-->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+    <script src="{{@BASE}}/js/updateStudentInfo.js"></script>
+</head>
+<body>
+    <header class="header clearfix" id="mainHeader">
+        <a href="profile"><h1>Green River Messaging</h1></a>
+        <a href="http://greenrivertech.net/index.php">GR TECH</a>
+        <a href="http://gatorlock.greenriverdev.com/">GatorLock</a>
+        <a href="logout"><h1 id="logout">Log out</h1></a>
+    </header>
 
-        <div class="container" id="mainContainer">
-            <h2 id="regHeader">Welcome, {{ @fname }}</h2>
-            <hr>
+    <div class="container" id="mainContainer">
+        <h2 id="regHeader">Welcome, {{ @fname }}</h2>
+        <hr>
 
-            <div class="row">
-                <div class="col-8">
+        <div class="row">
+            <div class="col-8">
+                <div id="studentFields">
 
-                    <div id="studentFields">
+                    <p class="error alert alert-danger" id="nameError">Invalid Name</p>
+                    <label><strong>Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
+                    <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
+                    <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
+                    <button class='update' id='updateName' name="updateName">Update Info</button>
+                    <button class="edit" type="button" id="editName"></button>
+                    <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button>
+                    </label>
 
-                        <p class="error alert alert-danger" id="nameError">Invalid Name</p>
-                        <label><strong>Name: </strong><span id="nameSpan">{{ @fname }} {{ @lname }} </span>
-                        <input class='form-control sameLine' type='text' name='newFName' id='newFName' value="{{ @fname }}">
-                        <input class='form-control sameLine' type='text' name='newLName' id='newLName' value="{{ @lname }}">
-                        <button class='update' id='updateName' name="updateName">Update Info</button>
-                        <button class="edit" type="button" id="editName"></button>
-                        <button type="button" class="cancelInput" id="cancelName" name="cancelName">Cancel</button>
-                        </label>
+                    <p><label><strong>Student Email: </strong><span id="emailSpan"> {{ @studentEmail }} </span></label></p>
 
-                        <p><label><strong>Student Email: </strong><span id="emailSpan"> {{ @studentEmail }} </span></label></p>
+                    <p class="error alert alert-danger" id="pEmailError">Invalid Email</p>
+                    <label><strong>Personal Email: </strong><span id="pEmailSpan">{{ @personalEmail }} </span>
+                    <input class='form-control sameLine' type='text' name='newPersonalEmail' id='newPersonalEmail' value="{{ @personalEmail }}">
+                    <button class='update' id='updatePersonalEmail' name="updatePersonalEmail">Update Info</button>
+                    <button type="button" class="edit" id="editPersonalEmail"></button>
+                    <button type="button" class="cancelInput" id="cancelPersonalEmail" name="cancelPersonalEmail">Cancel</button></label><br>
 
-                        <p class="error alert alert-danger" id="pEmailError">Invalid Email</p>
-                        <label><strong>Personal Email: </strong><span id="pEmailSpan">{{ @personalEmail }} </span>
-                        <input class='form-control sameLine' type='text' name='newPersonalEmail' id='newPersonalEmail' value="{{ @personalEmail }}">
-                        <button class='update' id='updatePersonalEmail' name="updatePersonalEmail">Update Info</button>
-                        <button type="button" class="edit" id="editPersonalEmail"></button>
-                        <button type="button" class="cancelInput" id="cancelPersonalEmail" name="cancelPersonalEmail">Cancel</button></label><br>
-
-                        <p class="error alert alert-danger" id="pEmailVerifyError">Incorrect Code</p>
-                        <p class="alert alert-success" id="pEmailSent">Code Sent</p>
-                        <div id="verifyPEmailDiv" class="verify">
-                            <label><strong>Personal Email Verification: </strong>
-                            <input class='form-control sameLine' type='text' name='personalVerification' id='personalVerification'>
-                            <button class='update' id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
-                            <button type="submit" name="resendPEmail" id="resendPEmail" class="resend">Send New Code</button></label>
-                        </div>
-
-                        <p class="error alert alert-danger" id="phoneError">Invalid Phone Number</p>
-                        <label><strong>Phone Number: </strong><span id="phoneSpan"> {{ @phone }} </span>
-                        <input class='form-control sameLine' type='text' name='newPhone' id='newPhone' value="{{ @phone }}">
-                        <button class='update' id='updatePhone' name="updatePhone">Update Info</button>
-                        <button type="button" class="edit" id="editPhone"></button>
-                        <button type="button" class="cancelInput" id="cancelPhone" name="cancelPhone">Cancel</button></label><br>
-
-                        <div id="carrierDiv">
-                            <p class="error alert alert-danger" id="carrierError">Invalid Carrier</p>
-                            <label><strong>Mobile Carrier: </strong><span id="carrierSpan"> {{ @carrier }} </span>
-                            <select class="form-control dropdown sameLine" id="newCarrier" name="newCarrier">
-                                <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
-                                    <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
-                                    {{ @carrierOption }}</option>
-                                </repeat>
-                            </select>
-                            <button class='update' id='updateCarrier' name="updateCarrier">Update Info</button>
-                            <button type="button" class="edit" id="editCarrier"></button>
-                            <button type="button" class="cancelInput" id="cancelCarrier" name="cancelCarrier">Cancel</button></label>
-                        </div>
-
-                        <p class="error alert alert-danger" id="phoneVerifyError">Incorrect Code</p>
-                        <p class="alert alert-success" id="phoneSent">Code Sent</p>
-                        <div id="verifyPhoneDiv" class="verify">
-                            <label><strong>Phone Verification: </strong><span id="PhoneVerificationSpan"> </span>
-                            <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerification'>
-                            <button class='update verify' id='verifyPhone' name="verifyPhone">Verify Phone</button>
-                            <button type="submit" name="resendPhone" id="resendPhone" class="resend">Send New Code</button></label><br>
-                        </div>
-
-                        <p class="error alert alert-danger" id="programError">Invalid Program</p>
-                        <label><strong>Program: </strong><span id="programSpan"> {{ @program }} </span>
-                        <select class="form-control dropdown sameLine" id="newProgram" name="newProgram">
-                            <repeat group = "{{ @programs }}" value = "{{ @programOption }}">
-                                <option <check if="{{ @programOption == @program }}">selected</check>>
-                                {{ @programOption }}</option>
-                            </repeat>
-                        </select>
-                        <button class='update' id='updateProgram' name="updateProgram">Update Info</button>
-                        <button type="button" class="edit" id="editProgram"></button>
-                        <button type="button" class="cancelInput" id="cancelProgram" name="cancelProgram">Cancel</button></label><br>
+                    <p class="error alert alert-danger" id="pEmailVerifyError">Incorrect Code</p>
+                    <p class="alert alert-success" id="pEmailSent">Code Sent</p>
+                    <div id="verifyPEmailDiv" class="verify">
+                        <label><strong>Personal Email Verification: </strong>
+                        <input class='form-control sameLine' type='text' name='personalVerification' id='personalVerification'>
+                        <button class='update' id='verifyPersonal' name="verifyPersonal">Verify Personal Email</button>
+                        <button type="submit" name="resendPEmail" id="resendPEmail" class="resend">Send New Code</button></label>
                     </div>
 
-                    <h3>Notification Preferences</h3>
+                    <p class="error alert alert-danger" id="phoneError">Invalid Phone Number</p>
+                    <label><strong>Phone Number: </strong><span id="phoneSpan"> {{ @phone }} </span>
+                    <input class='form-control sameLine' type='text' name='newPhone' id='newPhone' value="{{ @phone }}">
+                    <button class='update' id='updatePhone' name="updatePhone">Update Info</button>
+                    <button type="button" class="edit" id="editPhone"></button>
+                    <button type="button" class="cancelInput" id="cancelPhone" name="cancelPhone">Cancel</button></label><br>
 
-                    <check if="{{ @getStudentEmails == 'y' }}">
-                        <true><input type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails" checked><p>Student Email</p><br></true>
-                        <false><input type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails"><p>Student Email</p><br></false>
-                    </check><p id="prefEmail" class="alert alert-success">You will receive updates via student email</p>
+                    <div id="carrierDiv">
+                        <p class="error alert alert-danger" id="carrierError">Invalid Carrier</p>
+                        <label><strong>Mobile Carrier: </strong><span id="carrierSpan"> {{ @carrier }} </span>
+                        <select class="form-control dropdown sameLine" id="newCarrier" name="newCarrier">
+                            <repeat group = "{{ @carriers }}" value = "{{ @carrierOption }}">
+                                <option <check if="{{ @carrierOption == @carrier }}">selected</check>>
+                                {{ @carrierOption }}</option>
+                            </repeat>
+                        </select>
+                        <button class='update' id='updateCarrier' name="updateCarrier">Update Info</button>
+                        <button type="button" class="edit" id="editCarrier"></button>
+                        <button type="button" class="cancelInput" id="cancelCarrier" name="cancelCarrier">Cancel</button></label>
+                    </div>
 
-                    <check if="{{ @getPersonalEmails == 'y' }}">
-                        <true><input type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails" checked><p>Personal Email</p><br></true>
-                        <false><input type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
-                    </check><p id="prefPEmail" class="alert alert-success">You will receive updates via personal email</p>
+                    <p class="error alert alert-danger" id="phoneVerifyError">Incorrect Code</p>
+                    <p class="alert alert-success" id="phoneSent">Code Sent</p>
+                    <div id="verifyPhoneDiv" class="verify">
+                        <label><strong>Phone Verification: </strong><span id="PhoneVerificationSpan"> </span>
+                        <input class='form-control sameLine verify' type='text' name='phoneVerification' id='phoneVerification'>
+                        <button class='update verify' id='verifyPhone' name="verifyPhone">Verify Phone</button>
+                        <button type="submit" name="resendPhone" id="resendPhone" class="resend">Send New Code</button></label><br>
+                    </div>
 
-                    <check if="{{ @getTexts == 'y' }}">
-                        <true><input type="checkbox" name="getTexts" id="getTexts" value="getTexts" checked><p>Text Messages</p><br></true>
-                        <false><input type="checkbox" name="getTexts" id="getTexts" value="getTexts"><p>Text Messages</p><br></false>
-                    </check><p id="prefText" class="alert alert-success">You will receive updates via text message</p>
-
-                    <button id="save" name="save">Save Changes</button>
+                    <p class="error alert alert-danger" id="programError">Invalid Program</p>
+                    <label><strong>Program: </strong><span id="programSpan"> {{ @program }} </span>
+                    <select class="form-control dropdown sameLine" id="newProgram" name="newProgram">
+                        <repeat group = "{{ @programs }}" value = "{{ @programOption }}">
+                            <option <check if="{{ @programOption == @program }}">selected</check>>
+                            {{ @programOption }}</option>
+                        </repeat>
+                    </select>
+                    <button class='update' id='updateProgram' name="updateProgram">Update Info</button>
+                    <button type="button" class="edit" id="editProgram"></button>
+                    <button type="button" class="cancelInput" id="cancelProgram" name="cancelProgram">Cancel</button></label><br>
                 </div>
 
-                <!--<div class="col-4">
-                    <form class="form" action="" method="post">
+                <h3>Notification Preferences</h3>
 
-                        <h3>Change Password</h3>
-                        <br>
-                        <check if="{{ isset(@passwordChanged) }}">
-                            <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
-                        </check>
-                        <check if="{{ isset(@passwordError) }}">
-                            <p id="passChanged" class="alert alert-danger" role="alert">{{ @passwordError }}</p>
-                        </check>
+                <check if="{{ @getStudentEmails == 'y' }}">
+                    <true><input type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails" checked><p>Student Email</p><br></true>
+                    <false><input type="checkbox" name="getStudentEmails" id="getStudentEmails" value="getStudentEmails"><p>Student Email</p><br></false>
+                </check><p id="prefEmail" class="alert alert-success">You will receive updates via student email</p>
 
-                        <p><strong>Current Password: </strong> <input class="form-control" type='password' name='currentPassword'></p>
-                        <p><strong>New Password: </strong><input class="form-control" type='password' name='newPassword'></p>
-                        <p><strong>Confirm New Password: </strong><input class="form-control" type='password' name='confirmPassword'></p>
-                        <br>
-                        <button type="submit" id='updatePassword' name="updatePassword">Change Password</button>
-                    </form>
-                </div>-->
+                <check if="{{ @getPersonalEmails == 'y' }}">
+                    <true><input type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails" checked><p>Personal Email</p><br></true>
+                    <false><input type="checkbox" name="getPersonalEmails" id="getPersonalEmails" value="getPersonalEmails"><p>Personal Email</p><br></false>
+                </check><p id="prefPEmail" class="alert alert-success">You will receive updates via personal email</p>
+
+                <check if="{{ @getTexts == 'y' }}">
+                    <true><input type="checkbox" name="getTexts" id="getTexts" value="getTexts" checked><p>Text Messages</p><br></true>
+                    <false><input type="checkbox" name="getTexts" id="getTexts" value="getTexts"><p>Text Messages</p><br></false>
+                </check><p id="prefText" class="alert alert-success">You will receive updates via text message</p>
+
+                <button id="save" name="save">Save Changes</button>
             </div>
-        </div> <!-- /container -->
-    </body>
+
+            <!--<div class="col-4">
+                <form class="form" action="" method="post">
+
+                    <h3>Change Password</h3>
+                    <br>
+                    <check if="{{ isset(@passwordChanged) }}">
+                        <p id="passChanged" class="alert alert-success" role="alert">Password Changed</p>
+                    </check>
+                    <check if="{{ isset(@passwordError) }}">
+                        <p id="passChanged" class="alert alert-danger" role="alert">{{ @passwordError }}</p>
+                    </check>
+
+                    <p><strong>Current Password: </strong> <input class="form-control" type='password' name='currentPassword'></p>
+                    <p><strong>New Password: </strong><input class="form-control" type='password' name='newPassword'></p>
+                    <p><strong>Confirm New Password: </strong><input class="form-control" type='password' name='confirmPassword'></p>
+                    <br>
+                    <button type="submit" id='updatePassword' name="updatePassword">Change Password</button>
+                </form>
+            </div>-->
+        </div>
+    </div> <!-- /container -->
+</body>
 </html>
