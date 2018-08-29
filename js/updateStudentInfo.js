@@ -6,12 +6,19 @@ $(document).ready(function() {
     // only allows valid phone numbers
     $("#newPhone").mask("(999) 999-9999");
 
+    console.log($('[data-toggle="tooltip"]').tooltip());
+
     // hide editing inputs and show verification tabs
-    $(".error, .sameLine, .update, .cancelInput, #save, .alert-success").hide();
+    $(".error, .sameLine, .update, .cancelInput, .alert-success").hide();
     $(".verify *, #passChanged").show();
 
     // hide verification tabs if verified
     hideVerifications();
+
+    // disable saving notification preferences
+    $("#save").attr("disabled", true);
+    $('[data-toggle="tooltip"]').tooltip("enable");
+    $("#save").addClass("disabled");
 
     // hide carrier if value is empty
     if ($("#phoneSpan").text().length <= 2) {
@@ -20,7 +27,9 @@ $(document).ready(function() {
 
     // scroll down to see update button for notifications
     $("#getPersonalEmails, #getTexts, #getStudentEmails").click( function() {
-        $("#save").show();
+        $("#save").attr("disabled", false);
+        $('[data-toggle="tooltip"]').tooltip("disable");
+        $("#save").removeClass("disabled");
         $("html, body").animate({ scrollTop: $(document).height() }, 1000);
     });
 
@@ -292,7 +301,9 @@ $(document).ready(function() {
 
         // update the page
         updatePreferences.done(function() {
-            $("#save").hide();
+            $("#save").attr("disabled", true);
+            $('[data-toggle="tooltip"]').tooltip("enable");
+            $("#save").addClass("disabled");
 
             if (getStudentEmail) {
                 $("#prefEmail").show();
