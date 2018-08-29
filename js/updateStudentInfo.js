@@ -3,10 +3,13 @@
 // waits til page is loaded
 $(document).ready(function() {
 
+    // initial notification variables
+    var notifySEmail = $("#getStudentEmails[type=checkbox]").prop('checked');
+    var notifyPEmail = $("#getPersonalEmails[type=checkbox]").prop('checked');
+    var notifyPhone = $("#getTexts[type=checkbox]").prop('checked');
+
     // only allows valid phone numbers
     $("#newPhone").mask("(999) 999-9999");
-
-    console.log($('[data-toggle="tooltip"]').tooltip());
 
     // hide editing inputs and show verification tabs
     $(".error, .sameLine, .update, .cancelInput, .alert-success").hide();
@@ -16,20 +19,27 @@ $(document).ready(function() {
     hideVerifications();
 
     // disable saving notification preferences
-    $("#save").attr("disabled", true);
-    $('[data-toggle="tooltip"]').tooltip("enable");
-    $("#save").addClass("disabled");
+    disableButton()
 
     // hide carrier if value is empty
     if ($("#phoneSpan").text().length <= 2) {
         $("#carrierDiv").hide();
     }
 
-    // scroll down to see update button for notifications
+    // disable the saving notifications if they are still the original values
     $("#getPersonalEmails, #getTexts, #getStudentEmails").click( function() {
-        $("#save").attr("disabled", false);
-        $('[data-toggle="tooltip"]').tooltip("disable");
-        $("#save").removeClass("disabled");
+        var getStudentEmail = $("#getStudentEmails[type=checkbox]").prop('checked');
+        var getPersonalEmail = $("#getPersonalEmails[type=checkbox]").prop('checked');
+        var getTexts = $("#getTexts[type=checkbox]").prop('checked');
+
+        // the current and original values match
+        if (notifySEmail == getStudentEmail && notifyPEmail == getPersonalEmail && notifyPhone == getTexts) {
+            disableButton();
+        } else {
+            enableButton();
+        }
+
+        // scroll down to see update button for notifications
         $("html, body").animate({ scrollTop: $(document).height() }, 1000);
     });
 
@@ -301,9 +311,7 @@ $(document).ready(function() {
 
         // update the page
         updatePreferences.done(function() {
-            $("#save").attr("disabled", true);
-            $('[data-toggle="tooltip"]').tooltip("enable");
-            $("#save").addClass("disabled");
+            disableButton();
 
             if (getStudentEmail) {
                 $("#prefEmail").show();
@@ -317,6 +325,11 @@ $(document).ready(function() {
                 $("#prefText").show();
                 $("#prefText").delay(5000).fadeOut('slow');
             }
+
+            // reset the initial preferences
+            notifySEmail = $("#getStudentEmails[type=checkbox]").prop('checked');
+            notifyPEmail = $("#getPersonalEmails[type=checkbox]").prop('checked');
+            notifyPhone = $("#getTexts[type=checkbox]").prop('checked');
         });
     });
 
@@ -330,5 +343,17 @@ $(document).ready(function() {
             else if (data == "phone") $("#verifyPhoneDiv, #phoneVerifyError, #phoneError").hide();
             else if (data == "email") $("#verifyPEmailDiv, #pEmailVerifyError, #pEmailError").hide();
         });
+    }
+
+    function enableButton() {
+        $("#save").attr("disabled", false);
+        $('[data-toggle="tooltip"]').tooltip("disable");
+        $("#save").removeClass("disabled");
+    }
+
+    function disableButton() {
+        $("#save").attr("disabled", true);
+        $('[data-toggle="tooltip"]').tooltip("enable");
+        $("#save").addClass("disabled");
     }
 });
