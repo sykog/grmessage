@@ -10,6 +10,8 @@ $(document).ready(function() {
 
     // only allows valid phone numbers
     $("#newPhone").mask("(999) 999-9999");
+    // initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
 
     // hide editing inputs and show verification tabs
     $(".error, .sameLine, .update, .cancelInput, .alert-success").hide();
@@ -363,12 +365,14 @@ $(document).ready(function() {
         });
     }
 
+    // enable button that updates preferences
     function enableButton() {
         $("#save").attr("disabled", false);
         $('[data-toggle="tooltip"]').tooltip("disable");
         $("#save").removeClass("disabled");
     }
 
+    // disable button that updates preferences
     function disableButton() {
         $("#save").attr("disabled", true);
         $('[data-toggle="tooltip"]').tooltip("enable");

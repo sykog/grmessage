@@ -1,4 +1,4 @@
-// counter for charactrer limit and validation for sending a message
+// counter for character limit and validation for sending a message
 
 // waits til page is loaded
 $(document).ready(function() {
@@ -9,7 +9,14 @@ $(document).ready(function() {
     var containsMessage = false;
     var hasRecipient = false;
 
-    sendButton.hide();
+    // initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // disable send button
+    disableButton();
+
+    // hide sent message button after 5 seconds
+    $("h3#green").delay(5000).fadeOut('slow');
 
     // show number of characters left
     $("#textMessage").keyup(function() {
@@ -20,10 +27,10 @@ $(document).ready(function() {
         // check if the textarea isn't empty
         if (length === maxLength) {
             containsMessage = false;
-            sendButton.hide();
+            disableButton();
         } else {
             containsMessage = true;
-            if(hasRecipient) sendButton.show();
+            if(hasRecipient) enableButton();
         }
     });
 
@@ -37,8 +44,8 @@ $(document).ready(function() {
 
     // show send button it there is both a message and a recipient
     $("form").change(function() {
-        if (containsMessage && hasRecipient) sendButton.show();
-        else sendButton.hide();
+        if (containsMessage && hasRecipient) enableButton();
+        else disableButton();
     });
 
     // confirm if user wants to refresh if there is a message
@@ -47,4 +54,18 @@ $(document).ready(function() {
             return "Are you sure you want to leave? Your message has not been sent";
         }
     });
+
+    // enable button that sends a message
+    function enableButton() {
+        sendButton.attr("disabled", false);
+        $('[data-toggle="tooltip"]').tooltip("disable");
+        sendButton.removeClass("disabled");
+    }
+
+    // disable button that sends a message
+    function disableButton() {
+        sendButton.attr("disabled", true);
+        $('[data-toggle="tooltip"]').tooltip("enable");
+        sendButton.addClass("disabled");
+    }
 });
