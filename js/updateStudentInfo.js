@@ -134,7 +134,7 @@ $(document).ready(function() {
     });
 
     // update personal email
-    $("#updatePersonalEmail").click(function() {
+    $("#updatePersonalEmail").click(function(data) {
 
         // validate email with ajax
         var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -145,9 +145,15 @@ $(document).ready(function() {
                 pemail: $("#newPersonalEmail").val()});
 
             // update the page
-            updatePEmail.done(function() {
+            updatePEmail.done(function(data) {
                 $("#pEmailSpan").text($("#newPersonalEmail").val());
-                $("#pEmailSpan, #editPersonalEmail, #personalVerification, #verifyPEmailDiv, #resendPEmail, #pEmailSent").show();
+
+                // dont show verification tab if not changed
+                if (data == "unchanged") {
+                    $("#pEmailSpan, #editPersonalEmail").show();
+                } else {
+                    $("#pEmailSpan, #editPersonalEmail, #personalVerification, #verifyPEmailDiv, #resendPEmail, #pEmailSent").show();
+                }
                 $("#newPersonalEmail, #updatePersonalEmail, #cancelPersonalEmail, #pEmailError").hide();
                 $('#pEmailSent').delay(5000).fadeOut('slow');
             });
@@ -203,9 +209,15 @@ $(document).ready(function() {
                 carrier: $("#carrierSpan").text()});
 
             // update the page
-            updatePhone.done(function() {
+            updatePhone.done(function(data) {
                 $("#phoneSpan").text(newPhone);
-                $("#phoneSpan, #editPhone, #phoneVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
+
+                // dont show verification tab if not changed
+                if (data == "unchanged") {
+                    $("#phoneSpan, #editPhone").show();
+                } else {
+                    $("#phoneSpan, #editPhone, #phoneVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
+                }
                 $("#newPhone, #updatePhone, #cancelPhone, #phoneError").hide();
                 $('#phoneSent').delay(5000).fadeOut('slow');
             });
@@ -213,7 +225,7 @@ $(document).ready(function() {
     });
 
     // update phone carrier
-    $("#updateCarrier").click(function() {
+    $("#updateCarrier").click(function(data) {
 
         var carriers = ["Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
                 "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"];
@@ -228,9 +240,15 @@ $(document).ready(function() {
             carrier: carrier});
 
             // update the page
-            updateCarrier.done(function() {
+            updateCarrier.done(function(data) {
                 $("#carrierSpan").text(carrier);
-                $("#carrierSpan, #editCarrier, #carrierVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
+
+                // dont show verification tab if not changed
+                if (data == "unchanged") {
+                    $("#carrierSpan, #editCarrier").show();
+                } else {
+                    $("#carrierSpan, #editCarrier, #carrierVerification, #verifyPhoneDiv, #resendPhone, #phoneSent").show();
+                }
                 $("#newCarrier, #updateCarrier, #cancelCarrier, #carrierError").hide();
                 $('#phoneSent').delay(5000).fadeOut('slow');
             });

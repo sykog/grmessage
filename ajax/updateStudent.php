@@ -22,21 +22,26 @@
 
     // update personal email
     elseif ($_POST['column'] == "pEmail") {
-        $database->changePersonalEmail($email, $_POST['pemail']);
+        // only update if email is different than current one
+        if ($database->getStudent($email)['personalEmail'] != $_POST['pemail']) {
+            $database->changePersonalEmail($email, $_POST['pemail']);
 
-        // send a code when changing email
-        $code = randomString(6);
-        $database->setStudentCode("verifiedPersonal", $code, $email);
+            // send a code when changing email
+            $code = randomString(6);
+            $database->setStudentCode("verifiedPersonal", $code, $email);
 
-        // create the message
-        $message = (new Swift_Message())
-            ->setSubject('Verification Code')
-            ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-            ->setTo($_POST['pemail'])
-            ->setBody("Personal Email Verification Code: ". $code, 'text/html');
+            // create the message
+            $message = (new Swift_Message())
+                ->setSubject('Verification Code')
+                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                ->setTo($_POST['pemail'])
+                ->setBody("Personal Email Verification Code: ". $code, 'text/html');
 
-        // send the message
-        $result = $mailer->send($message);
+            // send the message
+            $result = $mailer->send($message);
+        } else {
+            echo "unchanged";
+        }
     }
 
     // verify personal email
@@ -72,21 +77,27 @@
         $phone = $_POST['phone'];
         $carrier = $database->getCarrierInfo(trim($_POST['carrier']));
         $carrierEmail = $carrier['carrierEmail'];
-        $database->changePhoneNumber($email, $phone);
 
-        // send a random code when changing phone number
-        $code = randomString(6);
-        $database->setStudentCode("verifiedPhone", $code, $email);
-        $to = $phone . "@" . $carrierEmail;
+        // only update if phone number is different than current one
+        if ($database->getStudent($email)['phone'] != $phone) {
+            $database->changePhoneNumber($email, $phone);
 
-        // create the message
-        $message = (new Swift_Message())
-            ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-            ->setTo($to)
-            ->setBody("Phone Verification Code: " . $code, 'text/html');
+            // send a random code when changing phone number
+            $code = randomString(6);
+            $database->setStudentCode("verifiedPhone", $code, $email);
+            $to = $phone . "@" . $carrierEmail;
 
-        // send the message
-        $result = $mailer->send($message);
+            // create the message
+            $message = (new Swift_Message())
+                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                ->setTo($to)
+                ->setBody("Phone Verification Code: " . $code, 'text/html');
+
+            // send the message
+            $result = $mailer->send($message);
+        } else {
+            echo "unchanged";
+        }
     }
 
     // update carrier
@@ -94,21 +105,27 @@
         $phone = trim($_POST['phone']);
         $carrier = $database->getCarrierInfo(trim($_POST['carrier']));
         $carrierEmail = $carrier['carrierEmail'];
-        $database->changeCarrier($email, $carrier['carrier']);
 
-        // send a random code when changing phone number
-        $code = randomString(6);
-        $database->setStudentCode("verifiedPhone", $code, $email);
-        $to = $phone . "@" . $carrierEmail;
+        // only update if phone carrier is different than current one
+        if ($database->getStudent($email)['carrier'] != $carrier['carrier']) {
+            $database->changeCarrier($email, $carrier['carrier']);
 
-        // create the message
-        $message = (new Swift_Message())
-            ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
-            ->setTo($to)
-            ->setBody("Phone Verification Code: " . $code, 'text/html');
+            // send a random code when changing phone number
+            $code = randomString(6);
+            $database->setStudentCode("verifiedPhone", $code, $email);
+            $to = $phone . "@" . $carrierEmail;
 
-        // send the message
-        $result = $mailer->send($message);
+            // create the message
+            $message = (new Swift_Message())
+                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                ->setTo($to)
+                ->setBody("Phone Verification Code: " . $code, 'text/html');
+
+            // send the message
+            $result = $mailer->send($message);
+        } else {
+            echo "unchanged";
+        }
     }
 
     // verify phone number
