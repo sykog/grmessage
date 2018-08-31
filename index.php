@@ -3,23 +3,23 @@ ini_set('display-errors', 1);
 error_reporting(E_ALL);
 
 // require autoload file
-require_once('vendor/autoload.php');
+require_once "vendor/autoload.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/../config.php";
 
 //Start the session
 session_start();
-include ('validate.php');
-include('randomString.php');
-include('gatorlock.php');
+include "validate.php";
+include "randomString.php";
+include "gatorlock.php";
 
 // create instance of base class
 $f3 = Base::instance();
 $f3->set('DEBUG', 3);
 
-$f3->set('carriers', array("Verizon","AT&T","Sprint","T-Mobile","Boost Mobile",
-    "Cricket Wireless","Virgin Mobile","Republic Wireless","U.S. Cellular","Alltel"));
+$f3->set('carriers', array("Verizon", "AT&T", "Sprint", "T-Mobile", "Boost Mobile",
+    "Cricket Wireless", "Virgin Mobile", "Republic Wireless", "U.S. Cellular", "Alltel"));
 $f3->set('programs', array("Bachelors - Software Development", "Associates - Software Development",
-    "Bachelors - Networking", "Associates - Networking"));
+    "Bachelors - Networking", "Associates - Networking", "Bachelors - Aeronautical Science", "Associates - Aviation"));
 
 // define a default route
 $f3->route('GET|POST /', function($f3, $params) {
@@ -575,13 +575,13 @@ $f3->route('GET|POST /message', function($f3, $params) {
         $f3->set('textMessage', $textMessage);
 
         if(validTextMessage ($textMessage)) {
-            $chosen = $_POST['chosenPrograms']; // gets the selected program(s)
+            $chosenProgram = $_POST['chosenPrograms']; // gets the selected program(s)
             $students = $database->getStudents();
 
             // send message to every student by selecting the program, then the student
-            foreach ((array)$chosen as $current) {
+            foreach ((array)$chosenProgram as $current) {
                 foreach ($students as $studentInfo) {
-                    if ($studentInfo['program'] == $current) {
+                    if ($studentInfo['program'] == $current && validProgram($current)) {
                         // only send text if opted in and verified
                         if ($studentInfo['getTexts'] == "y" && $studentInfo['verifiedPhone'] == 'y') {
                             $carrierInfo = $database->getCarrierInfo($studentInfo['carrier']);
@@ -626,7 +626,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
             }
 
             // store message in the database, get chosen programs
-            $recipient = implode(", ", (array)$chosen);
+            $recipient = implode(", ", (array)$chosenProgram);
             $database->storeMessage($email, $textMessage, $recipient);
 
             // confirm message was sent

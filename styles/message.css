@@ -1,7 +1,11 @@
-/* Form Styles */
+/* Body Styles */
+
+div#mainContainer {
+    margin-bottom: 2%;
+}
 
 div.col-6 {
-    margin: auto
+    margin: auto;
 }
 
 /* Input tyles */
