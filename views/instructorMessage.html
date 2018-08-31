@@ -53,8 +53,8 @@
                 <label class="form-control-label" for="textMessage">Body</label>
                 <textarea id="textMessage" name="textMessage" rows="7" cols="60" maxlength="250">{{ @textMessage }}</textarea>
 
-                <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Message must have a recipient and cannot be blank" data-placement="right">
-                    <button id="sendMessage" class="btn" type="submit" name="save">Send Message</button>
+                <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Message must have a recipient and cannot be blank" data-placement="left">
+                    <button id="sendMessage" class="btn" type="submit" name="submit">Send Message</button>
                 </span>
 
                 <check if="{{ @sent=='true' }}">

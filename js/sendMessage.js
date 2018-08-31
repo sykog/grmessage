@@ -8,6 +8,7 @@ $(document).ready(function() {
     var sendButton = $("#sendMessage");
     var containsMessage = false;
     var hasRecipient = false;
+    var sent = true;
 
     // initialize tooltips
     $('[data-toggle="tooltip"]').tooltip();
@@ -17,6 +18,12 @@ $(document).ready(function() {
 
     // hide sent message button after 5 seconds
     $("h3#green").delay(5000).fadeOut('slow');
+
+    sendButton.click(function() {
+        if (hasRecipient && $("#textMessage").val().length > 0) {
+            sent = true;
+        }
+    });
 
     // show number of characters left
     $("#textMessage").keyup(function() {
@@ -48,12 +55,10 @@ $(document).ready(function() {
         else disableButton();
     });
 
-    // confirm if user wants to refresh if there is a message
-    $(window).on('beforeunload', function() {
-        if ($("#textMessage").val().length > 0) {
-            return "Are you sure you want to leave? Your message has not been sent";
-        }
-    });
+    // ask for confirmation when leaving or page with a valid unsent message
+    window.onbeforeunload = function(event) {
+        if (!sent) return confirm("Are you sure you want to leave? Your message has not been sent");
+    };
 
     // enable button that sends a message
     function enableButton() {
