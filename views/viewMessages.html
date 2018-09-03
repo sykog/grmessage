@@ -27,12 +27,22 @@
         <a href="logout"><h1 id="logout">Log out</h1></a>
     </header>
 
-    <div class="container" id="mainContainer">
+    <div class="container-fluid" id="mainContainer">
 
         <h2 id="regHeader">Messages</h2>
         <a class="link" href="profile">Profile</a>
         <a class="link" href="message">Send Message</button></a>
         <hr>
+
+        <div id="filterData">
+            <h2>Filter By:</h2>
+            <repeat group="{{ @programs }}" value="{{ @program }}">
+                <div class="rows">
+                    <input type="checkbox" name="chosenPrograms[]" value="{{@program}}" checked>
+                    <label>{{ @program }}</label><br>
+                </div>
+            </repeat>
+        </div>
 
         <!--DataTable-->
         <table id="messagesTable" class="table table-striped table-bordered table-hover">

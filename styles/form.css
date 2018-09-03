@@ -15,15 +15,21 @@ h2#regHeader {
 /* Button Styles */
 
 button.clicked {
-    background: #008031;
-    background: -moz-linear-gradient(0deg, #00cc4b 0%, #008031 49%, #006225 51%, #00993b 100%);
-    background: -webkit-linear-gradient(0deg, #00cc4b 0%,#008031 49%,#006225 51%,#00993b 100%);
-    background: linear-gradient(180deg, #00cc4b 0%,#008031 49%,#006225 51%,#00993b 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00cc4b', endColorstr='#00993b',GradientType=1 );
+    background: #00b344;
+    background: -moz-linear-gradient(0deg, #00ff5e 0%, #00b344 49%, #009439 51%, #00cc4e 100%);
+    background: -webkit-linear-gradient(0deg, #00ff5e 0%,#00b344 49%,#009439 51%,#00cc4e 100%);
+    background: linear-gradient(180deg, #00ff5e 0%,#00b344 49%,#009439 51%,#00cc4e 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33ff7e', endColorstr='#00cc4e',GradientType=1 );
+    box-shadow: 0px 0px 5px #00cc4e;
+}
+
+button.clicked:hover {
+    cursor: default;
 }
 
 button#submit {
-    margin: 10px 0px;
+    font-size: 1.4em;
+    margin-bottom: 1%;
 }
 
 /* Input Styles */
@@ -52,6 +58,7 @@ p.error {
 div#gatorLockDiv {
     border-bottom: 2px solid #008930;
     width: max-content;
+    margin-bottom: 2%;
 }
 
 /* List Styles */

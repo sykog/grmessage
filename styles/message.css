@@ -10,8 +10,24 @@ div.col-6 {
 
 /* Input tyles */
 
+div#filterData {
+  width: 110%;
+  position: relative;
+  overflow: hidden;
+}
+
+div.rows {
+    position: relative;
+    width: 50%;
+    float: right;
+}
+
 textarea {
     width: 100%;
+}
+
+input {
+    margin-bottom: 1%;
 }
 
 label.form-control-label {
@@ -21,8 +37,8 @@ label.form-control-label {
     color: #006225;
 }
 
-input {
-    margin-bottom: 1%;
+input[type=checkbox]:checked + label {
+  font-weight: bold;
 }
 
 /* Font Styles */

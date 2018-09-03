@@ -37,14 +37,17 @@
             <p id="noRecipients" class="alert alert-danger" role="alert">Must select a program before sending a message</p>
 
             <form class="form" action="" method="post">
-                <repeat group="{{ @studentCount }}" key="{{ @program }}" value="{{ @subscribers }}">
-                    <label>
-                        <input type="checkbox" name="chosenPrograms[]" value="{{@program}}">
-                        {{ @program }} <i>({{ @subscribers }} <check if="{{ @subscribers == 1}}">
-                            <true>student</true><false>students</false></check>)</i>
-                    </label>
-                    <br>
-                </repeat>
+                <div id="filterData">
+                    <repeat group="{{ @studentCount }}" key="{{ @program }}" value="{{ @subscribers }}">
+                        <div class="rows">
+                            <input type="checkbox" name="chosenPrograms[]" value="{{@program}}">
+                            <label>{{ @program }} <i>({{ @subscribers }} <check if="{{ @subscribers == 1}}">
+                                <true>student</true><false>students</false></check>)</i>
+                            </label>
+                        </div>
+                    </repeat>
+                </div>
+
                 <label class="form-control-label" for="subject">Subject</label>
                 <input class="form-control" type="text" id="subject" name="subject" value="{{ @subject }}"
                        placeholder="Subject will only be used for emails, not texts">

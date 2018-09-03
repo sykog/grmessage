@@ -20,3 +20,20 @@ tbody tr:nth-child(even):hover td, tbody tr:nth-child(odd):hover td {
 a.page-link, a.page-link:hover {
     color: #006225;
 }
+
+/* Input Styles */
+
+div#filterData {
+  position: relative;
+  overflow: hidden;
+}
+
+div.rows {
+    position: relative;
+    width: 33%;
+    float: right;
+}
+
+input[type=checkbox]:checked + label {
+  font-weight: bold;
+}
