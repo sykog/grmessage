@@ -23,6 +23,12 @@ a.page-link, a.page-link:hover {
 
 /* Input Styles */
 
+label#filter {
+  font-size: 1.8em;
+  font-weight: 500;
+  margin-right: 1%;
+}
+
 div#filterData {
   position: relative;
   overflow: hidden;

@@ -35,7 +35,9 @@
         <hr>
 
         <div id="filterData">
-            <h2>Filter By:</h2>
+            <label id="filter">Filter By:</label>
+            <button id="check">Check all</button>
+            <button id="uncheck">Uncheck all</button><br>
             <repeat group="{{ @programs }}" value="{{ @program }}">
                 <div class="rows">
                     <input type="checkbox" name="chosenPrograms[]" value="{{@program}}" checked>
@@ -58,9 +60,9 @@
             <tbody>
             <repeat group="{{@messages}}" value="{{@message}}">
             <tr>
-                <td>{{ str_replace(array("greenriver.edu", "@"), "", @message['instructorEmail']) }} </td>
+                <td>{{ @message['instructorEmail'] }}</td>
                 <td>{{ @message['content'] }} </td>
-                <td>{{ str_replace(", ", "<br>", @message['recipient']) }} </td>
+                <td>{{ str_replace(", ", ",<br>", @message['recipient']) }} </td>
                 <td>{{ @message['datetime'] }}</td>
             </tr>
             </repeat>

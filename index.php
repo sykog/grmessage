@@ -659,6 +659,12 @@ $f3->route('GET|POST /view-messages', function($f3) {
 
     // get all messages
     $messages = $database->getMessages();
+    // replace the emails with the instructor's name
+    foreach($messages as &$message) {
+        $name = $database->getInstructor($message['instructorEmail'])['fname'] . " " .
+                $database->getInstructor($message['instructorEmail'])['lname'];
+        $message['instructorEmail'] = $name;
+    }
     $f3->set('messages', $messages);
 
     $template = new Template();
