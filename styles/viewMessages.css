@@ -36,10 +36,10 @@ div#filterData {
 
 div.rows {
     position: relative;
+    display: inline-block;
     width: 33%;
-    float: right;
 }
 
 input[type=checkbox]:checked + label {
-  font-weight: bold;
+    font-weight: bold;
 }
