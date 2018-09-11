@@ -695,5 +695,12 @@ $f3->route('GET|POST /view-messages', function($f3) {
     echo $template->render('views/viewMessages.html');
 });
 
+// define a message viewing route
+$f3->route('GET|POST /unsubscribe', function($f3) {
+
+    $template = new Template();
+    echo $template->render('views/unsubscribe.html');
+});
+
 // run fat free
 $f3->run();

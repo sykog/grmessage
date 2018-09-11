@@ -42,3 +42,12 @@ button#resend {
     background: linear-gradient(180deg, #f6ab55 0%,#f2870d 49%,#c26c0a 51%,#f49325 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6ab55', endColorstr='#f49325',GradientType=1 );
 }
+
+button#unsubscribe {
+    font-size: 1.5em;
+    background: #f20d0d;
+    background: -moz-linear-gradient(0deg, #f65555 0%, #f20d0d 49%, #c20a0a 51%, #f42525 100%);
+    background: -webkit-linear-gradient(0deg, #f65555 0%,#f20d0d 49%,#c20a0a 51%,#f42525 100%);
+    background: linear-gradient(180deg, #f65555 0%,#f20d0d 49%,#c20a0a 51%,#f42525 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f65555', endColorstr='#f42525',GradientType=1 );
+}

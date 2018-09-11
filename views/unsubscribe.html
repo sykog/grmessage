@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unsubscribe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://www.greenriver.edu/favicon.ico">
+
+    <!--Style sheets-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/main.css">
+    <link type="text/css" rel="stylesheet" href="{{@BASE}}/styles/accountVerification.css">
+</head>
+<body>
+    <header class="header clearfix" id="mainHeader">
+        <a href="{{@BASE}}"><h1>Green River Messaging</h1></a>
+        <a href="http://greenrivertech.net/index.php">GR TECH</a>
+        <a href="http://gatorlock.greenriverdev.com/">GatorLock</a>
+    </header>
+
+    <div class="container">
+        <p class="alert alert-warning text-dark my-3" role="alert">
+            Are you sure you want to unsubscribe from <b>ALL</b> announcements? (Texts and emails)
+        </p>
+        <form method="post" class="form mx-auto">
+            <div class="container">
+                <div class="row mx-auto">
+                    <div class="container">
+                        <div class="row mx-auto my-1">
+                            <check if="{{@unsubscribe != 'true'}}">
+                                <p class="alert alert-success text-dark my-2" role="alert">
+                                    You will no longer receive any more announcements
+                                </p>
+                            </check>
+                        </div>
+
+                        <div class="row mx-auto my-1">
+                            <label class="form-control-label mx-auto"><b>Unsubscribe for:</b> {{ @email }}</label>
+                        </div>
+                        <div class="row mx-auto my-1">
+                            <button type="submit" id="unsubscribe" name="verify">Unsubscribe</button>
+                        </div>
+                        <div class="row mx-auto my-1">
+                            <p><a href="{{@BASE}}">Return to home page</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- /container -->
+        </form>
+    </div> <!-- /container -->
+</body>
+</html>
