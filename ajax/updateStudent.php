@@ -30,12 +30,20 @@
             $code = randomString(6);
             $database->setStudentCode("verifiedPersonal", $code, $email);
 
+            $body = '<html lang="en">' .
+                '<body>' .
+                '<h3 style="color:#006225">Green River Messaging</h3>' .
+                '<p>Email Verification Code:</p>' .
+                '<h3>' . $code . '</h3>' .
+                '</body>' .
+                '</html>';
+
             // create the message
             $message = (new Swift_Message())
                 ->setSubject('Verification Code')
                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                 ->setTo($_POST['pemail'])
-                ->setBody("Personal Email Verification Code: ". $code, 'text/html');
+                ->setBody($body, 'text/html');
 
             // send the message
             $result = $mailer->send($message);

@@ -241,15 +241,27 @@ $f3->route('GET|POST /register', function($f3, $params) {
             if ($email == $_POST['semail']) {
                 $database->addStudent($email, $password, $phone, $first, $last, $carrier, $program);
                 $_SESSION['loggedIn'] = true;
+
+                // generate code
                 $studentCode = randomString(6);
                 $database->setStudentCode("verifiedStudent", $studentCode, $email);
+
+                $body = '<html lang="en">' .
+                '<body>' .
+                '<h3 style="color:#006225">Green River Messaging</h3>' .
+                '<p>Here is your account verification code:</p>' .
+                '<h3>' . $studentCode . '</h3>' .
+                '<p>Verification codes last for one hour. If it has been over an hour, you can request a new code ' .
+                'by logging into your account</p>' .
+                '</body>' .
+                '</html>';
 
                 // create the message
                 $message = (new Swift_Message())
                     ->setSubject('Account Verification Code')
                     ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                     ->setTo($email)
-                    ->setBody("Account Verification Code (Codes expire after 1 hour): " . $studentCode, 'text/html');
+                    ->setBody($body, 'text/html');
 
                 // send the message
                 $result = $mailer->send($message);
@@ -266,12 +278,22 @@ $f3->route('GET|POST /register', function($f3, $params) {
                 $instructorCode = randomString(6);
                 $database->setInstructorCode($instructorCode, $email);
 
+                $body = '<html lang="en">' .
+                '<body>' .
+                '<h3 style="color:#006225">Green River Messaging</h3>' .
+                '<p>Here is your account verification code:</p>' .
+                '<h3>' . $instructorCode . '</h3>' .
+                '<p>Verification codes last for one hour. If it has been over an hour, you can request a new code' .
+                'by logging into your account</p>' .
+                '</body>' .
+                '</html>';
+
                 // create the message
                 $message = (new Swift_Message())
                     ->setSubject('Account Verification Code')
                     ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                     ->setTo($email)
-                    ->setBody("Account Verification Code (Codes expire after 1 hour): " . $instructorCode, 'text/html');
+                    ->setBody($body, 'text/html');
 
                 // send the message
                 $result = $mailer->send($message);
@@ -324,12 +346,22 @@ $f3->route('GET|POST /verify', function($f3) {
         if (validIEmail($email)) $database->setInstructorCode($code, $email);
         else $database->setStudentCode("verifiedStudent", $code, $email);
 
+        $body = '<html lang="en">' .
+                '<body>' .
+                '<h3 style="color:#006225">Green River Messaging</h3>' .
+                '<p>Here is your account verification code:</p>' .
+                '<h3>' . $code . '</h3>' .
+                '<p>Verification codes last for one hour. If it has been over an hour, you can request a new code' .
+                'by logging into your account</p>' .
+                '</body>' .
+                '</html>';
+
         // create the message
         $message = (new Swift_Message())
             ->setSubject('Account Verification Code')
             ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
             ->setTo($email)
-            ->setBody("Account Verification Code (Codes expire after 1 hour): " . $code, 'text/html');
+            ->setBody($body, 'text/html');
 
         // send the message
         $result = $mailer->send($message);
@@ -386,23 +418,15 @@ $f3->route('GET|POST /profile', function($f3, $params) {
     unset($_SESSION['loginError']);
     unset($_SESSION['sent']);
 
-    // Create the transport
-    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
-        ->setUsername(EMAIL_USERNAME)
-        ->setPassword(EMAIL_PASSWORD);
-    // Create the Mailer using your created Transport
-    $mailer = new Swift_Mailer($transport);
-
-    if (isset($_SESSION['passwordError'])) $f3->set('passwordError', $_SESSION['passwordError']);
+    /* if (isset($_SESSION['passwordError'])) $f3->set('passwordError', $_SESSION['passwordError']);
     if (isset($_SESSION['passwordChanged'])) $f3->set('passwordChanged', $_SESSION['passwordChanged']);
-    if (isset($_SESSION['nameError'])) $f3->set('nameError', $_SESSION['nameError']);
+    if (isset($_SESSION['nameError'])) $f3->set('nameError', $_SESSION['nameError']);*/
 
     // go to login page if not logged in
     if(!$_SESSION['loggedIn']) {
         $f3->reroute("/");
     }
 
-    $headers = "From: Green River Messaging\n";
     $email = $_SESSION['email'];
 
     // instructor profile page
@@ -433,7 +457,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         }
 
         // change password if button was clicked
-        else if (isset($_POST['updatePassword'])) {
+        /* else if (isset($_POST['updatePassword'])) {
 
             $currentPassword = sha1($_POST['currentPassword']);
             $newPassword = $_POST['newPassword'];
@@ -460,7 +484,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
             unset($_SESSION['passwordError']);
             unset($_SESSION['nameError']);
             unset($_SESSION['passwordChanged']);
-        }
+        }*/
 
         $template = new Template();
         echo $template->render('views/instructorHome.html');
@@ -489,7 +513,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         $f3->set('getPersonalEmails', $student['getPersonalEmails']);
 
         // change password if button was clicked
-        if (isset($_POST['updatePassword'])) {
+        /*if (isset($_POST['updatePassword'])) {
 
             $currentPassword = sha1($_POST['currentPassword']);
             $newPassword = $_POST['newPassword'];
@@ -514,7 +538,7 @@ $f3->route('GET|POST /profile', function($f3, $params) {
         } else {
             unset($_SESSION['passwordError']);
             unset($_SESSION['passwordChanged']);
-        }
+        }*/
 
         $template = new Template();
         echo $template->render('views/studentProfile.html');
