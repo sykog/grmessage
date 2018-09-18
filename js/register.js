@@ -37,8 +37,10 @@ $(document).ready(function() {
             $("#showPassword[type=checkbox]").prop('checked', false);
             $("#password").attr("type", "password");
             $("#confirm").attr("type", "password");
+            $("#passLabel").text("GatorLock Password");
         } else {
             $("#showPassword, .gatorLockShow").show();
+            $("#passLabel").text("Password");
         }
     });
 

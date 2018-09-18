@@ -52,7 +52,7 @@
                     <false><input class="form-control" type="text" id="email" name="semail" placeholder="example@mail.greenriver.edu"
                        value="{{ @fields['semail'] }}" required></false>
                 </check>
-                <label class="form-control-label" for="password">*Password
+                <label class="form-control-label" for="password">*<span id="passLabel">Password</span>
                     <ul class="gatorLockShow text-muted"><p>Password must have all 4 of the following requirements:</p>
                         <li>At least 8 characters</li>
                         <li>At least 1 character (not case-sensitive)</li>
@@ -66,7 +66,7 @@
                 <input class="form-control" type="password" id="password" name="password"
                         value="{{ @fields['password'] }}" required>
 
-                <label class="gatorLockShow form-control-label" for="confirm">*Confirm password<span class="red gatorLockShow"></span></label>
+                <label class="gatorLockShow form-control-label" for="confirm">*Confirm Password<span class="red gatorLockShow"></span></label>
                 <check if="{{ isset(@errors['confirm']) }}">
                     <p class="gatorLockShow error alert alert-danger">{{ @errors['confirm'] }}</p>
                 </check>
