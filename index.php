@@ -554,7 +554,9 @@ $f3->route('GET|POST /message', function($f3, $params) {
         ->setPassword(EMAIL_PASSWORD);
     // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
-    $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, uncheck the notifications on your <a href="http://messaging.greenrivertech.net/">profile page</a>.</p>';
+    $studentUrl = "";
+    $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, uncheck the notifications on your <a href="http://asuarez.greenriverdev.com/355/grmessage/unsubscribe/'.
+        $studentUrl.'">http://asuarez.greenriverdev.com/355/grmessage/unsubscribe/'.$studentUrl.'</a>.</p>';
 
     // go back to home page if not logged in
     if(!$_SESSION['loggedIn']) $f3->reroute("/");
@@ -586,14 +588,6 @@ $f3->route('GET|POST /message', function($f3, $params) {
         $textMessage = trim($_POST['textMessage']);
         // keeps line breaks
         $emailMessage = nl2br($textMessage);
-        // format email with html
-        $body = '<html lang="en">' .
-            '<body>' .
-            '<h3 style="color:#006225">Green River Messaging</h3>' .
-            '<p>' . $emailMessage . '</p>' .
-            $optOut .
-            '</body>' .
-            '</html>';
 
         $f3->set('subject', $subject);
         $f3->set('textMessage', $textMessage);
@@ -605,6 +599,20 @@ $f3->route('GET|POST /message', function($f3, $params) {
             // send message to every student by selecting the program, then the student
             foreach ((array)$chosenProgram as $current) {
                 foreach ($students as $studentInfo) {
+                    // encrypt student email to but used in opt out link
+                    $studentUrl = sha1($studentInfo['studentEmail']);
+                    $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, opt out here: <a href="http://asuarez.greenriverdev.com/355/grmessage/unsubscribe/'.
+                            $studentUrl.'">http://asuarez.greenriverdev.com/355/grmessage/unsubscribe/'.$studentUrl.'</a>.</p>';
+                    // format email with html
+                    $body = '<html lang="en">' .
+                            '<body>' .
+                            '<h3 style="color:#006225">Green River Messaging</h3>' .
+                            '<p>' . $emailMessage . '</p>' .
+                            $optOut .
+                            '</body>' .
+                            '</html>';
+
+
                     if ($studentInfo['program'] == $current && validProgram($current)) {
                         // only send text if opted in and verified
                         if ($studentInfo['getTexts'] == "y" && $studentInfo['verifiedPhone'] == 'y') {
@@ -696,7 +704,22 @@ $f3->route('GET|POST /view-messages', function($f3) {
 });
 
 // define a message viewing route
-$f3->route('GET|POST /unsubscribe', function($f3) {
+$f3->route('GET|POST /unsubscribe/@student', function($f3, $params) {
+
+    $database = new Database(DB_DSN, DB_USERNAME, DB_PASSWORD);
+    // get the student email from the url
+    $student = $database->getStudentByURL($params['student']);
+    $email = $student['studentEmail'];
+    $f3->set('email', $email);
+
+    // go to home page if not an existing student url
+    if (empty($email)) $f3->reroute("/");
+
+    // set every contact to no
+    if(isset($_POST['optOut'])) {
+        $database->updatePreferences($email, "n", "n", "n");
+        $f3->set('unsubscribe', "true");
+    }
 
     $template = new Template();
     echo $template->render('views/unsubscribe.html');

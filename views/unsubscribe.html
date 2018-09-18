@@ -27,7 +27,7 @@
                 <div class="row mx-auto">
                     <div class="container">
                         <div class="row mx-auto my-1">
-                            <check if="{{@unsubscribe != 'true'}}">
+                            <check if="{{@unsubscribe == 'true'}}">
                                 <p class="alert alert-success text-dark my-2" role="alert">
                                     You will no longer receive any more announcements
                                 </p>
@@ -38,7 +38,7 @@
                             <label class="form-control-label mx-auto"><b>Unsubscribe for:</b> {{ @email }}</label>
                         </div>
                         <div class="row mx-auto my-1">
-                            <button type="submit" id="unsubscribe" name="verify">Unsubscribe</button>
+                            <button type="submit" id="unsubscribe" name="optOut">Unsubscribe</button>
                         </div>
                         <div class="row mx-auto my-1">
                             <p><a href="{{@BASE}}">Return to home page</a></p>

@@ -570,4 +570,23 @@ class Database
         return $results;
     } // end getMessages
 
+    /**
+     * @param $url
+     * @return mixed
+     */
+    function getStudentByURL($url) {
+        $dbh = $this->dbh;
+        // define the query
+        $sql = "SELECT * FROM students WHERE optOutUrl= :url";
+
+        // prepare the statement
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(":url", $url, PDO::PARAM_STR);
+
+        // execute and process the result
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    } // end getStudentURL
+
 }//end Database class

@@ -40,8 +40,8 @@
             <button id="uncheck">Uncheck all</button><br>
             <repeat group="{{ @programs }}" value="{{ @program }}">
                 <div class="rows">
-                    <input type="checkbox" name="chosenPrograms[]" value="{{@program}}" checked>
-                    <label>{{ @program }}</label>
+                    <input type="checkbox" name="chosenPrograms[]" value="{{@program}}" id="{{@program}}" checked>
+                    <label for="{{@program}}">{{ @program }}</label>
                 </div>
             </repeat>
         </div>

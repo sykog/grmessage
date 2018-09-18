@@ -40,8 +40,8 @@
                 <div id="filterData">
                     <repeat group="{{ @studentCount }}" key="{{ @program }}" value="{{ @subscribers }}">
                         <div class="rows">
-                            <input type="checkbox" name="chosenPrograms[]" value="{{@program}}">
-                            <label>{{ @program }} <i>({{ @subscribers }} <check if="{{ @subscribers == 1}}">
+                            <input type="checkbox" name="chosenPrograms[]" value="{{@program}}" id="{{@program}}">
+                            <label for="{{@program}}">{{ @program }} <i>({{ @subscribers }} <check if="{{ @subscribers == 1}}">
                                 <true>student</true><false>students</false></check>)</i>
                             </label>
                         </div>
