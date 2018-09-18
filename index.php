@@ -79,7 +79,7 @@ $f3->route('GET|POST /', function($f3, $params) {
                 // if email is in the database, try to log in
                 if($instructor['email'] == $email) {
                     $result = gatorlockLogin($email, $password);
-                    $success = true;
+                    $success = false;
                     // successful login returns 7
                     if ($result == 7) {
                         $success = true;

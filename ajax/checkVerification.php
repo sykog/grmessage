@@ -13,7 +13,7 @@
     $pemail = $database->getStudent($email)['personalEmail'];
 
     // returns what addresses have been verified
-    if (($verifiedEmail == y && $verifiedPhone == "y") || ($phone == "" && $pemail == "")) echo "both";
-    else if ($verifiedPhone == "y" || $phone == "") echo "phone";
-    else if ($verifiedEmail == y || $pemail == "") echo "email";
+    if (($verifiedEmail != "y" && $verifiedPhone != "y") || ($phone == "" && $pemail == "")) echo "both";
+    else if ($verifiedPhone != "y" && $phone != "") echo "phone";
+    else if ($verifiedEmail != "y" && $pemail != "") echo "email";
     else echo $verifiedPhone . ":" . $verifiedEmail;

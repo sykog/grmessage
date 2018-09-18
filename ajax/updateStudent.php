@@ -56,7 +56,7 @@
     elseif ($_POST['column'] == "pEmailVerify") {
         $verified = $database->getStudent($email)['verifiedPersonal'];
         // if it matches code in the database
-        if ($_POST['code'] == $verified || $verified == "y") {
+        if (($_POST['code'] == $verified || $verified == "y") && !empty($_POST['code'])) {
             $database->setStudentCode("verifiedPersonal", "y", $email);
             echo "correct";
         } else echo "incorrect";
@@ -141,7 +141,7 @@
         $verified = $database->getStudent($email)['verifiedPhone'];
 
         // if it matches code in the database
-        if ($_POST['code'] == $verified || $verified == "y") {
+        if (($_POST['code'] == $verified || $verified == "y") && !empty($_POST['code'])) {
             $database->setStudentCode("verifiedPhone", "y", $email);
             echo "correct";
         } else echo "incorrect" . $_POST['code'];

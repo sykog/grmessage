@@ -17,8 +17,8 @@ $(document).ready(function() {
     $(".error, .sameLine, .update, .cancelInput, .alert-success").hide();
     $(".verify *, #passChanged").show();
 
-    // hide verification tabs if verified
-    hideVerifications();
+    // hide verification tabs if not verified
+    showVerifications();
 
     // disable saving notification preferences
     disableButton()
@@ -354,14 +354,14 @@ $(document).ready(function() {
     });
 
     // check if either verification divs need to be shown
-    function hideVerifications() {
+    function showVerifications() {
         var verificatons = $.post('ajax/checkVerification.php', {email: $("#emailSpan").text()});
 
         // check to see which are verified, do nothing if neither are
         verificatons.done(function(data) {
-            if (data == "both") $("#verifyPhoneDiv, #phoneVerifyError, #phoneError, #verifyPEmailDiv, #pEmailVerifyError, #pEmailError").hide();
-            else if (data == "phone") $("#verifyPhoneDiv, #phoneVerifyError, #phoneError").hide();
-            else if (data == "email") $("#verifyPEmailDiv, #pEmailVerifyError, #pEmailError").hide();
+            if (data == "both") $("#verifyPhoneDiv, #verifyPEmailDiv").show();
+            else if (data == "phone") $("#verifyPhoneDiv").show();
+            else if (data == "email") $("#verifyPEmailDiv").show();
         });
     }
 

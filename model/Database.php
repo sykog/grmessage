@@ -30,19 +30,21 @@ class Database
      * @param $carrier cell phone carrier
      */
     function addStudent($email, $password, $phone, $fname, $lname, $carrier, $program) {
-        // encrypt password
+        // encrypt password and url
         $password = sha1($password);
+        $url = sha1($email);
         if (strlen($phone) == 0) {
             $carrier = "";
         }
         $dbh = $this->dbh;
         // define the query
-        $sql = "INSERT INTO students(studentEmail, password, phone, fname, lname, carrier, program)
-            VALUES (:email, :password, :phone, :fname, :lname, :carrier, :program)";
+        $sql = "INSERT INTO students(studentEmail, optOutUrl, password, phone, fname, lname, carrier, program)
+            VALUES (:email, :optOutUrl, :password, :phone, :fname, :lname, :carrier, :program)";
 
         // prepare the statement
         $statement = $dbh->prepare($sql);
         $statement->bindParam(':email', $email, PDO::PARAM_STR);
+        $statement->bindParam(':optOutUrl', $url, PDO::PARAM_STR);
         $statement->bindParam(':password', $password, PDO::PARAM_STR);
         $statement->bindParam(':phone', $phone, PDO::PARAM_STR);
         $statement->bindParam(':fname', $fname, PDO::PARAM_STR);
