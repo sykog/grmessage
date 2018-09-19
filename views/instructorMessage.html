@@ -33,7 +33,7 @@
         <hr>
 
         <div class="col-8 mx-auto">
-            <p id="emptyMessage" class="alert alert-danger" role="alert">Message must be between 1 and 250 characters</p>
+            <p id="emptyMessage" class="alert alert-danger" role="alert">Message must be between 1 and 200 characters</p>
             <p id="noRecipients" class="alert alert-danger" role="alert">Must select a program before sending a message</p>
 
             <form class="form" action="" method="post">
@@ -51,10 +51,10 @@
                 <label class="form-control-label" for="subject">Subject</label>
                 <input class="form-control" type="text" id="subject" name="subject" value="{{ @subject }}"
                        placeholder="Subject will only be used for emails, not texts">
-                <p id="counter"><span id="chars">250</span> characters left</p>
+                <p id="counter"><span id="chars">200</span> characters left</p>
 
                 <label class="form-control-label" for="textMessage">Body</label>
-                <textarea id="textMessage" name="textMessage" rows="7" cols="60" maxlength="250">{{ @textMessage }}</textarea>
+                <textarea id="textMessage" name="textMessage" rows="7" cols="60" maxlength="200">{{ @textMessage }}</textarea>
 
                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Message must have a recipient and cannot be blank" data-placement="left">
                     <button id="sendMessage" class="btn" type="submit" name="submit">Send Message</button>

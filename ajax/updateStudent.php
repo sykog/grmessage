@@ -8,7 +8,7 @@
     $database = new Database(DB_DSN,DB_USERNAME, DB_PASSWORD);
 
     // create the transport
-    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
+    $transport = (new Swift_SmtpTransport(EMAIL_ACCOUNT, 465, 'ssl'))
         ->setUsername(EMAIL_USERNAME)
         ->setPassword(EMAIL_PASSWORD);
     $mailer = new Swift_Mailer($transport);

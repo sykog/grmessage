@@ -148,7 +148,7 @@ $f3->route('GET|POST /register', function($f3, $params) {
     $f3->set('instructor', false);
 
     // Create the transport
-    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
+    $transport = (new Swift_SmtpTransport(EMAIL_ACCOUNT, 465, 'ssl'))
         ->setUsername(EMAIL_USERNAME)
         ->setPassword(EMAIL_PASSWORD);
     // Create the Mailer using your created Transport
@@ -306,7 +306,7 @@ $f3->route('GET|POST /verify', function($f3) {
     if (isset($_SESSION['codeError'])) $f3->set('codeError', $_SESSION['codeError']);
 
     // Create the transport
-    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
+    $transport = (new Swift_SmtpTransport(EMAIL_ACCOUNT, 465, 'ssl'))
         ->setUsername(EMAIL_USERNAME)
         ->setPassword(EMAIL_PASSWORD);
     // Create the Mailer using your created Transport
@@ -467,14 +467,15 @@ $f3->route('GET|POST /profile', function($f3, $params) {
 $f3->route('GET|POST /message', function($f3, $params) {
 
     // Create the transport
-    $transport = (new Swift_SmtpTransport('mail.asuarez.greenriverdev.com', 465, 'ssl'))
+    $transport = (new Swift_SmtpTransport(EMAIL_ACCOUNT, 465, 'ssl'))
         ->setUsername(EMAIL_USERNAME)
         ->setPassword(EMAIL_PASSWORD);
     // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
     $studentUrl = "";
-    $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, uncheck the notifications on your <a href="http://asuarez.greenriverdev.com/355/grmessage/unsubscribe/'.
-        $studentUrl.'">http://asuarez.greenriverdev.com/355/grmessage/unsubscribe/'.$studentUrl.'</a>.</p>';
+    $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, uncheck the notifications on your <a href="http://messaging.greenrivertech.net/unsubscribe/'.
+        $studentUrl.'">http://messaging.greenrivertech.net/unsubscribe/'.$studentUrl.'</a>.</p>';
+    $optOutText = "\nOpt out at http://messaging.greenrivertech.net/";
 
     // go back to home page if not logged in
     if(!$_SESSION['loggedIn']) $f3->reroute("/");
@@ -519,8 +520,8 @@ $f3->route('GET|POST /message', function($f3, $params) {
                 foreach ($students as $studentInfo) {
                     // encrypt student email to but used in opt out link
                     $studentUrl = sha1($studentInfo['studentEmail']);
-                    $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, opt out here: <a href="http://asuarez.greenriverdev.com/355/grmessage/unsubscribe/'.
-                            $studentUrl.'">http://asuarez.greenriverdev.com/355/grmessage/unsubscribe/'.$studentUrl.'</a>.</p>';
+                    $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, opt out here: <a href="http://messaging.greenrivertech.net/unsubscribe/'.
+                            $studentUrl.'">http://messaging.greenrivertech.net/unsubscribe/'.$studentUrl.'</a>.</p>';
                     // format email with html
                     $body = '<html lang="en">' .
                             '<body>' .
@@ -542,7 +543,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                             $message = (new Swift_Message())
                                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                                 ->setTo($to)
-                                ->setBody($textMessage, 'text/html');
+                                ->setBody($textMessage . $optOutText, 'text/html');
 
                             // send the message
                             $result = $mailer->send($message);

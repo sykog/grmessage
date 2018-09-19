@@ -4,7 +4,7 @@
 $(document).ready(function() {
 
     // variables
-    var maxLength = 250;
+    var maxLength = 200;
     var sendButton = $("#sendMessage");
     var containsMessage = false;
     var hasRecipient = false;
