@@ -80,6 +80,7 @@ $f3->route('GET|POST /', function($f3, $params) {
                 if($instructor['email'] == $email) {
                     $result = gatorlockLogin($email, $password);
                     $success = false;
+                    $_SESSION['loginError'] = $result . "ff";
                     // successful login returns 7
                     if ($result == 7) {
                         $success = true;
@@ -475,7 +476,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
     $studentUrl = "";
     $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, uncheck the notifications on your <a href="http://messaging.greenrivertech.net/unsubscribe/'.
         $studentUrl.'">http://messaging.greenrivertech.net/unsubscribe/'.$studentUrl.'</a>.</p>';
-    $optOutText = "\nOpt out at http://messaging.greenrivertech.net/";
+    $optOutText = "Opt out at http://messaging.greenrivertech.net/unsubscribe/".$studentUrl;
 
     // go back to home page if not logged in
     if(!$_SESSION['loggedIn']) $f3->reroute("/");
@@ -522,6 +523,7 @@ $f3->route('GET|POST /message', function($f3, $params) {
                     $studentUrl = sha1($studentInfo['studentEmail']);
                     $optOut = '<hr><p style="color:#7D7D7D">If you would like to stop receiving updates, opt out here: <a href="http://messaging.greenrivertech.net/unsubscribe/'.
                             $studentUrl.'">http://messaging.greenrivertech.net/unsubscribe/'.$studentUrl.'</a>.</p>';
+                    $optOutText = "Opt out at http://messaging.greenrivertech.net/unsubscribe/".$studentUrl;
                     // format email with html
                     $body = '<html lang="en">' .
                             '<body>' .
@@ -540,13 +542,41 @@ $f3->route('GET|POST /message', function($f3, $params) {
                             $to = $studentInfo['phone'] . "@" . $carrierEmail;
 
                             // create the message
-                            $message = (new Swift_Message())
+                            // sms have limited characters, so the text must be split if too long
+                            if (strlen($textMessage) >= 140) {
+                                $part[0] = substr($textMessage, 0, 141);
+                                $part[1] = substr($textMessage, 141);
+
+                                $messages[0] = (new Swift_Message())
                                 ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
                                 ->setTo($to)
-                                ->setBody($textMessage . $optOutText, 'text/html');
+                                ->setBody($part[0], 'text/html');
+
+                                $messages[1] = (new Swift_Message())
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($to)
+                                ->setBody($part[1], 'text/html');
+
+                                $messages[2] = (new Swift_Message())
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($to)
+                                ->setBody($optOutText, 'text/html');
+                            } else {
+                                $messages[0] = (new Swift_Message())
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($to)
+                                ->setBody($textMessage, 'text/html');
+
+                                $messages[1] = (new Swift_Message())
+                                ->setFrom([EMAIL_USERNAME => 'Green River Messaging'])
+                                ->setTo($to)
+                                ->setBody($optOutText, 'text/html');
+                            }
 
                             // send the message
-                            $result = $mailer->send($message);
+                            foreach ($messages as $messagePart) {
+                                $result = $mailer->send($messagePart);
+                            }
                         }
                         // only send secondary email if opted in and verified
                         if ($studentInfo['getPersonalEmails'] == "y" && $studentInfo['verifiedPersonal'] == 'y') {
